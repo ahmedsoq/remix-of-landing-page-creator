@@ -2,8 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { Facebook, MessageCircle, Phone, X } from "lucide-react";
 
-import camMain from "@/assets/cam-main.png.asset.json";
-import camSide from "@/assets/cam-side.png.asset.json";
+import camHero from "@/assets/cam-hero.jpg.asset.json";
 import sceneKids from "@/assets/scene-kids.jpg.asset.json";
 import scenePets from "@/assets/scene-pets.jpg.asset.json";
 import sceneTravel from "@/assets/scene-travel.jpg.asset.json";
@@ -70,12 +69,11 @@ function loadSettings(): Settings {
 }
 
 const GALLERY: { src: string; alt: string; fit: string }[] = [
+  { src: camHero.url, alt: "كاميرا 1080P Full HD — أمام وخلف", fit: "object-cover" },
   { src: sceneKids.url, alt: "راقب أطفالك في أي وقت", fit: "object-cover" },
-  { src: camMain.url, alt: "كاميرا 1080P — أمام وخلف", fit: "object-contain p-4" },
   { src: sceneHome.url, alt: "حماية منزلك ليلاً برؤية ليلية", fit: "object-cover" },
   { src: scenePets.url, alt: "راقب حيواناتك أثناء غيابك", fit: "object-cover" },
-  { src: sceneTravel.url, alt: "وثّق رحلاتك وأسفارك", fit: "object-cover" },
-  { src: camSide.url, alt: "مشبك معدني قوي وعدسة دوارة", fit: "object-contain p-4" },
+  { src: sceneTravel.url, alt: "وثّق رحلاتك وأسفارك بجودة عالية", fit: "object-cover" },
 ];
 
 
