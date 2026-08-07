@@ -24,7 +24,7 @@ export const Route = createFileRoute("/")({
 
 /**
  * الصفحة بالكامل موجودة في ملف واحد: public/elsoooq.html
- * (HTML + CSS + JS + المحافظات + لوحة التحكم) — قابل للنقل لأي استضافة.
+ * (نسخة index.html في جذر المستودع جاهزة لرفع GitHub Pages)
  */
 function Landing() {
   useEffect(() => {
