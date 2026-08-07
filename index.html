@@ -227,15 +227,37 @@ var S = load();
 function tgSend(token, chat, text){
   token = String(token||"").trim(); chat = String(chat||"").trim();
   if(!token || !chat) return Promise.reject(new Error("لم يتم ضبط إعدادات الإشعارات بعد. افتح لوحة التحكم واحفظ التوكن وأيدي الشات."));
-  return fetch("https://api.telegram.org/bot" + token + "/sendMessage", {
-    method:"POST", headers:{"Content-Type":"application/json"},
-    body: JSON.stringify({ chat_id: chat, text: text, disable_web_page_preview:true })
-  }).then(function(r){ return r.json(); }).catch(function(){
-    return fetch("https://api.telegram.org/bot" + token + "/sendMessage?chat_id=" + encodeURIComponent(chat) + "&text=" + encodeURIComponent(text)).then(function(r){ return r.json(); });
-  }).then(function(t){
-    if(!t || !t.ok) throw new Error((t && t.description) ? t.description : "فشل الإرسال");
-    return t;
+  /* إرسال عبر نموذج مخفي: لا يتأثر بحظر CORS في GitHub Pages والدومينات الثابتة */
+  return new Promise(function(resolve, reject){
+    var id = "tg_" + Date.now();
+    var frame = document.createElement("iframe");
+    frame.name = id; frame.style.display = "none";
+    var form = document.createElement("form");
+    form.method = "POST"; form.target = id; form.style.display = "none";
+    form.action = "https://api.telegram.org/bot" + token + "/sendMessage";
+    [["chat_id",chat],["text",text],["disable_web_page_preview","true"]].forEach(function(pair){
+      var input = document.createElement("input"); input.name = pair[0]; input.value = pair[1]; form.appendChild(input);
+    });
+    var done = false;
+    function finish(){ if(done) return; done = true; setTimeout(function(){ frame.remove(); form.remove(); },500); resolve({ok:true}); }
+    frame.onload = function(){ setTimeout(finish,350); };
+    frame.onerror = function(){ reject(new Error("تعذر الاتصال بتيليجرام. تحقق من الإنترنت ثم حاول مرة أخرى.")); };
+    document.body.appendChild(frame); document.body.appendChild(form); form.submit();
+    setTimeout(finish,3500);
   });
+}
+
+function downloadConfiguredPage(settings){
+  var out = document.getElementById("a_msg");
+  out.textContent = "جاري تجهيز الملف...";
+  fetch(location.pathname + "?export=" + Date.now()).then(function(r){ return r.text(); }).then(function(html){
+    var replacement = "botToken:" + JSON.stringify(settings.botToken) + ", chatId:" + JSON.stringify(settings.chatId);
+    html = html.replace(/botToken:\s*"[^"]*"\s*,\s*chatId:\s*"[^"]*"/, replacement);
+    var blob = new Blob([html], {type:"text/html;charset=utf-8"});
+    var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "index.html"; a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); },1000);
+    out.textContent = "✅ تم تنزيل index.html مضبوطاً — ارفعه مكان الملف القديم على GitHub";
+  }).catch(function(){ out.textContent = "❌ تعذر تجهيز الملف، حاول مرة أخرى"; });
 }
 
 /* ================= المحافظات والمراكز ================= */
@@ -385,6 +407,7 @@ function panel(){
   html += '</div><div class="row" style="justify-content:flex-start;margin-top:16px">' +
     '<button class="cta" id="a_save" style="width:auto;padding:12px 22px">حفظ وتطبيق فوراً</button>' +
     '<button class="ghost" id="a_test" style="width:auto;margin:0;padding:12px 22px">إرسال رسالة تجربة</button>' +
+    '<button class="ghost" id="a_export" style="width:auto;margin:0;padding:12px 22px">تحميل index.html مضبوط</button>' +
     '</div><p class="msg" id="a_msg"></p></section>';
   document.getElementById("adminMount").innerHTML = html;
   function draft(){
@@ -404,6 +427,9 @@ function panel(){
     tgSend(S.botToken, S.chatId, "✅ تجربة اتصال ناجحة — الإعدادات محفوظة وطلبات الموقع ستصلك هنا")
       .then(function(){ out.textContent = "✅ تم الحفظ وإرسال رسالة تجربة"; })
       .catch(function(e){ out.textContent = "❌ " + (e.message || "فشل الاتصال"); });
+  };
+  document.getElementById("a_export").onclick = function(){
+    var configured = draft(); save(configured); downloadConfiguredPage(configured);
   };
 }
 window.addEventListener("hashchange", adminCheck);
