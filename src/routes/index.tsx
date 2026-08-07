@@ -16,13 +16,13 @@ import { EGYPT_AREAS, GOVS, UNIT_PRICE, totalFor, unitDiscount } from "@/lib/egy
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "كاميرا مراقبة جيب صوت وصورة بدون إنترنت | 1200ج بدل 1900" },
+      { title: "elsoooq — كاميرا مراقبة جيب صوت وصورة | 1200ج بدل 1900" },
       {
         name: "description",
         content:
           "كاميرا مراقبة صغيرة تسجل صوت وصورة بجودة 1080P بدون إنترنت. رؤية ليلية ومشبك معدني. 1200 جنيه بدل 1900، الدفع عند الاستلام وشحن مجاني لكل محافظات مصر.",
       },
-      { property: "og:title", content: "كاميرا مراقبة جيب صوت وصورة بدون إنترنت" },
+      { property: "og:title", content: "elsoooq — كاميرا مراقبة جيب صوت وصورة بدون إنترنت" },
       {
         property: "og:description",
         content: "1080P فيديو وصوت، رؤية ليلية، بدون إنترنت. 1200ج بدل 1900 مع الدفع عند الاستلام وشحن مجاني.",
@@ -54,9 +54,9 @@ const DEFAULTS: Settings = {
   price: String(UNIT_PRICE),
   oldPrice: "1900",
   productName: "كاميرا مراقبة جيب صوت وصورة بدون إنترنت",
-  whatsapp: "",
-  facebook: "",
-  phone: "",
+  whatsapp: "201022077100",
+  facebook: "https://facebook.com/elsoooqshop",
+  phone: "01022077100",
   adminPass: "admin123",
 };
 
@@ -148,25 +148,41 @@ function LandingPage() {
       </div>
 
 
+      {/* فيديو ريلز */}
+      <section className="glass glow-orange mt-4 p-3">
+        <h2 className="mb-2 text-center text-base font-black">شاهد الكاميرا وهي تعمل</h2>
+        <div className="relative w-full overflow-hidden rounded-2xl" style={{ aspectRatio: "9 / 16" }}>
+          <iframe
+            className="absolute inset-0 size-full"
+            src="https://www.youtube.com/embed/Rahad6F_gNQ?playsinline=1&rel=0&modestbranding=1"
+            title="شاهد الكاميرا وهي تعمل"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          />
+        </div>
+      </section>
+
       {/* التواصل */}
       <section className="glass glow-cyan mt-4 p-4 text-center">
         <h2 className="text-base font-black">تواصل معنا مباشرة</h2>
         <div className="mt-3 flex items-center justify-center gap-5">
           <SocialCircle
-            href={settings.whatsapp ? `https://wa.me/${settings.whatsapp.replace(/\D/g, "")}` : "#"}
+            href={`https://wa.me/${(settings.whatsapp || "201022077100").replace(/\D/g, "")}`}
             label="واتساب"
             cls="glow-lime"
           >
             <MessageCircle className="size-7" />
           </SocialCircle>
-          <SocialCircle href={settings.facebook || "#"} label="فيسبوك" cls="glow-cyan">
+          <SocialCircle href={settings.facebook || "https://facebook.com/elsoooqshop"} label="فيسبوك" cls="glow-cyan">
             <Facebook className="size-7" />
           </SocialCircle>
-          <SocialCircle href={settings.phone ? `tel:${settings.phone}` : "#"} label="اتصال" cls="glow-orange">
+          <SocialCircle href={`tel:${settings.phone || "01022077100"}`} label="اتصال" cls="glow-orange">
             <Phone className="size-7" />
           </SocialCircle>
         </div>
       </section>
+
 
       {orderOpen && <OrderModal settings={settings} onClose={() => setOrderOpen(false)} />}
       {adminOpen && <AdminPanel settings={settings} onSave={setSettings} />}
