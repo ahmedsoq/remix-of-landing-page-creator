@@ -23,12 +23,12 @@ export const Route = createFileRoute("/")({
 });
 
 /**
- * الصفحة بالكامل موجودة في ملف واحد: index.html
- * (HTML + CSS + JS + المحافظات + لوحة التحكم) — قابل للنقل لأي استضافة.
+ * الصفحة بالكامل موجودة في ملف واحد: public/elsoooq.html
+ * (نسخة index.html في جذر المستودع جاهزة لرفع GitHub Pages)
  */
 function Landing() {
   useEffect(() => {
-    window.location.replace("/index.html" + window.location.hash);
+    window.location.replace("/elsoooq.html" + window.location.hash);
   }, []);
 
   return (
