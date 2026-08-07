@@ -88,7 +88,25 @@ label span{font-size:12px}
 .tick svg{width:38px;height:38px;stroke:var(--lime)}
 .ghost{display:block;width:100%;margin-top:12px;padding:12px;border-radius:14px;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.2);color:#fff;font-family:inherit;font-weight:900;cursor:pointer}
 footer{margin-top:20px;text-align:center;font-size:11px;opacity:.6}
+/* عناصر التحفيز */
+.urg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.urg>div{display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 8px;font-size:12.5px;font-weight:900;border-radius:16px}
+.urg b{font-variant-numeric:tabular-nums;font-size:14px}
+.proof{margin-bottom:10px;padding:8px 12px;border-radius:16px;font-size:12px;font-weight:800;text-align:center;overflow:hidden;height:34px;display:flex;align-items:center;justify-content:center}
+.proof span{animation:pf .5s ease}
+@keyframes pf{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.trust{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.trust div{padding:9px 6px;border-radius:14px;text-align:center;font-size:11px;font-weight:900;line-height:1.35}
+.trust i{font-style:normal;display:block;font-size:16px;margin-bottom:2px}
+.sticky{position:fixed;inset-inline:0;bottom:0;z-index:40;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:linear-gradient(to top,rgba(7,7,12,.98),rgba(7,7,12,.75));backdrop-filter:blur(10px);transform:translateY(120%);transition:transform .3s ease}
+.sticky.on{transform:none}
+.sticky .inner{max-width:780px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.sticky .p{flex:0 0 auto;font-size:13px;font-weight:900;line-height:1.2;text-align:center}
+.sticky .p em{font-style:normal;display:block;font-size:10px;opacity:.6;text-decoration:line-through}
+.sticky button{flex:1;padding:13px;font-size:15px;border-radius:16px}
+body{padding-bottom:76px}
 </style>
+
 </head>
 <body>
 <div class="wrap">
@@ -96,6 +114,12 @@ footer{margin-top:20px;text-align:center;font-size:11px;opacity:.6}
   <div class="cta" style="padding:12px;text-align:center;font-size:15px;margin-bottom:12px">
     🚚 شحن مجاني لكل المحافظات • 💵 الدفع عند الاستلام
   </div>
+
+  <div class="urg">
+    <div class="glass g-pink">⏳ ينتهي العرض <b id="cdown">03:59:59</b></div>
+    <div class="glass g-yellow">🔥 متبقي <b id="stock">7</b> قطع فقط</div>
+  </div>
+  <div class="glass g-lime proof" id="proof"><span>👤 أحمد من القاهرة طلب الآن</span></div>
 
   <section class="glass g-violet pad">
     <h1 id="pname">كاميرا مراقبة جيب صوت وصورة بدون إنترنت</h1>
@@ -107,7 +131,13 @@ footer{margin-top:20px;text-align:center;font-size:11px;opacity:.6}
       <span class="glass g-yellow pill" id="save">وفر 700 ج</span>
     </div>
     <button class="cta" style="margin-top:12px;padding:15px;font-size:17px" onclick="openOrder()">اطلب الآن — الدفع عند الاستلام</button>
+    <div class="trust">
+      <div class="glass g-lime"><i>🛡️</i>ضمان استرجاع 14 يوم</div>
+      <div class="glass g-cyan"><i>📦</i>فحص قبل الدفع</div>
+      <div class="glass g-orange"><i>⚡</i>توصيل 24-48 ساعة</div>
+    </div>
   </section>
+
 
   <div class="grid2">
     <div class="glass g-orange feat"><img class="ic" src="img/ic-video.png" alt="جودة التصوير" loading="lazy" width="52" height="52"><div><h3>جودة التصوير 1080</h3><p>تصوير صوت وصورة بجودة محترمة وتصوير في الوضع الليلي</p></div></div>
@@ -144,6 +174,15 @@ footer{margin-top:20px;text-align:center;font-size:11px;opacity:.6}
   <div id="adminMount"></div>
   <footer>© <span id="yr"></span> elsoooq — جميع الحقوق محفوظة</footer>
 </div>
+
+<div class="sticky" id="stickyBar">
+  <div class="inner">
+    <div class="p"><span id="sPrice">1200 ج</span><em id="sOld">1900 ج</em></div>
+    <button class="cta" onclick="openOrder()">اطلب الآن — الدفع عند الاستلام</button>
+  </div>
+</div>
+
+
 
 <!-- نموذج الطلب -->
 <div class="overlay" id="orderOverlay">
@@ -334,7 +373,7 @@ Array.prototype.forEach.call(document.querySelectorAll(".qopt"), function(b){
 });
 updTotal();
 
-function openOrder(){ document.getElementById("orderOverlay").classList.add("on"); document.body.style.overflow="hidden"; }
+function openOrder(){ document.getElementById("orderOverlay").classList.add("on"); document.body.style.overflow="hidden"; var b=document.getElementById("stickyBar"); if(b) b.classList.remove("on"); }
 function closeOrder(){
   document.getElementById("orderOverlay").classList.remove("on"); document.body.style.overflow="";
   document.getElementById("orderForm").style.display=""; document.getElementById("orderDone").style.display="none";
@@ -440,6 +479,55 @@ function panel(){
 }
 window.addEventListener("hashchange", adminCheck);
 adminCheck();
+
+/* ============ عناصر التحفيز على الشراء ============ */
+(function(){
+  /* 1) عداد عكسي 4 ساعات يتجدد تلقائياً */
+  var CD = "cam_cd_end";
+  var end = parseInt(localStorage.getItem(CD) || "0", 10);
+  if(!end || end < Date.now()) { end = Date.now() + 4*3600*1000; try{ localStorage.setItem(CD, String(end)); }catch(e){} }
+  var el = document.getElementById("cdown");
+  function two(n){ return n < 10 ? "0"+n : ""+n; }
+  function tick(){
+    var s = Math.max(0, Math.floor((end - Date.now())/1000));
+    if(s === 0){ end = Date.now() + 4*3600*1000; try{ localStorage.setItem(CD, String(end)); }catch(e){} }
+    el.textContent = two(Math.floor(s/3600))+":"+two(Math.floor(s%3600/60))+":"+two(s%60);
+  }
+  tick(); setInterval(tick, 1000);
+
+  /* 2) المخزون المتبقي */
+  var SK = "cam_stock", st = parseInt(localStorage.getItem(SK) || "0", 10);
+  if(!st || st < 4){ st = 5 + Math.floor(Math.random()*5); try{ localStorage.setItem(SK, String(st)); }catch(e){} }
+  document.getElementById("stock").textContent = st;
+
+  /* 3) إثبات اجتماعي متغير */
+  var names = ["أحمد","محمود","مصطفى","سارة","كريم","إسلام","هبة","عمرو","ياسمين","خالد"];
+  var govs = ["القاهرة","الجيزة","الإسكندرية","الدقهلية","الشرقية","أسيوط","المنوفية","بورسعيد"];
+  var pf = document.getElementById("proof");
+  var msgs = 0;
+  function proof(){
+    msgs++;
+    var t = (msgs % 4 === 0)
+      ? "🔥 تم شراء " + (18 + Math.floor(Math.random()*12)) + " قطعة اليوم"
+      : "👤 " + names[Math.floor(Math.random()*names.length)] + " من " + govs[Math.floor(Math.random()*govs.length)] + " طلب منذ " + (1 + Math.floor(Math.random()*9)) + " دقائق";
+    pf.innerHTML = '<span>'+t+'</span>';
+  }
+  setInterval(proof, 4500);
+
+  /* 4) زر ثابت أسفل الشاشة */
+  var bar = document.getElementById("stickyBar");
+  function sync(){
+    document.getElementById("sPrice").textContent = document.getElementById("price").textContent;
+    document.getElementById("sOld").textContent = document.getElementById("oldprice").textContent;
+  }
+  sync();
+  window.addEventListener("scroll", function(){
+    var show = window.scrollY > 320 && !document.getElementById("orderOverlay").classList.contains("on");
+    bar.classList.toggle("on", show);
+    if(show) sync();
+  }, {passive:true});
+})();
+
 </script>
 </body>
 </html>
