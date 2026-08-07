@@ -193,9 +193,37 @@ var DEFAULTS = {
   phone:"01022077100", adminPass:"admin123"
 };
 var KEY = "cam_lp_settings_v1";
+/* كوكي على الدومين الرئيسي حتى تعمل الإعدادات على elsoooq.com و www.elsoooq.com معاً */
+function rootDomain(){
+  var h = location.hostname;
+  if(/^[\d.]+$/.test(h) || h === "localhost") return null;
+  var p = h.split("."); if(p.length < 2) return null;
+  return "." + p.slice(-2).join(".");
+}
+function cookieGet(){
+  var m = document.cookie.match(/(?:^|;\s*)cam_lp_s=([^;]*)/);
+  if(!m) return null;
+  try{ return decodeURIComponent(m[1]); }catch(e){ return null; }
+}
+function cookieSet(v){
+  var d = rootDomain();
+  document.cookie = "cam_lp_s=" + encodeURIComponent(v) + ";path=/;max-age=31536000;samesite=lax" + (d ? ";domain=" + d : "") + (location.protocol === "https:" ? ";secure" : "");
+}
+function load(){
+  var raw = null;
+  try{ raw = localStorage.getItem(KEY); }catch(e){}
+  if(!raw) raw = cookieGet();
+  try{ return raw ? Object.assign({},DEFAULTS,JSON.parse(raw)) : Object.assign({},DEFAULTS); }
+  catch(e){ return Object.assign({},DEFAULTS); }
+}
+function save(s){
+  Object.keys(s).forEach(function(k){ if(typeof s[k]==="string") s[k]=s[k].trim(); });
+  var raw = JSON.stringify(s);
+  try{ localStorage.setItem(KEY, raw); }catch(e){}
+  try{ cookieSet(raw); }catch(e){}
+  S = s; render();
+}
 var S = load();
-function load(){ try{ var r = localStorage.getItem(KEY); return r ? Object.assign({},DEFAULTS,JSON.parse(r)) : Object.assign({},DEFAULTS);}catch(e){return Object.assign({},DEFAULTS);} }
-function save(s){ Object.keys(s).forEach(function(k){ if(typeof s[k]==="string") s[k]=s[k].trim(); }); localStorage.setItem(KEY, JSON.stringify(s)); S = s; render(); }
 function tgSend(token, chat, text){
   token = String(token||"").trim(); chat = String(chat||"").trim();
   if(!token || !chat) return Promise.reject(new Error("لم يتم ضبط إعدادات الإشعارات بعد. افتح لوحة التحكم واحفظ التوكن وأيدي الشات."));
