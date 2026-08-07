@@ -2,8 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { Facebook, MessageCircle, Phone, X } from "lucide-react";
 
-import camMain from "@/assets/cam-main.png.asset.json";
-import camSide from "@/assets/cam-side.png.asset.json";
+import camHero from "@/assets/cam-hero.jpg.asset.json";
 import sceneKids from "@/assets/scene-kids.jpg.asset.json";
 import scenePets from "@/assets/scene-pets.jpg.asset.json";
 import sceneTravel from "@/assets/scene-travel.jpg.asset.json";
