@@ -1,14 +1,16 @@
-# Welcome to your Lovable project
+# Landing Page Creator
+
+لدي منتج ارغب في عمل صفحة هبوط لبيع هذا المنتج اريد صفحه ويب سهلة وسريعه من كود واحد في ملف واحد html بدون ملفات كتير وتعقيدات واريد تفريغ  الصوره والبحث عنها وتوليد 3 صور آخرين من نفس المنتج بنفس الشكل قبل أن تبدأ اسالني عن كل شئ واريد اشعارات الطالبات تصلني علي بوت في تليجرام واريد وضع التوكن وأيدي الشات في الموقع مباشر داخل لوحة تحكم مخفية في الموقع ويتم تطبيق التغير فورا منها علي الموقع بالكامل
 
 This project was built with [Lovable](https://lovable.dev).
 
 ## Build with Lovable
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/494a1c3e-fede-42d4-8030-c1a1722273c2).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
@@ -20,10 +22,3 @@ cd <repository-name>
 npm i
 npm run dev
 ```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
