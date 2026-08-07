@@ -198,19 +198,23 @@ function Carousel() {
 
   return (
     <div className="mt-3">
-      <div className="relative h-56 overflow-hidden rounded-2xl md:h-72">
+      <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-black/20">
         {GALLERY.map((g, idx) => (
           <img
             key={g.src}
             src={g.src}
             alt={g.alt}
             loading={idx === 0 ? "eager" : "lazy"}
-            className={`absolute inset-0 mx-auto h-full w-full object-contain transition-all duration-700 ${
-              idx === i ? "scale-100 opacity-100" : "scale-90 opacity-0"
+            className={`absolute inset-0 h-full w-full transition-all duration-700 ${g.fit} ${
+              idx === i ? "scale-100 opacity-100" : "scale-105 opacity-0"
             }`}
           />
         ))}
+        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 py-2 text-center text-xs font-black">
+          {GALLERY[i].alt}
+        </div>
       </div>
+
       <div className="mt-2 flex justify-center gap-2">
         {GALLERY.map((g, idx) => (
           <button
