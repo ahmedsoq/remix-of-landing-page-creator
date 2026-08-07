@@ -19,23 +19,24 @@
 }
 *{box-sizing:border-box}
 body{margin:0;background:
-  radial-gradient(60vw 60vw at 90% -10%, rgba(255,122,24,.22), transparent 60%),
-  radial-gradient(60vw 60vw at -10% 20%, rgba(34,227,255,.18), transparent 60%),
-  radial-gradient(60vw 60vw at 50% 110%, rgba(139,92,246,.22), transparent 60%),
+  radial-gradient(80vw 60vw at 85% -5%, rgba(255,122,24,.16), transparent 55%),
+  radial-gradient(70vw 60vw at -5% 25%, rgba(34,227,255,.12), transparent 55%),
   var(--bg);
   color:var(--fg);font-family:'Cairo',system-ui,sans-serif;font-weight:700;min-height:100vh}
 .wrap{max-width:780px;margin:0 auto;padding:12px 12px 40px}
-.glass{background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.18);border-radius:22px;backdrop-filter:blur(12px)}
-.g-orange{border-color:rgba(255,122,24,.8);box-shadow:0 0 22px rgba(255,122,24,.45),inset 0 0 18px rgba(255,122,24,.18)}
-.g-lime{border-color:rgba(182,255,46,.8);box-shadow:0 0 22px rgba(182,255,46,.4),inset 0 0 18px rgba(182,255,46,.15)}
-.g-cyan{border-color:rgba(34,227,255,.8);box-shadow:0 0 22px rgba(34,227,255,.4),inset 0 0 18px rgba(34,227,255,.15)}
-.g-pink{border-color:rgba(255,46,166,.8);box-shadow:0 0 22px rgba(255,46,166,.4),inset 0 0 18px rgba(255,46,166,.15)}
-.g-violet{border-color:rgba(139,92,246,.85);box-shadow:0 0 26px rgba(139,92,246,.45),inset 0 0 20px rgba(139,92,246,.16)}
-.g-yellow{border-color:rgba(255,212,0,.85);box-shadow:0 0 20px rgba(255,212,0,.4)}
+.glass{background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.18);border-radius:22px;backdrop-filter:blur(8px);contain:layout style paint}
+.g-orange{border-color:rgba(255,122,24,.7);box-shadow:0 0 16px rgba(255,122,24,.32),inset 0 0 12px rgba(255,122,24,.12)}
+.g-lime{border-color:rgba(182,255,46,.7);box-shadow:0 0 16px rgba(182,255,46,.3),inset 0 0 12px rgba(182,255,46,.1)}
+.g-cyan{border-color:rgba(34,227,255,.7);box-shadow:0 0 16px rgba(34,227,255,.3),inset 0 0 12px rgba(34,227,255,.1)}
+.g-pink{border-color:rgba(255,46,166,.7);box-shadow:0 0 16px rgba(255,46,166,.3),inset 0 0 12px rgba(255,46,166,.1)}
+.g-violet{border-color:rgba(139,92,246,.75);box-shadow:0 0 18px rgba(139,92,246,.3),inset 0 0 14px rgba(139,92,246,.1)}
+.g-yellow{border-color:rgba(255,212,0,.75);box-shadow:0 0 14px rgba(255,212,0,.28)}
 .cta{display:block;width:100%;border:none;cursor:pointer;color:#12060a;font-family:inherit;font-weight:900;
   background:linear-gradient(90deg,var(--orange),var(--yellow),var(--lime));border-radius:20px;
   animation:pulse 1.8s ease-in-out infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,122,24,.6)}50%{box-shadow:0 0 26px 8px rgba(255,122,24,.25)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,122,24,.5)}50%{box-shadow:0 0 18px 5px rgba(255,122,24,.18)}}
+html{scroll-behavior:smooth}
+button,input,select,a{touch-action:manipulation}
 h1{font-size:22px;font-weight:900;text-align:center;line-height:1.4;margin:0}
 .pad{padding:16px}
 .row{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
@@ -43,7 +44,7 @@ h1{font-size:22px;font-weight:900;text-align:center;line-height:1.4;margin:0}
 .old{font-size:18px;text-decoration:line-through;opacity:.6}
 .pill{padding:8px 12px;font-size:12px}
 .slider{position:relative;width:100%;aspect-ratio:1/1;overflow:hidden;border-radius:18px;background:rgba(0,0,0,.25);margin-top:12px}
-.slider img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.05);transition:opacity .7s,transform .7s}
+.slider img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.03);transition:opacity .5s,transform .5s;will-change:opacity,transform}
 .slider img.on{opacity:1;transform:scale(1)}
 .cap{position:absolute;inset-inline:0;bottom:0;padding:8px 12px;text-align:center;font-size:12px;font-weight:900;background:linear-gradient(to top,rgba(0,0,0,.75),transparent)}
 .dots{display:flex;justify-content:center;gap:8px;margin-top:8px}
@@ -52,7 +53,7 @@ h1{font-size:22px;font-weight:900;text-align:center;line-height:1.4;margin:0}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;align-items:stretch}
 .feat{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:14px;text-align:center;min-height:132px}
 .feat .ic{width:52px;height:52px;object-fit:contain;filter:drop-shadow(0 0 10px currentColor);animation:icf 3s ease-in-out infinite}
-@keyframes icf{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-4px) scale(1.06)}}
+@keyframes icf{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
 .feat h3{margin:0;font-size:14px;font-weight:900;line-height:1.3}
 .feat p{margin:0;font-size:12px;opacity:.9;line-height:1.45}
 .vid{position:relative;width:100%;aspect-ratio:9/16;border-radius:18px;overflow:hidden}
@@ -62,7 +63,7 @@ h1{font-size:22px;font-weight:900;text-align:center;line-height:1.4;margin:0}
 .circle{width:58px;height:58px;border-radius:99px;display:flex;align-items:center;justify-content:center;transition:transform .2s}
 .soc:hover .circle{transform:scale(1.1)}
 .circle svg{width:28px;height:28px}
-.overlay{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.72);backdrop-filter:blur(4px);overflow-y:auto;padding:12px;display:none}
+.overlay{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);overflow-y:auto;padding:12px;display:none;will-change:opacity}
 .overlay.on{display:block}
 .modal{max-width:520px;margin:16px auto}
 .fld{width:100%;margin-top:4px;padding:10px 12px;border-radius:14px;border:2px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);color:#fff;font-family:inherit;font-weight:700;font-size:14px;outline:none}
@@ -93,18 +94,19 @@ footer{margin-top:20px;text-align:center;font-size:11px;opacity:.6}
 .urg>div{display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 8px;font-size:12.5px;font-weight:900;border-radius:16px}
 .urg b{font-variant-numeric:tabular-nums;font-size:14px}
 .proof{margin-bottom:10px;padding:8px 12px;border-radius:16px;font-size:12px;font-weight:800;text-align:center;overflow:hidden;height:34px;display:flex;align-items:center;justify-content:center}
-.proof span{animation:pf .5s ease}
-@keyframes pf{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.proof span{display:block;animation:pf .45s ease;will-change:transform,opacity}
+@keyframes pf{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .trust{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
 .trust div{padding:9px 6px;border-radius:14px;text-align:center;font-size:11px;font-weight:900;line-height:1.35}
 .trust i{font-style:normal;display:block;font-size:16px;margin-bottom:2px}
-.sticky{position:fixed;inset-inline:0;bottom:0;z-index:40;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:linear-gradient(to top,rgba(7,7,12,.98),rgba(7,7,12,.75));backdrop-filter:blur(10px);transform:translateY(120%);transition:transform .3s ease}
-.sticky.on{transform:none}
+.sticky{position:fixed;inset-inline:0;bottom:0;z-index:40;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:linear-gradient(to top,rgba(7,7,12,.98),rgba(7,7,12,.75));backdrop-filter:blur(8px);transform:translateY(120%) translateZ(0);transition:transform .3s ease;will-change:transform}
+.sticky.on{transform:translateZ(0)}
 .sticky .inner{max-width:780px;margin:0 auto;display:flex;align-items:center;gap:10px}
 .sticky .p{flex:0 0 auto;font-size:13px;font-weight:900;line-height:1.2;text-align:center}
 .sticky .p em{font-style:normal;display:block;font-size:10px;opacity:.6;text-decoration:line-through}
 .sticky button{flex:1;padding:13px;font-size:15px;border-radius:16px}
 body{padding-bottom:76px}
+@media (prefers-reduced-motion: reduce){*{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}html{scroll-behavior:auto}}
 </style>
 
 </head>
@@ -140,16 +142,18 @@ body{padding-bottom:76px}
 
 
   <div class="grid2">
-    <div class="glass g-orange feat"><img class="ic" src="img/ic-video.png" alt="جودة التصوير" loading="lazy" width="52" height="52"><div><h3>جودة التصوير 1080</h3><p>تصوير صوت وصورة بجودة محترمة وتصوير في الوضع الليلي</p></div></div>
-    <div class="glass g-cyan feat"><img class="ic" src="img/ic-sd.png" alt="تخزين" loading="lazy" width="52" height="52"><div><h3>تخزين على الميموري</h3><p>يمكن تخزين كل شيء فيديوهات وصور على كارت ميموري مباشر وسهل</p></div></div>
-    <div class="glass g-lime feat"><img class="ic" src="img/ic-batt.png" alt="بطارية" loading="lazy" width="52" height="52"><div><h3>بطارية قوية</h3><p>تدوم البطارية 4 ساعات ونص تصوير مستمر برا الشاحن</p></div></div>
-    <div class="glass g-pink feat"><img class="ic" src="img/ic-eye.png" alt="سهولة الاستخدام" loading="lazy" width="52" height="52"><div><h3>سهولة الاستخدام</h3><p>يمكن استخدامها في أي مكان مخفي بكل سهولة</p></div></div>
+    <div class="glass g-orange feat"><img class="ic" src="img/ic-video.png" alt="جودة التصوير" loading="lazy" decoding="async" width="52" height="52"><div><h3>جودة التصوير 1080</h3><p>تصوير صوت وصورة بجودة محترمة وتصوير في الوضع الليلي</p></div></div>
+    <div class="glass g-cyan feat"><img class="ic" src="img/ic-sd.png" alt="تخزين" loading="lazy" decoding="async" width="52" height="52"><div><h3>تخزين على الميموري</h3><p>يمكن تخزين كل شيء فيديوهات وصور على كارت ميموري مباشر وسهل</p></div></div>
+    <div class="glass g-lime feat"><img class="ic" src="img/ic-batt.png" alt="بطارية" loading="lazy" decoding="async" width="52" height="52"><div><h3>بطارية قوية</h3><p>تدوم البطارية 4 ساعات ونص تصوير مستمر برا الشاحن</p></div></div>
+    <div class="glass g-pink feat"><img class="ic" src="img/ic-eye.png" alt="سهولة الاستخدام" loading="lazy" decoding="async" width="52" height="52"><div><h3>سهولة الاستخدام</h3><p>يمكن استخدامها في أي مكان مخفي بكل سهولة</p></div></div>
   </div>
 
   <section class="glass g-orange" style="padding:12px;margin-top:16px">
     <h2 style="margin:0 0 8px;text-align:center;font-size:15px;font-weight:900">شاهد الكاميرا وهي تعمل</h2>
-    <div class="vid">
-      <iframe src="https://www.youtube.com/embed/Rahad6F_gNQ?playsinline=1&rel=0&modestbranding=1" title="شاهد الكاميرا وهي تعمل" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    <div class="vid" id="vidBox" onclick="loadVid(this)" style="cursor:pointer;background:#000;display:flex;align-items:center;justify-content:center;position:relative">
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6),transparent);z-index:1"></div>
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="rgba(255,255,255,.95)" style="position:relative;z-index:2;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5))"><path d="M8 5v14l11-7z"/></svg>
+      <span style="position:absolute;bottom:12px;inset-inline:0;text-align:center;z-index:2;font-size:13px;font-weight:900">اضغط لتشغيل الفيديو</span>
     </div>
   </section>
 
@@ -321,7 +325,7 @@ var GALLERY = [
 var slider = document.getElementById("slider"), dots = document.getElementById("dots"), cur = 0;
 GALLERY.forEach(function(g,i){
   var im = document.createElement("img");
-  im.src = g[0]; im.alt = g[1]; im.loading = i===0?"eager":"lazy";
+  im.src = g[0]; im.alt = g[1]; im.loading = i===0?"eager":"lazy"; im.decoding = "async"; if(i===0) im.fetchPriority = "high";
   if(i===0) im.className = "on";
   slider.appendChild(im);
   var b = document.createElement("button");
@@ -336,7 +340,8 @@ function show(i){
   for(var k=0;k<imgs.length;k++){ imgs[k].className = (k===i?"on":""); bs[k].className = (k===i?"on":""); }
   cap.textContent = GALLERY[i][1];
 }
-setInterval(function(){ show((cur+1)%GALLERY.length); }, 2600);
+var slideInt = setInterval(function(){ show((cur+1)%GALLERY.length); }, 2600);
+if("IntersectionObserver" in window){ new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ if(!slideInt) slideInt = setInterval(function(){ show((cur+1)%GALLERY.length); }, 2600); } else { clearInterval(slideInt); slideInt = null; } }); }).observe(slider); }
 
 /* ================= عرض الإعدادات ================= */
 function waNum(){ return String(S.whatsapp || "201022077100").replace(/\D/g,""); }
@@ -528,6 +533,7 @@ adminCheck();
   }, {passive:true});
 })();
 
+function loadVid(box){ box.onclick=null; box.style.cursor='default'; box.innerHTML='<iframe src="https://www.youtube.com/embed/Rahad6F_gNQ?playsinline=1&rel=0&autoplay=1" title="شاهد الكاميرا وهي تعمل" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe>'; }
 </script>
 </body>
 </html>
