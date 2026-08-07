@@ -223,6 +223,7 @@ function save(s){
   try{ cookieSet(raw); }catch(e){}
   S = s; render();
 }
+var S = load();
 function tgSend(token, chat, text){
   token = String(token||"").trim(); chat = String(chat||"").trim();
   if(!token || !chat) return Promise.reject(new Error("لم يتم ضبط إعدادات الإشعارات بعد. افتح لوحة التحكم واحفظ التوكن وأيدي الشات."));
