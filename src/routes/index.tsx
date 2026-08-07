@@ -54,9 +54,9 @@ const DEFAULTS: Settings = {
   price: String(UNIT_PRICE),
   oldPrice: "1900",
   productName: "كاميرا مراقبة جيب صوت وصورة بدون إنترنت",
-  whatsapp: "",
-  facebook: "",
-  phone: "",
+  whatsapp: "201022077100",
+  facebook: "https://facebook.com/elsoooqshop",
+  phone: "01022077100",
   adminPass: "admin123",
 };
 
