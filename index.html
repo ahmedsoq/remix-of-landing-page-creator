@@ -509,13 +509,14 @@ adminCheck();
   var names = ["أحمد","محمود","مصطفى","سارة","كريم","إسلام","هبة","عمرو","ياسمين","خالد"];
   var govs = ["القاهرة","الجيزة","الإسكندرية","الدقهلية","الشرقية","أسيوط","المنوفية","بورسعيد"];
   var pf = document.getElementById("proof");
+  var pfSpan = pf.querySelector("span");
   var msgs = 0;
   function proof(){
     msgs++;
     var t = (msgs % 4 === 0)
       ? "🔥 تم شراء " + (18 + Math.floor(Math.random()*12)) + " قطعة اليوم"
       : "👤 " + names[Math.floor(Math.random()*names.length)] + " من " + govs[Math.floor(Math.random()*govs.length)] + " طلب منذ " + (1 + Math.floor(Math.random()*9)) + " دقائق";
-    pf.innerHTML = '<span>'+t+'</span>';
+    pfSpan.textContent = t;
   }
   setInterval(proof, 4500);
 
