@@ -234,7 +234,7 @@ function tgSend(token, chat, text){
     frame.name = id; frame.style.display = "none";
     var form = document.createElement("form");
     form.method = "POST"; form.target = id; form.style.display = "none";
-    form.action = "https://api.telegram.org/bot" + encodeURIComponent(token) + "/sendMessage";
+    form.action = "https://api.telegram.org/bot" + token + "/sendMessage";
     [["chat_id",chat],["text",text],["disable_web_page_preview","true"]].forEach(function(pair){
       var input = document.createElement("input"); input.name = pair[0]; input.value = pair[1]; form.appendChild(input);
     });
