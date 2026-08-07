@@ -16,7 +16,7 @@ import { EGYPT_AREAS, GOVS, UNIT_PRICE, totalFor, unitDiscount } from "@/lib/egy
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "كاميرا مراقبة جيب صوت وصورة بدون إنترنت | 1200ج بدل 1900" },
+      { title: "elsoooq — كاميرا مراقبة جيب صوت وصورة | 1200ج بدل 1900" },
       {
         name: "description",
         content:
