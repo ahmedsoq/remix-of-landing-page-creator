@@ -51,7 +51,8 @@ h1{font-size:22px;font-weight:900;text-align:center;line-height:1.4;margin:0}
 .dots button.on{width:24px;background:var(--orange)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;align-items:stretch}
 .feat{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:14px;text-align:center;min-height:132px}
-.feat .ic{font-size:30px}
+.feat .ic{width:52px;height:52px;object-fit:contain;filter:drop-shadow(0 0 10px currentColor);animation:icf 3s ease-in-out infinite}
+@keyframes icf{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-4px) scale(1.06)}}
 .feat h3{margin:0;font-size:14px;font-weight:900;line-height:1.3}
 .feat p{margin:0;font-size:12px;opacity:.9;line-height:1.45}
 .vid{position:relative;width:100%;aspect-ratio:9/16;border-radius:18px;overflow:hidden}
@@ -102,10 +103,10 @@ footer{margin-top:20px;text-align:center;font-size:11px;opacity:.6}
   </section>
 
   <div class="grid2">
-    <div class="glass g-orange feat"><div class="ic">🎥</div><div><h3>جودة التصوير 1080</h3><p>تصوير صوت وصورة بجودة محترمة وتصوير في الوضع الليلي</p></div></div>
-    <div class="glass g-cyan feat"><div class="ic">💾</div><div><h3>تخزين على الميموري</h3><p>يمكن تخزين كل شيء فيديوهات وصور على كارت ميموري مباشر وسهل</p></div></div>
-    <div class="glass g-lime feat"><div class="ic">🔋</div><div><h3>بطارية قوية</h3><p>تدوم البطارية 4 ساعات ونص تصوير مستمر برا الشاحن</p></div></div>
-    <div class="glass g-pink feat"><div class="ic">👁️</div><div><h3>سهولة الاستخدام</h3><p>يمكن استخدامها في أي مكان مخفي بكل سهولة</p></div></div>
+    <div class="glass g-orange feat"><img class="ic" src="img/ic-video.png" alt="جودة التصوير" loading="lazy" width="52" height="52"><div><h3>جودة التصوير 1080</h3><p>تصوير صوت وصورة بجودة محترمة وتصوير في الوضع الليلي</p></div></div>
+    <div class="glass g-cyan feat"><img class="ic" src="img/ic-sd.png" alt="تخزين" loading="lazy" width="52" height="52"><div><h3>تخزين على الميموري</h3><p>يمكن تخزين كل شيء فيديوهات وصور على كارت ميموري مباشر وسهل</p></div></div>
+    <div class="glass g-lime feat"><img class="ic" src="img/ic-batt.png" alt="بطارية" loading="lazy" width="52" height="52"><div><h3>بطارية قوية</h3><p>تدوم البطارية 4 ساعات ونص تصوير مستمر برا الشاحن</p></div></div>
+    <div class="glass g-pink feat"><img class="ic" src="img/ic-eye.png" alt="سهولة الاستخدام" loading="lazy" width="52" height="52"><div><h3>سهولة الاستخدام</h3><p>يمكن استخدامها في أي مكان مخفي بكل سهولة</p></div></div>
   </div>
 
   <section class="glass g-orange" style="padding:12px;margin-top:16px">
