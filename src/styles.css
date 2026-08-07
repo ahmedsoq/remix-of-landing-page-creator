@@ -229,3 +229,10 @@
   50% { transform: scale(1.035); }
 }
 
+@utility no-bar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
