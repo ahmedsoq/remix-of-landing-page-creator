@@ -3,9 +3,11 @@ import { useEffect, useMemo, useState } from "react";
 import { Facebook, MessageCircle, Phone, X } from "lucide-react";
 
 import camMain from "@/assets/cam-main.png.asset.json";
-import camFront from "@/assets/cam-front.png.asset.json";
 import camSide from "@/assets/cam-side.png.asset.json";
-import camWorn from "@/assets/cam-worn.png.asset.json";
+import sceneKids from "@/assets/scene-kids.jpg.asset.json";
+import scenePets from "@/assets/scene-pets.jpg.asset.json";
+import sceneTravel from "@/assets/scene-travel.jpg.asset.json";
+import sceneHome from "@/assets/scene-home.jpg.asset.json";
 import { EGYPT_AREAS, GOVS, UNIT_PRICE, totalFor, unitDiscount } from "@/lib/egypt-areas";
 
 export const Route = createFileRoute("/")({
