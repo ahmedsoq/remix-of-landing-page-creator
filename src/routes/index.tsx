@@ -334,12 +334,27 @@ function OrderModal({ settings, onClose }: { settings: Settings; onClose: () => 
         </div>
 
         {state === "done" ? (
-          <div className="glass glow-cyan mt-4 p-5 text-center">
-            <div className="text-4xl">✅</div>
-            <h3 className="mt-2 text-lg font-black">تم استلام طلبك بنجاح</h3>
-            <p className="mt-1 text-sm opacity-90">هنتواصل معك تليفونياً لتأكيد الطلب.</p>
-            <button onClick={onClose} className="cta-pulse mt-4 rounded-xl px-6 py-3 font-black">
-              تم
+          <div className="mt-4 text-center">
+            <div className="glass glow-lime mx-auto flex size-20 items-center justify-center rounded-full">
+              <svg className="size-10 text-brand-lime" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
+            <h3 className="mt-4 text-xl font-black">تم تنفيذ طلبك</h3>
+            <p className="mt-2 text-sm font-bold opacity-90 leading-relaxed">
+              جاري الإرسال… سوف نتصل بك لتأكيد الطلب والتحضير للشحن.
+            </p>
+            <a
+              href={`https://wa.me/${(settings.whatsapp || "201022077100").replace(/\D/g, "")}?text=${encodeURIComponent("مرحباً، أرسلت طلباً للكاميرا وأريد متابعة الطلب")}`}
+              target="_blank"
+              rel="noreferrer"
+              className="cta-pulse mt-5 inline-flex items-center justify-center gap-2 rounded-2xl px-6 py-3 font-black"
+            >
+              <MessageCircle className="size-5" />
+              متابعة الطلب علي الواتساب
+            </a>
+            <button onClick={onClose} className="glass mt-3 block w-full rounded-xl px-6 py-3 font-black">
+              إغلاق
             </button>
           </div>
         ) : (
