@@ -73,6 +73,13 @@ label span{font-size:12px}
 @media(min-width:640px){.fgrid{grid-template-columns:1fr 1fr}.full{grid-column:1/-1}h1{font-size:28px}}
 .full{grid-column:1/-1}
 .tot{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;font-weight:900;font-size:14px}
+.qtyw>span{font-size:13px;opacity:.9}
+.qopts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
+.qopt{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px;border-radius:16px;border:2px solid rgba(255,255,255,.22);background:rgba(255,255,255,.07);color:#fff;font-family:inherit;cursor:pointer;transition:.2s}
+.qopt b{font-size:13px;font-weight:900}
+.qopt i{font-style:normal;font-size:12px;font-weight:800;opacity:.9}
+.qopt em{font-style:normal;font-size:10px;font-weight:800;opacity:.75;min-height:13px}
+.qopt.on{border-color:rgba(255,190,80,.9);background:linear-gradient(160deg,rgba(255,160,40,.35),rgba(255,80,60,.2));box-shadow:0 10px 26px -12px rgba(255,150,40,.8)}
 .hdr{display:flex;align-items:center;justify-content:space-between}
 .xbtn{background:rgba(255,255,255,.1);border:none;color:#fff;border-radius:99px;width:34px;height:34px;font-size:18px;cursor:pointer;font-family:inherit}
 .msg{text-align:center;font-size:13px;font-weight:900;color:var(--yellow)}
@@ -152,7 +159,15 @@ footer{margin-top:20px;text-align:center;font-size:11px;opacity:.6}
       <label><span>المحافظة</span><select class="fld" id="f_gov"></select></label>
       <label><span>المركز / المنطقة</span><select class="fld" id="f_area" disabled></select></label>
       <label class="full"><span>العنوان بالتفصيل</span><input class="fld" id="f_address" maxlength="200" placeholder="المدينة - الشارع - رقم العقار" /></label>
-      <label class="full"><span>عدد القطع (خصم أكبر مع الكمية)</span><select class="fld" id="f_qty"></select></label>
+      <div class="full qtyw">
+        <span>عدد القطع</span>
+        <div class="qopts">
+          <button type="button" class="qopt on" data-q="1"><b>قطعة</b><i>1200 ج</i><em>—</em></button>
+          <button type="button" class="qopt" data-q="2"><b>قطعتين</b><i>1100 ج/قطعة</i><em>خصم 100 ج</em></button>
+          <button type="button" class="qopt" data-q="3"><b>3 قطع</b><i>1000 ج/قطعة</i><em>خصم 200 ج</em></button>
+        </div>
+        <input type="hidden" id="f_qty" value="1" />
+      </div>
       <div class="glass g-orange full tot"><span>الإجمالي</span><span id="f_total" style="font-size:18px">1200 ج</span></div>
       <p class="msg full" id="f_msg"></p>
       <button type="submit" class="cta full" style="padding:15px;font-size:17px" id="f_submit">تأكيد الطلب</button>
@@ -186,7 +201,7 @@ function save(s){ localStorage.setItem(KEY, JSON.stringify(s)); S = s; render();
 var AREAS = {"القاهرة": ["مدينة نصر", "مصر الجديدة", "المعادي", "حلوان", "المقطم", "الزيتون", "شبرا", "عين شمس", "المرج", "حدائق القبة", "السيدة زينب", "وسط البلد", "الزمالك", "التجمع الخامس", "الشروق", "بدر", "15 مايو", "المطرية", "الوايلي", "باب الشعرية"], "الجيزة": ["الدقي", "العجوزة", "الهرم", "فيصل", "إمبابة", "بولاق الدكرور", "الوراق", "أوسيم", "كرداسة", "6 أكتوبر", "الشيخ زايد", "البدرشين", "الصف", "أطفيح", "العياط", "منشأة القناطر", "الحوامدية"], "الإسكندرية": ["المنتزه", "شرق", "وسط", "العطارين", "محرم بك", "سيدي جابر", "العجمي", "برج العرب", "الدخيلة", "العامرية", "المندرة", "سموحة", "الورديان"], "القليوبية": ["بنها", "شبرا الخيمة", "القناطر الخيرية", "الخانكة", "كفر شكر", "طوخ", "قها", "العبور", "الخصوص", "شبين القناطر"], "الشرقية": ["الزقازيق", "العاشر من رمضان", "بلبيس", "أبو حماد", "أبو كبير", "فاقوس", "كفر صقر", "ديرب نجم", "الحسينية", "مشتول السوق", "القرين", "منيا القمح", "الإبراهيمية", "صان الحجر"], "الدقهلية": ["المنصورة", "طلخا", "ميت غمر", "دكرنس", "أجا", "السنبلاوين", "بلقاس", "شربين", "المطرية", "منية النصر", "تمي الأمديد", "الجمالية", "بني عبيد", "محلة دمنة", "نبروه"], "المنوفية": ["شبين الكوم", "منوف", "سرس الليان", "أشمون", "الباجور", "قويسنا", "بركة السبع", "تلا", "الشهداء", "السادات"], "الغربية": ["طنطا", "المحلة الكبرى", "كفر الزيات", "زفتى", "السنطة", "بسيون", "قطور", "سمنود", "بلتيم"], "البحيرة": ["دمنهور", "كفر الدوار", "رشيد", "إدكو", "أبو المطامير", "أبو حمص", "الدلنجات", "المحمودية", "الرحمانية", "إيتاي البارود", "حوش عيسى", "شبراخيت", "بدر", "وادي النطرون", "النوبارية"], "كفر الشيخ": ["كفر الشيخ", "دسوق", "فوه", "مطوبس", "برج البرلس", "بلطيم", "الحامول", "بيلا", "الرياض", "سيدي سالم", "قلين"], "دمياط": ["دمياط", "رأس البر", "فارسكور", "الزرقا", "السرو", "الروضة", "كفر البطيخ", "كفر سعد", "ميت أبو غالب"], "بورسعيد": ["بورسعيد", "بورفؤاد", "العرب", "حي الزهور", "حي الضواحي", "حي المناخ", "الجنوب"], "الإسماعيلية": ["الإسماعيلية", "فايد", "القنطرة شرق", "القنطرة غرب", "التل الكبير", "أبو صوير", "القصاصين"], "السويس": ["السويس", "الأربعين", "عتاقة", "الجناين", "فيصل"], "شمال سيناء": ["العريش", "بئر العبد", "الشيخ زويد", "رفح", "نخل", "الحسنة"], "جنوب سيناء": ["شرم الشيخ", "دهب", "نويبع", "طور سيناء", "سانت كاترين", "أبو رديس", "رأس سدر", "طابا"], "بني سويف": ["بني سويف", "الواسطى", "ناصر", "إهناسيا", "ببا", "الفشن", "سمسطا", "بني سويف الجديدة"], "الفيوم": ["الفيوم", "سنورس", "إطسا", "إبشواي", "طامية", "يوسف الصديق", "الفيوم الجديدة"], "المنيا": ["المنيا", "العدوة", "مغاغة", "بني مزار", "مطاي", "سمالوط", "المنيا الجديدة", "أبو قرقاص", "ملوي", "دير مواس"], "أسيوط": ["أسيوط", "ديروط", "منفلوط", "القوصية", "أبنوب", "أبو تيج", "الغنايم", "ساحل سليم", "البداري", "صدفا"], "سوهاج": ["سوهاج", "أخميم", "البلينا", "المراغة", "المنشاة", "دار السلام", "جرجا", "جهينة", "ساقلته", "طما", "طهطا"], "قنا": ["قنا", "أبو تشت", "نجع حمادي", "دشنا", "الوقف", "قفط", "نقادة", "فرشوط", "قوص"], "الأقصر": ["الأقصر", "الأقصر الجديدة", "إسنا", "أرمنت", "الطود", "الزينية", "البياضية", "القرنة"], "أسوان": ["أسوان", "أسوان الجديدة", "دراو", "كوم أمبو", "نصر النوبة", "كلابشة", "إدفو", "الرديسية", "السباعية", "أبو سمبل"], "البحر الأحمر": ["الغردقة", "رأس غارب", "سفاجا", "القصير", "مرسى علم", "شلاتين", "حلايب"], "الوادي الجديد": ["الخارجة", "باريس", "موط", "الفرافرة", "بلاط", "الداخلة"], "مطروح": ["مرسى مطروح", "الحمام", "العلمين", "الضبعة", "النجيلة", "سيدي براني", "السلوم", "سيوة"]};
 
 /* ================= الخصومات ================= */
-function unitDiscount(q){ return ({1:0,2:100,3:150,4:200,5:250})[q] || 250; }
+function unitDiscount(q){ return ({1:0,2:100,3:200})[q] || 200; }
 function totalFor(q){ return (UNIT_PRICE - unitDiscount(q)) * q; }
 
 /* ================= الصور ================= */
@@ -247,12 +262,14 @@ gov.onchange = function(){
   area.innerHTML = '<option value="">اختر المركز</option>';
   (AREAS[gov.value]||[]).forEach(function(a){ area.innerHTML += '<option value="'+a+'">'+a+'</option>'; });
 };
-[1,2,3,4,5].forEach(function(q){
-  var d = unitDiscount(q);
-  qty.innerHTML += '<option value="'+q+'">'+q+' قطعة — '+(UNIT_PRICE-d)+' ج للقطعة'+(d?' (خصم '+d+' ج)':'')+'</option>';
-});
 function updTotal(){ document.getElementById("f_total").textContent = totalFor(Number(qty.value)) + " ج"; }
-qty.onchange = updTotal; updTotal();
+Array.prototype.forEach.call(document.querySelectorAll(".qopt"), function(b){
+  b.onclick = function(){
+    Array.prototype.forEach.call(document.querySelectorAll(".qopt"), function(x){ x.classList.remove("on"); });
+    b.classList.add("on"); qty.value = b.getAttribute("data-q"); updTotal();
+  };
+});
+updTotal();
 
 function openOrder(){ document.getElementById("orderOverlay").classList.add("on"); document.body.style.overflow="hidden"; }
 function closeOrder(){
