@@ -348,26 +348,19 @@ function OrderModal({ settings, onClose }: { settings: Settings; onClose: () => 
               <input className={field} value={form.address} onChange={set("address")} maxLength={200} placeholder="المدينة - الشارع - رقم العقار" />
             </label>
 
-            {/* الكمية والخصومات */}
-            <div className="md:col-span-2">
-              <span className="text-xs">حدد الكمية واحصل على خصم</span>
-              <div className="no-bar mt-2 flex gap-2 overflow-x-auto pb-1">
+            {/* الكمية والخصومات — قائمة منسدلة */}
+            <label className="block md:col-span-2">
+              <span className="text-xs">عدد القطع (خصم أكبر مع الكمية)</span>
+              <select className={field} value={qty} onChange={(e) => setQty(Number(e.target.value))}>
                 {[1, 2, 3, 4, 5].map((q) => (
-                  <button
-                    key={q}
-                    type="button"
-                    onClick={() => setQty(q)}
-                    className={`min-w-[110px] shrink-0 rounded-xl p-2 text-center text-xs font-black ${
-                      qty === q ? "cta-pulse" : "glass glow-violet"
-                    }`}
-                  >
-                    <div className="text-base">{q} قطعة</div>
-                    <div>{UNIT_PRICE - unitDiscount(q)} ج للقطعة</div>
-                    <div className="opacity-90">{unitDiscount(q) ? `خصم ${unitDiscount(q)} ج` : "بدون خصم"}</div>
-                  </button>
+                  <option key={q} value={q} className="text-black">
+                    {q} قطعة — {UNIT_PRICE - unitDiscount(q)} ج للقطعة
+                    {unitDiscount(q) ? ` (خصم ${unitDiscount(q)} ج)` : ""}
+                  </option>
                 ))}
-              </div>
-            </div>
+              </select>
+            </label>
+
 
             <div className="glass glow-orange md:col-span-2 flex items-center justify-between px-4 py-3 text-sm font-black">
               <span>الإجمالي</span>
