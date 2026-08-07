@@ -3,6 +3,10 @@ import { useEffect, useMemo, useState } from "react";
 import { Facebook, MessageCircle, Phone, X } from "lucide-react";
 
 import camHero from "@/assets/cam-hero.jpg.asset.json";
+import featPair from "@/assets/feat-pair.jpg.asset.json";
+import featLens from "@/assets/feat-lens.jpg.asset.json";
+import featClip from "@/assets/feat-clip.jpg.asset.json";
+import featSd from "@/assets/feat-sd.jpg.asset.json";
 import sceneKids from "@/assets/scene-kids.jpg.asset.json";
 import scenePets from "@/assets/scene-pets.jpg.asset.json";
 import sceneTravel from "@/assets/scene-travel.jpg.asset.json";
