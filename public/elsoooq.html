@@ -150,10 +150,8 @@ body{padding-bottom:76px}
 
   <section class="glass g-orange" style="padding:12px;margin-top:16px">
     <h2 style="margin:0 0 8px;text-align:center;font-size:15px;font-weight:900">شاهد الكاميرا وهي تعمل</h2>
-    <div class="vid" id="vidBox" onclick="loadVid(this)" style="cursor:pointer;background:#000;display:flex;align-items:center;justify-content:center;position:relative">
-      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6),transparent);z-index:1"></div>
-      <svg width="64" height="64" viewBox="0 0 24 24" fill="rgba(255,255,255,.95)" style="position:relative;z-index:2;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5))"><path d="M8 5v14l11-7z"/></svg>
-      <span style="position:absolute;bottom:12px;inset-inline:0;text-align:center;z-index:2;font-size:13px;font-weight:900">اضغط لتشغيل الفيديو</span>
+    <div class="vid">
+      <iframe src="https://www.youtube.com/embed/Rahad6F_gNQ?rel=0" title="شاهد الكاميرا وهي تعمل" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
     </div>
   </section>
 
@@ -534,7 +532,7 @@ adminCheck();
   }, {passive:true});
 })();
 
-function loadVid(box){ box.onclick=null; box.style.cursor='default'; box.innerHTML='<iframe src="https://www.youtube.com/embed/Rahad6F_gNQ?playsinline=1&rel=0&autoplay=1" title="شاهد الكاميرا وهي تعمل" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe>'; }
+
 </script>
 </body>
 </html>
