@@ -3,9 +3,11 @@ import { useEffect, useMemo, useState } from "react";
 import { Facebook, MessageCircle, Phone, X } from "lucide-react";
 
 import camMain from "@/assets/cam-main.png.asset.json";
-import camFront from "@/assets/cam-front.png.asset.json";
 import camSide from "@/assets/cam-side.png.asset.json";
-import camWorn from "@/assets/cam-worn.png.asset.json";
+import sceneKids from "@/assets/scene-kids.jpg.asset.json";
+import scenePets from "@/assets/scene-pets.jpg.asset.json";
+import sceneTravel from "@/assets/scene-travel.jpg.asset.json";
+import sceneHome from "@/assets/scene-home.jpg.asset.json";
 import { EGYPT_AREAS, GOVS, UNIT_PRICE, totalFor, unitDiscount } from "@/lib/egypt-areas";
 
 export const Route = createFileRoute("/")({
@@ -67,12 +69,15 @@ function loadSettings(): Settings {
   }
 }
 
-const GALLERY = [
-  { src: camMain.url, alt: "كاميرا المراقبة من الأمام والخلف" },
-  { src: camFront.url, alt: "كاميرا المراقبة من الأمام" },
-  { src: camSide.url, alt: "كاميرا المراقبة من الجانب والمشبك المعدني" },
-  { src: camWorn.url, alt: "الكاميرا مثبتة على جيب القميص" },
+const GALLERY: { src: string; alt: string; fit: string }[] = [
+  { src: sceneKids.url, alt: "راقب أطفالك في أي وقت", fit: "object-cover" },
+  { src: camMain.url, alt: "كاميرا 1080P — أمام وخلف", fit: "object-contain p-4" },
+  { src: sceneHome.url, alt: "حماية منزلك ليلاً برؤية ليلية", fit: "object-cover" },
+  { src: scenePets.url, alt: "راقب حيواناتك أثناء غيابك", fit: "object-cover" },
+  { src: sceneTravel.url, alt: "وثّق رحلاتك وأسفارك", fit: "object-cover" },
+  { src: camSide.url, alt: "مشبك معدني قوي وعدسة دوارة", fit: "object-contain p-4" },
 ];
+
 
 const FEATURES = [
   { glow: "glow-orange", icon: "🎥", t: "1080P Full HD", d: "صوت وصورة واضحة" },
@@ -198,19 +203,23 @@ function Carousel() {
 
   return (
     <div className="mt-3">
-      <div className="relative h-56 overflow-hidden rounded-2xl md:h-72">
+      <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-black/20">
         {GALLERY.map((g, idx) => (
           <img
             key={g.src}
             src={g.src}
             alt={g.alt}
             loading={idx === 0 ? "eager" : "lazy"}
-            className={`absolute inset-0 mx-auto h-full w-full object-contain transition-all duration-700 ${
-              idx === i ? "scale-100 opacity-100" : "scale-90 opacity-0"
+            className={`absolute inset-0 h-full w-full transition-all duration-700 ${g.fit} ${
+              idx === i ? "scale-100 opacity-100" : "scale-105 opacity-0"
             }`}
           />
         ))}
+        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 py-2 text-center text-xs font-black">
+          {GALLERY[i]?.alt}
+        </div>
       </div>
+
       <div className="mt-2 flex justify-center gap-2">
         {GALLERY.map((g, idx) => (
           <button
