@@ -373,7 +373,7 @@ Array.prototype.forEach.call(document.querySelectorAll(".qopt"), function(b){
 });
 updTotal();
 
-function openOrder(){ document.getElementById("orderOverlay").classList.add("on"); document.body.style.overflow="hidden"; }
+function openOrder(){ document.getElementById("orderOverlay").classList.add("on"); document.body.style.overflow="hidden"; var b=document.getElementById("stickyBar"); if(b) b.classList.remove("on"); }
 function closeOrder(){
   document.getElementById("orderOverlay").classList.remove("on"); document.body.style.overflow="";
   document.getElementById("orderForm").style.display=""; document.getElementById("orderDone").style.display="none";
