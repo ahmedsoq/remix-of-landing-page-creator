@@ -123,16 +123,19 @@ function LandingPage() {
         </button>
       </section>
 
-      {/* المواصفات بشكل عرضي */}
-      <div className="no-bar mt-4 flex gap-3 overflow-x-auto pb-2">
+      {/* المواصفات — 4 كروت 2×2 */}
+      <div className="mt-4 grid grid-cols-2 gap-3">
         {FEATURES.map((f) => (
-          <div key={f.t} className={`glass ${f.glow} min-w-[150px] shrink-0 p-3 text-center`}>
+          <div key={f.t} className={`glass ${f.glow} flex items-center gap-2 p-3`}>
             <div className="text-2xl">{f.icon}</div>
-            <h3 className="mt-1 text-sm font-black">{f.t}</h3>
-            <p className="text-xs opacity-90">{f.d}</p>
+            <div className="min-w-0 text-right">
+              <h3 className="truncate text-sm font-black">{f.t}</h3>
+              <p className="truncate text-xs opacity-90">{f.d}</p>
+            </div>
           </div>
         ))}
       </div>
+
 
       {/* التواصل */}
       <section className="glass glow-cyan mt-4 p-4 text-center">
