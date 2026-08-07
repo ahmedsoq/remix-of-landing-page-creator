@@ -125,7 +125,7 @@ function LandingPage() {
               اطلب الآن — الدفع عند الاستلام
             </a>
           </div>
-          <img src={GALLERY[0].src} alt={GALLERY[0].alt} className="mx-auto w-full max-w-md drop-shadow-2xl" />
+          <img src={camMain.url} alt="كاميرا المراقبة من الأمام والخلف" className="mx-auto w-full max-w-md drop-shadow-2xl" />
         </div>
       </section>
 
