@@ -479,6 +479,55 @@ function panel(){
 }
 window.addEventListener("hashchange", adminCheck);
 adminCheck();
+
+/* ============ عناصر التحفيز على الشراء ============ */
+(function(){
+  /* 1) عداد عكسي 4 ساعات يتجدد تلقائياً */
+  var CD = "cam_cd_end";
+  var end = parseInt(localStorage.getItem(CD) || "0", 10);
+  if(!end || end < Date.now()) { end = Date.now() + 4*3600*1000; try{ localStorage.setItem(CD, String(end)); }catch(e){} }
+  var el = document.getElementById("cdown");
+  function two(n){ return n < 10 ? "0"+n : ""+n; }
+  function tick(){
+    var s = Math.max(0, Math.floor((end - Date.now())/1000));
+    if(s === 0){ end = Date.now() + 4*3600*1000; try{ localStorage.setItem(CD, String(end)); }catch(e){} }
+    el.textContent = two(Math.floor(s/3600))+":"+two(Math.floor(s%3600/60))+":"+two(s%60);
+  }
+  tick(); setInterval(tick, 1000);
+
+  /* 2) المخزون المتبقي */
+  var SK = "cam_stock", st = parseInt(localStorage.getItem(SK) || "0", 10);
+  if(!st || st < 4){ st = 5 + Math.floor(Math.random()*5); try{ localStorage.setItem(SK, String(st)); }catch(e){} }
+  document.getElementById("stock").textContent = st;
+
+  /* 3) إثبات اجتماعي متغير */
+  var names = ["أحمد","محمود","مصطفى","سارة","كريم","إسلام","هبة","عمرو","ياسمين","خالد"];
+  var govs = ["القاهرة","الجيزة","الإسكندرية","الدقهلية","الشرقية","أسيوط","المنوفية","بورسعيد"];
+  var pf = document.getElementById("proof");
+  var msgs = 0;
+  function proof(){
+    msgs++;
+    var t = (msgs % 4 === 0)
+      ? "🔥 تم شراء " + (18 + Math.floor(Math.random()*12)) + " قطعة اليوم"
+      : "👤 " + names[Math.floor(Math.random()*names.length)] + " من " + govs[Math.floor(Math.random()*govs.length)] + " طلب منذ " + (1 + Math.floor(Math.random()*9)) + " دقائق";
+    pf.innerHTML = '<span>'+t+'</span>';
+  }
+  setInterval(proof, 4500);
+
+  /* 4) زر ثابت أسفل الشاشة */
+  var bar = document.getElementById("stickyBar");
+  function sync(){
+    document.getElementById("sPrice").textContent = document.getElementById("price").textContent;
+    document.getElementById("sOld").textContent = document.getElementById("oldprice").textContent;
+  }
+  sync();
+  window.addEventListener("scroll", function(){
+    var show = window.scrollY > 320 && !document.getElementById("orderOverlay").classList.contains("on");
+    bar.classList.toggle("on", show);
+    if(show) sync();
+  }, {passive:true});
+})();
+
 </script>
 </body>
 </html>
