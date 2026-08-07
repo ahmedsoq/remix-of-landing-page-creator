@@ -79,9 +79,8 @@ const FEATURES = [
   { glow: "glow-cyan", icon: "🌙", t: "رؤية ليلية", d: "تصوير في الظلام" },
   { glow: "glow-lime", icon: "📴", t: "بدون إنترنت", d: "تسجل على الميموري" },
   { glow: "glow-pink", icon: "🧲", t: "مشبك معدني", d: "ثبتها في ثانية" },
-  { glow: "glow-violet", icon: "🔄", t: "عدسة دوارة", d: "أي زاوية تريدها" },
-  { glow: "glow-yellow", icon: "🔋", t: "بطارية قوية", d: "ساعات تسجيل" },
 ];
+
 
 /* ================= الصفحة ================= */
 
@@ -124,16 +123,19 @@ function LandingPage() {
         </button>
       </section>
 
-      {/* المواصفات بشكل عرضي */}
-      <div className="no-bar mt-4 flex gap-3 overflow-x-auto pb-2">
+      {/* المواصفات — 4 كروت 2×2 */}
+      <div className="mt-4 grid grid-cols-2 gap-3">
         {FEATURES.map((f) => (
-          <div key={f.t} className={`glass ${f.glow} min-w-[150px] shrink-0 p-3 text-center`}>
+          <div key={f.t} className={`glass ${f.glow} flex items-center gap-2 p-3`}>
             <div className="text-2xl">{f.icon}</div>
-            <h3 className="mt-1 text-sm font-black">{f.t}</h3>
-            <p className="text-xs opacity-90">{f.d}</p>
+            <div className="min-w-0 text-right">
+              <h3 className="truncate text-sm font-black">{f.t}</h3>
+              <p className="truncate text-xs opacity-90">{f.d}</p>
+            </div>
           </div>
         ))}
       </div>
+
 
       {/* التواصل */}
       <section className="glass glow-cyan mt-4 p-4 text-center">
@@ -346,26 +348,19 @@ function OrderModal({ settings, onClose }: { settings: Settings; onClose: () => 
               <input className={field} value={form.address} onChange={set("address")} maxLength={200} placeholder="المدينة - الشارع - رقم العقار" />
             </label>
 
-            {/* الكمية والخصومات */}
-            <div className="md:col-span-2">
-              <span className="text-xs">حدد الكمية واحصل على خصم</span>
-              <div className="no-bar mt-2 flex gap-2 overflow-x-auto pb-1">
+            {/* الكمية والخصومات — قائمة منسدلة */}
+            <label className="block md:col-span-2">
+              <span className="text-xs">عدد القطع (خصم أكبر مع الكمية)</span>
+              <select className={field} value={qty} onChange={(e) => setQty(Number(e.target.value))}>
                 {[1, 2, 3, 4, 5].map((q) => (
-                  <button
-                    key={q}
-                    type="button"
-                    onClick={() => setQty(q)}
-                    className={`min-w-[110px] shrink-0 rounded-xl p-2 text-center text-xs font-black ${
-                      qty === q ? "cta-pulse" : "glass glow-violet"
-                    }`}
-                  >
-                    <div className="text-base">{q} قطعة</div>
-                    <div>{UNIT_PRICE - unitDiscount(q)} ج للقطعة</div>
-                    <div className="opacity-90">{unitDiscount(q) ? `خصم ${unitDiscount(q)} ج` : "بدون خصم"}</div>
-                  </button>
+                  <option key={q} value={q} className="text-black">
+                    {q} قطعة — {UNIT_PRICE - unitDiscount(q)} ج للقطعة
+                    {unitDiscount(q) ? ` (خصم ${unitDiscount(q)} ج)` : ""}
+                  </option>
                 ))}
-              </div>
-            </div>
+              </select>
+            </label>
+
 
             <div className="glass glow-orange md:col-span-2 flex items-center justify-between px-4 py-3 text-sm font-black">
               <span>الإجمالي</span>
