@@ -67,12 +67,15 @@ function loadSettings(): Settings {
   }
 }
 
-const GALLERY = [
-  { src: camMain.url, alt: "كاميرا المراقبة من الأمام والخلف" },
-  { src: camFront.url, alt: "كاميرا المراقبة من الأمام" },
-  { src: camSide.url, alt: "كاميرا المراقبة من الجانب والمشبك المعدني" },
-  { src: camWorn.url, alt: "الكاميرا مثبتة على جيب القميص" },
+const GALLERY: { src: string; alt: string; fit: string }[] = [
+  { src: sceneKids.url, alt: "راقب أطفالك في أي وقت", fit: "object-cover" },
+  { src: camMain.url, alt: "كاميرا 1080P — أمام وخلف", fit: "object-contain p-4" },
+  { src: sceneHome.url, alt: "حماية منزلك ليلاً برؤية ليلية", fit: "object-cover" },
+  { src: scenePets.url, alt: "راقب حيواناتك أثناء غيابك", fit: "object-cover" },
+  { src: sceneTravel.url, alt: "وثّق رحلاتك وأسفارك", fit: "object-cover" },
+  { src: camSide.url, alt: "مشبك معدني قوي وعدسة دوارة", fit: "object-contain p-4" },
 ];
+
 
 const FEATURES = [
   { glow: "glow-orange", icon: "🎥", t: "1080P Full HD", d: "صوت وصورة واضحة" },
