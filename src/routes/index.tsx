@@ -216,7 +216,7 @@ function Carousel() {
           />
         ))}
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 py-2 text-center text-xs font-black">
-          {GALLERY[i].alt}
+          {GALLERY[i]?.alt}
         </div>
       </div>
 
