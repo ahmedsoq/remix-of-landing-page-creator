@@ -74,6 +74,10 @@ function loadSettings(): Settings {
 
 const GALLERY: { src: string; alt: string; fit: string }[] = [
   { src: camHero.url, alt: "كاميرا 1080P Full HD — أمام وخلف", fit: "object-cover" },
+  { src: featPair.url, alt: "تصميم أنيق ومتين — الوجه والظهر", fit: "object-cover" },
+  { src: featLens.url, alt: "عدسة دوّارة 180° لأي زاوية تصوير", fit: "object-cover" },
+  { src: featClip.url, alt: "مشبك معدني قوي — 8سم فقط وخفيفة", fit: "object-cover" },
+  { src: featSd.url, alt: "تدعم كارت ميموري حتى 128 جيجا", fit: "object-cover" },
   { src: sceneKids.url, alt: "راقب أطفالك في أي وقت", fit: "object-cover" },
   { src: sceneHome.url, alt: "حماية منزلك ليلاً برؤية ليلية", fit: "object-cover" },
   { src: scenePets.url, alt: "راقب حيواناتك أثناء غيابك", fit: "object-cover" },
