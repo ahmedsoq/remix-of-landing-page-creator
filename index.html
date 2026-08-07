@@ -356,14 +356,20 @@ document.getElementById("orderForm").onsubmit = function(e){
 
 
   var d = unitDiscount(q);
-  var text = "🛒 طلب جديد\n\n" +
+  var text = "🛒 طلب جديد من elsoooq.com\n" +
+    "━━━━━━━━━━━━━━━━━━━━\n\n" +
+    "👤 الاسم:\n" + name + "\n\n" +
+    "📍 العنوان:\n" + address + "\n\n" +
+    "📞 الهاتف:\n" + phone + "\n\n" +
+    "🔢 العدد:\n" + q + " قطعة" + "\n\n" +
+    "━━━━━━━━━━━━━━━━━━━━\n" +
     "📦 المنتج: " + S.productName + "\n" +
-    "🔢 الكمية: " + q + "\n" +
     "💰 سعر القطعة: " + (UNIT_PRICE-d) + " ج" + (d ? " (خصم " + d + " ج)" : "") + "\n" +
-    "🧾 الإجمالي: " + totalFor(q) + " ج (الدفع عند الاستلام)\n\n" +
-    "👤 الاسم: " + name + "\n📞 الهاتف: " + phone + "\n" +
-    "🏙️ المحافظة: " + gov.value + "\n🏘️ المركز: " + area.value + "\n" +
-    "📍 العنوان: " + address + "\n🕒 " + new Date().toLocaleString("ar-EG");
+    "🧾 الإجمالي: " + totalFor(q) + " ج\n" +
+    "💳 طريقة الدفع: الدفع عند الاستلام\n" +
+    "🏙️ المحافظة: " + gov.value + "\n" +
+    "🏘️ المركز: " + area.value + "\n" +
+    "🕒 التاريخ: " + new Date().toLocaleString("ar-EG");
 
   var btn = document.getElementById("f_submit");
   btn.disabled = true; btn.textContent = "جاري الإرسال..."; fail("");
