@@ -422,6 +422,20 @@ document.getElementById("orderForm").onsubmit = function(e){
    .then(function(){ btn.disabled = false; btn.textContent = "تأكيد الطلب"; });
 };
 
+/* ================= عدّاد الزوار (يظهر للأدمن فقط) ================= */
+var VC_BASE = "https://abacus.jasoncameron.dev";
+var VC_NS = "elsoooq-com";
+function vcKeyToday(){ var d=new Date(); return "day-"+d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2); }
+function vcHit(k){ return fetch(VC_BASE+"/hit/"+VC_NS+"/"+k, {cache:"no-store"}).then(function(r){return r.json();}).catch(function(){return null;}); }
+function vcGet(k){ return fetch(VC_BASE+"/get/"+VC_NS+"/"+k, {cache:"no-store"}).then(function(r){return r.json();}).then(function(j){ return (j&&typeof j.value==="number")?j.value:null; }).catch(function(){return null;}); }
+(function(){
+  if(location.hash === "#admin-2024") return; /* زيارة الأدمن لا تُحسب */
+  try{
+    vcHit("visits"); vcHit(vcKeyToday());
+    if(!localStorage.getItem("vc_device")){ localStorage.setItem("vc_device","1"); vcHit("unique"); }
+  }catch(e){}
+})();
+
 /* ================= لوحة التحكم المخفية (#admin-2024) ================= */
 var FIELDS = [
   ["botToken","توكن بوت تليجرام"],["chatId","أيدي الشات (Chat ID)"],
@@ -457,7 +471,26 @@ function panel(){
     '<button class="ghost" id="a_test" style="width:auto;margin:0;padding:12px 22px">إرسال رسالة تجربة</button>' +
     '<button class="ghost" id="a_export" style="width:auto;margin:0;padding:12px 22px">تحميل index.html مضبوط</button>' +
     '</div><p class="msg" id="a_msg"></p></section>';
+  html += '<div class="glass pad" style="margin-top:16px;padding:14px">' +
+    '<div class="row" style="justify-content:space-between;align-items:center;margin:0">' +
+      '<strong style="font-size:16px">👁️ زوار الموقع</strong>' +
+      '<button class="ghost" id="a_vrefresh" style="width:auto;margin:0;padding:8px 14px;font-size:13px">تحديث</button>' +
+    '</div>' +
+    '<div class="fgrid" style="margin-top:10px">' +
+      '<div style="text-align:center"><div style="font-size:22px;font-weight:900" id="v_total">…</div><div style="font-size:12px;opacity:.75">إجمالي الزيارات</div></div>' +
+      '<div style="text-align:center"><div style="font-size:22px;font-weight:900" id="v_unique">…</div><div style="font-size:12px;opacity:.75">زوار مختلفون</div></div>' +
+      '<div style="text-align:center"><div style="font-size:22px;font-weight:900" id="v_today">…</div><div style="font-size:12px;opacity:.75">زيارات اليوم</div></div>' +
+    '</div></div>';
   document.getElementById("adminMount").innerHTML = html;
+  function loadVisits(){
+    ["v_total","v_unique","v_today"].forEach(function(id){ var e=document.getElementById(id); if(e) e.textContent="…"; });
+    [["visits","v_total"],["unique","v_unique"],[vcKeyToday(),"v_today"]].forEach(function(p){
+      vcGet(p[0]).then(function(n){ var e=document.getElementById(p[1]); if(e) e.textContent = (n===null?"—":String(n)); });
+    });
+  }
+  loadVisits();
+  document.getElementById("a_vrefresh").onclick = loadVisits;
+
   function draft(){
     var d = Object.assign({}, S);
     document.querySelectorAll('#adminMount [data-k]').forEach(function(i){ d[i.getAttribute("data-k")] = i.value; });
