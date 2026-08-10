@@ -844,15 +844,19 @@ function panel(){
       price: Number(d.price), oldPrice: Number(d.oldPrice)||0,
       badge: (d.badge||"").trim(),
       images: imgs,
+      desc: (d.desc||"").trim(),
+      stock: Number(d.stock)||0,
+      hours: Number(d.hours)||0,
       features: parseLines(d.features, 3).slice(0,4),
-      video: (d.video||"").trim(),
+      video: ytId(d.video||""),
       tiers: tiers
     };
     var list = customProducts();
     var i = list.findIndex(function(x){ return x.id === prod.id; });
     if(i > -1) list[i] = prod; else list.push(prod);
-    saveCustom(list);
-    EDIT = emptyForm();
+    try{ saveCustom(list); }
+    catch(e){ msg.textContent = "❌ مساحة المتصفح ممتلئة — احذف منتجاً قديماً أو استخدم صور أقل"; return; }
+    EDIT = emptyForm(); UPLOADS = [];
     msg.textContent = "✅ تم حفظ المنتج — رابطه: /" + prod.id;
     route();
   };
