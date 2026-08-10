@@ -453,7 +453,7 @@ function renderHome(){
     h += '<div class="pgrid">' + top.map(cardHtml).join("") + '</div>';
   }
   h += '<h2 class="sechd">🛍️ كل المنتجات<small>' + list.length + ' منتج متاح للطلب</small></h2>';
-  h += '<div class="pgrid">' + list.map(cardHtml).join("") + '</div>';
+  h += '<div class="pgrid"' + (list.length === 1 ? ' style="grid-template-columns:1fr;max-width:280px;margin-inline:auto"' : '') + '>' + list.map(cardHtml).join("") + '</div>';
   h += socialsHtml();
   document.getElementById("app").innerHTML = h;
   bindNav();
