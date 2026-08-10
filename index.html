@@ -749,13 +749,22 @@ function panel(){
       '<label><span>السعر الحالي</span><input class="fld" data-p="price" inputmode="numeric" value="'+esc(EDIT.price)+'" placeholder="1200" /></label>' +
       '<label><span>السعر القديم</span><input class="fld" data-p="oldPrice" inputmode="numeric" value="'+esc(EDIT.oldPrice)+'" placeholder="1900" /></label>' +
       '<label><span>شارة المنتج (اختياري)</span><input class="fld" data-p="badge" value="'+esc(EDIT.badge)+'" placeholder="جديد / الأكثر مبيعاً" /></label>' +
-      '<label><span>كود فيديو يوتيوب (اختياري)</span><input class="fld" data-p="video" value="'+esc(EDIT.video)+'" placeholder="Rahad6F_gNQ" /></label>' +
-      '<label class="full"><span>الصور — كل سطر: رابط الصورة | الوصف</span><textarea class="fld" data-p="images" placeholder="https://.../1.jpg | وصف الصورة&#10;https://.../2.jpg | وصف آخر">'+esc(EDIT.images)+'</textarea></label>' +
+      '<label><span>فيديو يوتيوب (رابط أو كود)</span><input class="fld" data-p="video" value="'+esc(EDIT.video)+'" placeholder="https://youtube.com/shorts/Rahad6F_gNQ" /></label>' +
+      '<label><span>عدد القطع المتبقية (شريط التحفيز)</span><input class="fld" data-p="stock" inputmode="numeric" value="'+esc(EDIT.stock)+'" placeholder="7" /></label>' +
+      '<label><span>مدة العرض بالساعات (العدّاد)</span><input class="fld" data-p="hours" inputmode="numeric" value="'+esc(EDIT.hours)+'" placeholder="4" /></label>' +
+      '<label class="full"><span>وصف المنتج (يظهر تحت الاسم)</span><textarea class="fld" data-p="desc" placeholder="وصف قصير يشجع على الشراء">'+esc(EDIT.desc)+'</textarea></label>' +
+      '<div class="full">' +
+        '<span style="font-size:12.5px;font-weight:900;display:block;margin-bottom:6px">صور المنتج — ارفعها من جهازك مباشرة</span>' +
+        '<div class="upzone" id="p_zone">📤 اضغط لاختيار الصور من الجهاز (يمكن اختيار أكثر من صورة)<input type="file" id="p_files" accept="image/*" multiple /></div>' +
+        '<div class="upgrid" id="p_prev"></div>' +
+      '</div>' +
+      '<label class="full"><span>أو روابط صور إضافية — كل سطر: رابط الصورة | الوصف</span><textarea class="fld" data-p="images" placeholder="https://.../1.jpg | وصف الصورة">'+esc(EDIT.images)+'</textarea></label>' +
       '<label class="full"><span>المواصفات (4 أسطر) — كل سطر: أيقونة (إيموجي أو رابط) | العنوان | الوصف</span><textarea class="fld" data-p="features" placeholder="🔋 | بطارية قوية | تدوم 10 ساعات">'+esc(EDIT.features)+'</textarea></label>' +
       '<label class="full"><span>خصومات الكمية — خصم القطعة لـ 1 و 2 و 3 قطع</span><input class="fld" data-p="tiers" value="'+esc(EDIT.tiers)+'" placeholder="0,100,200" /></label>' +
     '</div>' +
     '<div class="row" style="justify-content:flex-start;margin-top:14px">' +
       '<button class="cta" id="p_save" style="width:auto;padding:12px 22px">حفظ المنتج</button>' +
+      '<button class="ghost" id="p_tpl" style="width:auto;margin:0;padding:12px 22px">تعبئة بقالب الكاميرا</button>' +
       '<button class="ghost" id="p_clear" style="width:auto;margin:0;padding:12px 22px">نموذج فارغ</button>' +
     '</div><p class="msg" id="p_msg"></p>' +
     '<div class="adminlist" id="p_list"></div>' +
