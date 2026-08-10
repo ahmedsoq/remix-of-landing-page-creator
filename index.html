@@ -721,9 +721,58 @@ function adminCheck(){
 window.addEventListener("hashchange", adminCheck);
 
 function emptyForm(){
-  return {id:"", name:"", price:"", oldPrice:"", badge:"", images:"", features:"", video:"", tiers:"0,100,200"};
+  return {id:"", name:"", price:"", oldPrice:"", badge:"", desc:"", stock:"", hours:"", images:"", features:"", video:"", tiers:"0,100,200"};
 }
-var EDIT = emptyForm();
+var EDIT = emptyForm(), UPLOADS = [];
+
+function ytId(v){
+  v = String(v||"").trim();
+  var m = v.match(/(?:shorts\/|watch\?v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{6,})/);
+  return m ? m[1] : v.replace(/[^A-Za-z0-9_-]/g, "");
+}
+/* تصغير وضغط الصورة المرفوعة قبل الحفظ */
+function shrinkImage(file, cb){
+  if(!file || !/^image\//.test(file.type)) return cb(null);
+  var fr = new FileReader();
+  fr.onload = function(){
+    var img = new Image();
+    img.onload = function(){
+      var max = 900, w = img.width, h = img.height;
+      if(w > max || h > max){ var r = Math.min(max/w, max/h); w = Math.round(w*r); h = Math.round(h*r); }
+      var c = document.createElement("canvas"); c.width = w; c.height = h;
+      var x = c.getContext("2d"); x.fillStyle = "#0b0b12"; x.fillRect(0,0,w,h); x.drawImage(img,0,0,w,h);
+      try{ cb(c.toDataURL("image/jpeg", 0.72)); }catch(e){ cb(fr.result); }
+    };
+    img.onerror = function(){ cb(null); };
+    img.src = fr.result;
+  };
+  fr.onerror = function(){ cb(null); };
+  fr.readAsDataURL(file);
+}
+/* معاينة الصور المرفوعة داخل اللوحة */
+function drawUploads(){
+  var box = document.getElementById("p_prev"); if(!box) return;
+  if(!UPLOADS.length){ box.innerHTML = '<p style="font-size:12px;opacity:.7;margin:0">لا توجد صور مرفوعة بعد.</p>'; return; }
+  box.innerHTML = UPLOADS.map(function(g,i){
+    return '<div class="upitem"><button class="x" data-rm="'+i+'" title="حذف">✕</button>' +
+      '<img src="'+esc(g[0])+'" alt="">' +
+      '<input data-cap="'+i+'" value="'+esc(g[1]||"")+'" placeholder="وصف الصورة" />' +
+      '<div class="mv"><button data-mv="'+i+'" data-d="-1">◀</button><button data-mv="'+i+'" data-d="1">▶</button></div></div>';
+  }).join("");
+  box.querySelectorAll("[data-rm]").forEach(function(b){
+    b.onclick = function(){ UPLOADS.splice(Number(b.getAttribute("data-rm")),1); drawUploads(); };
+  });
+  box.querySelectorAll("[data-cap]").forEach(function(inp){
+    inp.oninput = function(){ UPLOADS[Number(inp.getAttribute("data-cap"))][1] = inp.value; };
+  });
+  box.querySelectorAll("[data-mv]").forEach(function(b){
+    b.onclick = function(){
+      var i = Number(b.getAttribute("data-mv")), j = i + Number(b.getAttribute("data-d"));
+      if(j < 0 || j >= UPLOADS.length) return;
+      var t = UPLOADS[i]; UPLOADS[i] = UPLOADS[j]; UPLOADS[j] = t; drawUploads();
+    };
+  });
+}
 
 function panel(){
   var html = '<section class="glass g-pink pad" style="margin-top:20px">' +
