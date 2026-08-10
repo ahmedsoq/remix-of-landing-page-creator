@@ -10,49 +10,25 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <style>
-*{box-sizing:border-box;}
+body{font-family:Arial;background:#eee;padding:10px;}
+.container{max-width:600px;margin:auto;}
+.box{background:#fff;padding:15px;border-radius:10px;margin-bottom:15px;}
 
-body {
-font-family: Arial;
-background:#f5f5f5;
-margin:0;
-padding:10px;
-}
-
-.container {
-max-width:600px;
-margin:auto;
-}
-
-.box {
-background:#fff;
-padding:15px;
-border-radius:12px;
-margin-bottom:15px;
-box-shadow:0 2px 10px rgba(0,0,0,0.05);
-}
-
-h2 {
-font-size:20px;
-text-align:center;
-margin-bottom:15px;
-}
-
-input,select,textarea {
+input,select,textarea{
 width:100%;
 padding:12px;
 margin:6px 0;
-border-radius:8px;
 border:1px solid #ccc;
+border-radius:6px;
 font-size:16px;
 }
 
-button {
+button{
 width:100%;
 padding:12px;
 margin-top:10px;
 border:none;
-border-radius:8px;
+border-radius:6px;
 font-size:16px;
 cursor:pointer;
 }
@@ -63,32 +39,16 @@ cursor:pointer;
 
 .invoice{
 display:none;
-font-size:15px;
+background:#fff;
+padding:10px;
+border:2px solid #000;
 }
 
-.header{
-text-align:center;
-border-bottom:2px solid #000;
-padding-bottom:10px;
-margin-bottom:10px;
-}
+.section{border:1px solid #000;margin-top:10px;padding:8px;}
+.row{display:flex;justify-content:space-between;border-bottom:1px solid #000;padding:4px;}
+.center{text-align:center;}
+.barcode{border:2px dashed #000;padding:10px;margin:10px;text-align:center;font-weight:bold;}
 
-.footer{
-text-align:center;
-margin-top:15px;
-color:green;
-font-weight:bold;
-font-size:16px;
-}
-
-#qrcode{
-text-align:center;
-margin-top:15px;
-}
-
-@media (max-width:400px){
-h2{font-size:18px;}
-}
 </style>
 </head>
 
@@ -97,153 +57,154 @@ h2{font-size:18px;}
 <div class="container">
 
 <div class="box">
-<h2>إنشاء بوليصة شحن</h2>
+<h2>إنشاء بوليصة</h2>
 
 <input id="name" placeholder="اسم العميل">
+<input id="phone" placeholder="رقم العميل">
 
 <select id="gov" onchange="loadCities()">
 <option value="">اختر المحافظة</option>
-<option>القاهرة</option>
-<option>الجيزة</option>
-<option>الإسكندرية</option>
-<option>الدقهلية</option>
-<option>الشرقية</option>
-<option>الغربية</option>
-<option>المنوفية</option>
-<option>القليوبية</option>
-<option>البحيرة</option>
-<option>كفر الشيخ</option>
-<option>أسيوط</option>
-<option>سوهاج</option>
-<option>قنا</option>
-<option>الأقصر</option>
-<option>أسوان</option>
 </select>
 
 <select id="city">
 <option>اختر المركز</option>
 </select>
 
-<input id="street" placeholder="اسم الشارع بالتفصيل">
-<input id="product" placeholder="المنتج والعدد">
-<input id="amount" placeholder="مبلغ التحصيل">
+<input id="street" placeholder="الشارع بالتفصيل">
+
+<input id="product" placeholder="المنتج">
+<input id="amount" placeholder="المبلغ">
 <textarea id="note" placeholder="ملاحظة"></textarea>
 
 <button class="generate" onclick="generate()">إنشاء البوليصة</button>
 </div>
 
-<div id="invoice" class="box invoice">
+<div id="invoice" class="invoice">
 
-<div class="header">
-<h2>elsoooq</h2>
-<p>📞 01022077100</p>
-<p>facebook.com/elsoooqshop</p>
-<p id="date"></p>
-<p id="orderId"></p>
+<div class="center"><b>ELSOOOQ SHIPPING</b></div>
+<div class="barcode" id="orderId"></div>
+
+<div class="section">
+<div class="row"><span>العميل</span><span id="c_name"></span></div>
+<div class="row"><span>الهاتف</span><span id="c_phone"></span></div>
+<div class="row"><span>العنوان</span><span id="c_address"></span></div>
 </div>
 
-<p><b>اسم العميل:</b> <span id="c_name"></span></p>
-<p><b>العنوان:</b> <span id="c_address"></span></p>
-<p><b>المنتج:</b> <span id="c_product"></span></p>
-<p><b>المبلغ:</b> <span id="c_amount"></span></p>
-<p><b>ملاحظة:</b> <span id="c_note"></span></p>
-
-<div id="qrcode"></div>
-
-<div class="footer">
-❤️ شكراً لثقتك في elsoooq ❤️
+<div class="section">
+<div class="row"><span>المنتج</span><span id="c_product"></span></div>
+<div class="row"><span>المبلغ</span><span id="c_amount"></span></div>
 </div>
+
+<div class="section">
+<div class="row"><span>ملاحظات</span><span id="c_note"></span></div>
+</div>
+
+<div id="qrcode" class="center"></div>
+
+<div class="center">شكراً لثقتك ❤️</div>
 
 <button class="print" onclick="window.print()">طباعة</button>
-<button class="pdf" onclick="downloadPDF()">تحميل PDF</button>
+<button class="pdf" onclick="downloadPDF()">PDF</button>
+<button style="background:#25D366;color:#fff;" onclick="sendToCustomer()">واتساب</button>
 
 </div>
 
 </div>
 
 <script>
-const data = {
-"القاهرة":["مدينة نصر","مصر الجديدة","المعادي","حلوان"],
-"الجيزة":["الهرم","فيصل","العجوزة","الدقي"],
-"الإسكندرية":["سيدي جابر","العجمي","المنتزه"],
-"الدقهلية":["المنصورة","ميت غمر"],
-"الشرقية":["الزقازيق","بلبيس"],
-"الغربية":["طنطا","المحلة"],
-"المنوفية":["شبين الكوم","منوف"],
-"القليوبية":["بنها","شبرا"],
-"البحيرة":["دمنهور","كفر الدوار"],
-"كفر الشيخ":["كفر الشيخ","دسوق"],
-"أسيوط":["أسيوط","ديروط"],
-"سوهاج":["سوهاج","جرجا"],
-"قنا":["قنا","نجع حمادي"],
-"الأقصر":["الأقصر"],
-"أسوان":["أسوان"]
+
+// 🔥 كل محافظات ومراكز مصر (مختصر قوي لكن شامل)
+const egypt = {
+"القاهرة":["مدينة نصر","مصر الجديدة","المعادي","حلوان","عين شمس","الزيتون"],
+"الجيزة":["الهرم","فيصل","الدقي","العجوزة","6 أكتوبر","الشيخ زايد"],
+"الإسكندرية":["سيدي جابر","العجمي","المنتزه","محرم بك"],
+"الدقهلية":["المنصورة","ميت غمر","دكرنس"],
+"الشرقية":["الزقازيق","بلبيس","العاشر من رمضان"],
+"الغربية":["طنطا","المحلة الكبرى","زفتى"],
+"المنوفية":["شبين الكوم","منوف","أشمون"],
+"القليوبية":["بنها","شبرا الخيمة","قليوب"],
+"البحيرة":["دمنهور","كفر الدوار","رشيد"],
+"كفر الشيخ":["كفر الشيخ","دسوق","بلطيم"],
+"أسيوط":["أسيوط","ديروط","منفلوط"],
+"سوهاج":["سوهاج","جرجا","المراغة"],
+"قنا":["قنا","نجع حمادي","قفط"],
+"الأقصر":["الأقصر","إسنا"],
+"أسوان":["أسوان","إدفو","كوم أمبو"],
+"بني سويف":["بني سويف","الواسطى"],
+"الفيوم":["الفيوم","سنورس"],
+"دمياط":["دمياط","رأس البر"],
+"بورسعيد":["بورسعيد"],
+"الإسماعيلية":["الإسماعيلية"],
+"السويس":["السويس"],
+"مطروح":["مرسى مطروح"],
+"شمال سيناء":["العريش"],
+"جنوب سيناء":["شرم الشيخ","دهب"],
+"الوادي الجديد":["الخارجة"],
+"البحر الأحمر":["الغردقة","سفاجا"]
 };
 
+// تحميل المحافظات
+window.onload = function(){
+for(let gov in egypt){
+let option=document.createElement("option");
+option.text=gov;
+document.getElementById("gov").add(option);
+}
+}
+
+// تحميل المراكز
 function loadCities(){
-let gov = document.getElementById("gov").value;
-let city = document.getElementById("city");
-city.innerHTML = "";
-data[gov].forEach(c=>{
-let option = document.createElement("option");
-option.text = c;
+let gov=document.getElementById("gov").value;
+let city=document.getElementById("city");
+
+city.innerHTML="";
+egypt[gov].forEach(c=>{
+let option=document.createElement("option");
+option.text=c;
 city.add(option);
 });
 }
 
-// 🔥 Auto-fill تحميل البيانات
-window.onload = function(){
-if(localStorage.getItem("name")){
-name.value = localStorage.getItem("name");
-gov.value = localStorage.getItem("gov");
-loadCities();
-city.value = localStorage.getItem("city");
-street.value = localStorage.getItem("street");
-product.value = localStorage.getItem("product");
-amount.value = localStorage.getItem("amount");
-note.value = localStorage.getItem("note");
-}
-}
-
+// إنشاء بوليصة
 function generate(){
+
+let order="ORD"+Math.floor(100000+Math.random()*900000);
 
 document.getElementById("invoice").style.display="block";
 
-let order="ORD-"+Math.floor(100000+Math.random()*900000);
+orderId.innerText=order;
+c_name.innerText=name.value;
+c_phone.innerText=phone.value;
 
-document.getElementById("orderId").innerText="رقم الطلب: "+order;
-document.getElementById("date").innerText=new Date().toLocaleString();
+c_address.innerText=gov.value+" - "+city.value+" - "+street.value;
 
-document.getElementById("c_name").innerText=name.value;
-
-let address = gov.value+" - "+city.value+" - "+street.value;
-document.getElementById("c_address").innerText=address;
-
-document.getElementById("c_product").innerText=product.value;
-document.getElementById("c_amount").innerText=amount.value+" جنيه";
-document.getElementById("c_note").innerText=note.value;
-
-// 🔥 حفظ البيانات
-localStorage.setItem("name", name.value);
-localStorage.setItem("gov", gov.value);
-localStorage.setItem("city", city.value);
-localStorage.setItem("street", street.value);
-localStorage.setItem("product", product.value);
-localStorage.setItem("amount", amount.value);
-localStorage.setItem("note", note.value);
+c_product.innerText=product.value;
+c_amount.innerText=amount.value+" جنيه";
+c_note.innerText=note.value;
 
 // QR
 document.getElementById("qrcode").innerHTML="";
-new QRCode(document.getElementById("qrcode"), {
-text: "https://www.facebook.com/elsoooqshop",
-width:120,
-height:120
+new QRCode(document.getElementById("qrcode"),{
+text:"https://www.facebook.com/elsoooqshop",
+width:100,
+height:100
 });
 }
 
+// PDF
 function downloadPDF(){
 html2pdf().from(document.getElementById("invoice")).save("elsoooq.pdf");
 }
+
+// واتساب
+function sendToCustomer(){
+let phoneNum=phone.value;
+if(phoneNum.startsWith("0")) phoneNum="2"+phoneNum;
+
+let msg="طلبك رقم: "+orderId.innerText;
+window.open("https://wa.me/"+phoneNum+"?text="+msg);
+}
+
 </script>
 
 </body>
