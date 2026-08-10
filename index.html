@@ -335,7 +335,10 @@ function discountFor(p,q){
   t.forEach(function(x){ if(Number(x[0]) === Number(q)) d = Number(x[1])||0; });
   return d;
 }
-function totalFor(p,q){ return (Number(p.price) - discountFor(p,q)) * q; }
+var SHIP = 55;
+function subtotalFor(p,q){ return (Number(p.price) - discountFor(p,q)) * q; }
+function totalFor(p,q){ return subtotalFor(p,q) + SHIP; }
+
 function iconHtml(ic){
   if(/[\/.]/.test(ic) && /^(https?:|\.|\/|img)/.test(ic))
     return '<img class="ic" src="'+esc(ic)+'" alt="" loading="lazy" decoding="async" width="52" height="52">';
