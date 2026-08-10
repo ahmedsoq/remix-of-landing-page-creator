@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>elsoooq — كاميرا مراقبة جيب صوت وصورة | 1200ج بدل 1900</title>
-<meta name="description" content="كاميرا مراقبة صغيرة تسجل صوت وصورة بجودة 1080P بدون إنترنت. رؤية ليلية ومشبك معدني. 1200 جنيه بدل 1900، الدفع عند الاستلام وشحن مجاني لكل محافظات مصر." />
-<meta property="og:title" content="elsoooq — كاميرا مراقبة جيب صوت وصورة بدون إنترنت" />
-<meta property="og:description" content="1080P فيديو وصوت، رؤية ليلية، بدون إنترنت. 1200ج بدل 1900 مع الدفع عند الاستلام وشحن مجاني." />
+<title>elsoooq — متجر إلكتروني | شحن مجاني والدفع عند الاستلام</title>
+<meta name="description" content="متجر elsoooq — منتجات مختارة بأسعار مميزة، شحن مجاني لكل محافظات مصر والدفع عند الاستلام مع فحص المنتج قبل الدفع." />
+<meta property="og:title" content="elsoooq — متجر إلكتروني | الدفع عند الاستلام" />
+<meta property="og:description" content="منتجات مختارة بأسعار مميزة، شحن مجاني لكل محافظات مصر والدفع عند الاستلام." />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -36,7 +36,7 @@ body{margin:0;background:
   animation:pulse 1.8s ease-in-out infinite}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,122,24,.5)}50%{box-shadow:0 0 18px 5px rgba(255,122,24,.18)}}
 html{scroll-behavior:smooth}
-button,input,select,a{touch-action:manipulation}
+button,input,select,a,textarea{touch-action:manipulation}
 h1{font-size:22px;font-weight:900;text-align:center;line-height:1.4;margin:0}
 .pad{padding:16px}
 .row{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
@@ -47,12 +47,13 @@ h1{font-size:22px;font-weight:900;text-align:center;line-height:1.4;margin:0}
 .slider img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.03);transition:opacity .5s,transform .5s;will-change:opacity,transform}
 .slider img.on{opacity:1;transform:scale(1)}
 .cap{position:absolute;inset-inline:0;bottom:0;padding:8px 12px;text-align:center;font-size:12px;font-weight:900;background:linear-gradient(to top,rgba(0,0,0,.75),transparent)}
-.dots{display:flex;justify-content:center;gap:8px;margin-top:8px}
+.dots{display:flex;justify-content:center;gap:8px;margin-top:8px;flex-wrap:wrap}
 .dots button{height:8px;width:8px;border:none;border-radius:99px;background:rgba(255,255,255,.4);cursor:pointer;transition:all .3s}
 .dots button.on{width:24px;background:var(--orange)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;align-items:stretch}
 .feat{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:14px;text-align:center;min-height:132px}
 .feat .ic{width:52px;height:52px;object-fit:contain;filter:drop-shadow(0 0 10px currentColor);animation:icf 3s ease-in-out infinite}
+.feat .emo{font-size:38px;line-height:1;animation:icf 3s ease-in-out infinite}
 @keyframes icf{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
 .feat h3{margin:0;font-size:14px;font-weight:900;line-height:1.3}
 .feat p{margin:0;font-size:12px;opacity:.9;line-height:1.45}
@@ -69,6 +70,7 @@ h1{font-size:22px;font-weight:900;text-align:center;line-height:1.4;margin:0}
 .fld{width:100%;margin-top:4px;padding:10px 12px;border-radius:14px;border:2px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);color:#fff;font-family:inherit;font-weight:700;font-size:14px;outline:none}
 .fld:focus{border-color:rgba(255,255,255,.65)}
 .fld option{color:#000}
+textarea.fld{min-height:70px;resize:vertical}
 label span{font-size:12px}
 .fgrid{display:grid;gap:12px;margin-top:12px}
 @media(min-width:640px){.fgrid{grid-template-columns:1fr 1fr}.full{grid-column:1/-1}h1{font-size:28px}}
@@ -89,7 +91,6 @@ label span{font-size:12px}
 .tick svg{width:38px;height:38px;stroke:var(--lime)}
 .ghost{display:block;width:100%;margin-top:12px;padding:12px;border-radius:14px;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.2);color:#fff;font-family:inherit;font-weight:900;cursor:pointer}
 footer{margin-top:20px;text-align:center;font-size:11px;opacity:.6}
-/* عناصر التحفيز */
 .urg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
 .urg>div{display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 8px;font-size:12.5px;font-weight:900;border-radius:16px}
 .urg b{font-variant-numeric:tabular-nums;font-size:14px}
@@ -106,85 +107,56 @@ footer{margin-top:20px;text-align:center;font-size:11px;opacity:.6}
 .sticky .p em{font-style:normal;display:block;font-size:10px;opacity:.6;text-decoration:line-through}
 .sticky button{flex:1;padding:13px;font-size:15px;border-radius:16px}
 body{padding-bottom:76px}
+/* ====== المتجر ====== */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;margin-bottom:10px}
+.brand{font-size:20px;font-weight:900;letter-spacing:.5px;text-decoration:none;color:#fff;display:flex;align-items:center;gap:8px}
+.brand em{font-style:normal;background:linear-gradient(90deg,var(--orange),var(--yellow));-webkit-background-clip:text;background-clip:text;color:transparent}
+.backl{font-size:12.5px;font-weight:900;text-decoration:none;color:#fff;opacity:.85;padding:7px 12px;border-radius:99px;background:rgba(255,255,255,.1)}
+.pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
+@media(min-width:700px){.pgrid{grid-template-columns:repeat(3,1fr)}}
+.pcard{display:flex;flex-direction:column;overflow:hidden;text-decoration:none;color:inherit;transition:transform .2s,box-shadow .2s;padding:0}
+.pcard:hover{transform:translateY(-4px)}
+.pcard .ph{position:relative;width:100%;aspect-ratio:1/1;background:rgba(0,0,0,.3)}
+.pcard .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.pcard .tag{position:absolute;top:8px;inset-inline-start:8px;font-size:10px;font-weight:900;padding:4px 9px;border-radius:99px;background:linear-gradient(90deg,var(--orange),var(--pink));color:#fff}
+.pcard .pb{padding:10px;display:flex;flex-direction:column;gap:6px;flex:1}
+.pcard h3{margin:0;font-size:13.5px;font-weight:900;line-height:1.4;min-height:38px}
+.pcard .pp{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.pcard .pp b{font-size:16px;font-weight:900;color:var(--yellow)}
+.pcard .pp s{font-size:12px;opacity:.55}
+.pcard .buy{margin-top:auto;text-align:center;padding:9px;border-radius:14px;font-size:12.5px;font-weight:900;background:linear-gradient(90deg,var(--orange),var(--yellow));color:#12060a}
+.sechd{margin:22px 0 0;font-size:17px;font-weight:900;text-align:center}
+.sechd small{display:block;font-size:12px;font-weight:700;opacity:.7;margin-top:4px}
+.hero{padding:18px 16px;text-align:center;margin-bottom:12px}
+.hero h1{font-size:24px}
+.hero p{margin:8px 0 0;font-size:13px;opacity:.85;line-height:1.7}
+.adminlist{display:grid;gap:8px;margin-top:10px}
+.arow{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:14px;background:rgba(255,255,255,.07)}
+.arow img{width:40px;height:40px;border-radius:10px;object-fit:cover;background:rgba(0,0,0,.3)}
+.arow span{flex:1;font-size:12.5px;font-weight:900}
+.arow small{font-size:11px;opacity:.7}
+.arow button{border:none;background:rgba(255,60,60,.25);color:#fff;font-family:inherit;font-weight:900;border-radius:10px;padding:6px 10px;cursor:pointer;font-size:11.5px}
 @media (prefers-reduced-motion: reduce){*{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}html{scroll-behavior:auto}}
 </style>
-
 </head>
 <body>
+
 <div class="wrap">
-
-  <div class="cta" style="padding:12px;text-align:center;font-size:15px;margin-bottom:12px">
-    🚚 شحن مجاني لكل المحافظات • 💵 الدفع عند الاستلام
+  <div class="glass topbar" id="topbar">
+    <a class="brand" href="#" id="brandLink">🛍️ <em>elsoooq</em></a>
+    <a class="backl" href="#" id="backLink" style="display:none">← كل المنتجات</a>
   </div>
-
-  <div class="urg">
-    <div class="glass g-pink">⏳ ينتهي العرض <b id="cdown">03:59:59</b></div>
-    <div class="glass g-yellow">🔥 متبقي <b id="stock">7</b> قطع فقط</div>
-  </div>
-  <div class="glass g-lime proof" id="proof"><span>👤 أحمد من القاهرة طلب الآن</span></div>
-
-  <section class="glass g-violet pad">
-    <h1 id="pname">كاميرا مراقبة جيب صوت وصورة بدون إنترنت</h1>
-    <div class="slider" id="slider"></div>
-    <div class="dots" id="dots"></div>
-    <div class="row" style="margin-top:12px">
-      <span class="glass g-orange price" id="price">1200 ج</span>
-      <span class="old" id="oldprice">1900 ج</span>
-      <span class="glass g-yellow pill" id="save">وفر 700 ج</span>
-    </div>
-    <button class="cta" style="margin-top:12px;padding:15px;font-size:17px" onclick="openOrder()">اطلب الآن — الدفع عند الاستلام</button>
-    <div class="trust">
-      <div class="glass g-lime"><i>🛡️</i>ضمان استرجاع 14 يوم</div>
-      <div class="glass g-cyan"><i>📦</i>فحص قبل الدفع</div>
-      <div class="glass g-orange"><i>⚡</i>توصيل من يومين لـ 3 أيام</div>
-    </div>
-  </section>
-
-
-  <div class="grid2">
-    <div class="glass g-orange feat"><img class="ic" src="img/ic-video.png" alt="جودة التصوير" loading="lazy" decoding="async" width="52" height="52"><div><h3>جودة التصوير 1080</h3><p>تصوير صوت وصورة بجودة محترمة وتصوير في الوضع الليلي</p></div></div>
-    <div class="glass g-cyan feat"><img class="ic" src="img/ic-sd.png" alt="تخزين" loading="lazy" decoding="async" width="52" height="52"><div><h3>تخزين على الميموري</h3><p>يمكن تخزين كل شيء فيديوهات وصور على كارت ميموري مباشر وسهل</p></div></div>
-    <div class="glass g-lime feat"><img class="ic" src="img/ic-batt.png" alt="بطارية" loading="lazy" decoding="async" width="52" height="52"><div><h3>بطارية قوية</h3><p>تدوم البطارية 4 ساعات ونص تصوير مستمر برا الشاحن</p></div></div>
-    <div class="glass g-pink feat"><img class="ic" src="img/ic-eye.png" alt="سهولة الاستخدام" loading="lazy" decoding="async" width="52" height="52"><div><h3>سهولة الاستخدام</h3><p>يمكن استخدامها في أي مكان مخفي بكل سهولة</p></div></div>
-  </div>
-
-  <section class="glass g-orange" style="padding:12px;margin-top:16px">
-    <h2 style="margin:0 0 8px;text-align:center;font-size:15px;font-weight:900">شاهد الكاميرا وهي تعمل</h2>
-    <div class="vid">
-      <iframe src="https://www.youtube.com/embed/Rahad6F_gNQ?rel=0" title="شاهد الكاميرا وهي تعمل" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-    </div>
-  </section>
-
-  <section class="glass g-cyan pad center" style="margin-top:16px">
-    <h2 style="margin:0;font-size:15px;font-weight:900">تواصل معنا مباشرة</h2>
-    <div class="socials">
-      <a class="soc" id="waLink" href="#" target="_blank" rel="noreferrer">
-        <span class="glass g-lime circle"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.13c-.25.7-1.44 1.35-1.98 1.4-.54.06-1.05.26-3.62-.75-3.1-1.22-5.05-4.42-5.2-4.63-.15-.2-1.23-1.64-1.23-3.13 0-1.5.78-2.23 1.06-2.53.28-.3.6-.38.8-.38h.57c.19 0 .43-.03.66.5.25.6.85 2.08.92 2.23.08.15.13.33.03.53-.1.2-.42.63-.6.85-.13.15-.28.32-.12.62.16.3.7 1.2 1.5 1.94 1.03.95 1.86 1.24 2.13 1.39.27.15.43.13.6-.08.16-.2.68-.8.86-1.07.18-.28.36-.23.6-.15.25.09 1.6.76 1.87.9.28.13.46.2.53.31.07.11.07.65-.18 1.36z"/></svg></span>
-        واتساب
-      </a>
-      <a class="soc" id="fbLink" href="#" target="_blank" rel="noreferrer">
-        <span class="glass g-cyan circle"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06C2 17.08 5.66 21.24 10.44 22v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.91 3.77-3.91 1.1 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.88h2.77l-.44 2.91h-2.33V22C18.34 21.24 22 17.08 22 12.06z"/></svg></span>
-        فيسبوك
-      </a>
-      <a class="soc" id="telLink" href="#">
-        <span class="glass g-orange circle"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.1 2.2 2.9 4 5.1 5.1l1.7-1.7c.2-.2.5-.3.8-.2 1 .3 2 .5 3.1.5.4 0 .8.4.8.8V18c0 .4-.4.8-.8.8C9.9 18.8 5.2 14.1 5.2 6.7c0-.4.4-.8.8-.8h2.7c.4 0 .8.4.8.8 0 1.1.2 2.1.5 3.1.1.3 0 .6-.2.8l-1.7 1.7z"/></svg></span>
-        اتصال
-      </a>
-    </div>
-  </section>
-
+  <div id="app"></div>
   <div id="adminMount"></div>
   <footer>© <span id="yr"></span> elsoooq — جميع الحقوق محفوظة</footer>
 </div>
 
 <div class="sticky" id="stickyBar">
   <div class="inner">
-    <div class="p"><span id="sPrice">1200 ج</span><em id="sOld">1900 ج</em></div>
+    <div class="p"><span id="sPrice">—</span><em id="sOld"></em></div>
     <button class="cta" onclick="openOrder()">اطلب الآن — الدفع عند الاستلام</button>
   </div>
 </div>
-
-
 
 <!-- نموذج الطلب -->
 <div class="overlay" id="orderOverlay">
@@ -193,6 +165,7 @@ body{padding-bottom:76px}
       <h2 style="margin:0;font-size:17px;font-weight:900">اطلب الآن — الدفع عند الاستلام</h2>
       <button class="xbtn" onclick="closeOrder()" aria-label="إغلاق">×</button>
     </div>
+    <p style="margin:6px 0 0;font-size:13px;opacity:.85" id="o_pname"></p>
 
     <form id="orderForm" class="fgrid">
       <label><span>الاسم بالكامل</span><input class="fld" id="f_name" maxlength="100" placeholder="محمد أحمد" /></label>
@@ -202,14 +175,10 @@ body{padding-bottom:76px}
       <label class="full"><span>العنوان بالتفصيل</span><input class="fld" id="f_address" maxlength="200" placeholder="المدينة - الشارع - رقم العقار" /></label>
       <div class="full qtyw">
         <span>عدد القطع</span>
-        <div class="qopts">
-          <button type="button" class="qopt on" data-q="1"><b>قطعة</b><i>1200 ج</i><em>—</em></button>
-          <button type="button" class="qopt" data-q="2"><b>قطعتين</b><i>1100 ج/قطعة</i><em>خصم 100 ج</em></button>
-          <button type="button" class="qopt" data-q="3"><b>3 قطع</b><i>1000 ج/قطعة</i><em>خصم 200 ج</em></button>
-        </div>
+        <div class="qopts" id="qopts"></div>
         <input type="hidden" id="f_qty" value="1" />
       </div>
-      <div class="glass g-orange full tot"><span>الإجمالي</span><span id="f_total" style="font-size:18px">1200 ج</span></div>
+      <div class="glass g-orange full tot"><span>الإجمالي</span><span id="f_total" style="font-size:18px">—</span></div>
       <p class="msg full" id="f_msg"></p>
       <button type="submit" class="cta full" style="padding:15px;font-size:17px" id="f_submit">تأكيد الطلب</button>
     </form>
@@ -225,50 +194,144 @@ body{padding-bottom:76px}
 </div>
 
 <script>
-/* ================= الإعدادات ================= */
-var UNIT_PRICE = 1200;
+/* ================= الإعدادات العامة ================= */
 var DEFAULTS = {
-  botToken:"", chatId:"", price:"1200", oldPrice:"1900",
-  productName:"كاميرا مراقبة جيب صوت وصورة بدون إنترنت",
+  botToken:"", chatId:"",
+  storeName:"elsoooq",
   whatsapp:"201022077100", facebook:"https://facebook.com/elsoooqshop",
   phone:"01022077100", adminPass:"admin123"
 };
 var KEY = "cam_lp_settings_v1";
-/* كوكي على الدومين الرئيسي حتى تعمل الإعدادات على elsoooq.com و www.elsoooq.com معاً */
+var PKEY = "elsoooq_products_v1";
+
 function rootDomain(){
   var h = location.hostname;
   if(/^[\d.]+$/.test(h) || h === "localhost") return null;
   var p = h.split("."); if(p.length < 2) return null;
   return "." + p.slice(-2).join(".");
 }
-function cookieGet(){
-  var m = document.cookie.match(/(?:^|;\s*)cam_lp_s=([^;]*)/);
+function cookieGet(name){
+  var m = document.cookie.match(new RegExp("(?:^|;\\s*)" + name + "=([^;]*)"));
   if(!m) return null;
   try{ return decodeURIComponent(m[1]); }catch(e){ return null; }
 }
-function cookieSet(v){
+function cookieSet(name, v){
   var d = rootDomain();
-  document.cookie = "cam_lp_s=" + encodeURIComponent(v) + ";path=/;max-age=31536000;samesite=lax" + (d ? ";domain=" + d : "") + (location.protocol === "https:" ? ";secure" : "");
+  document.cookie = name + "=" + encodeURIComponent(v) + ";path=/;max-age=31536000;samesite=lax" + (d ? ";domain=" + d : "") + (location.protocol === "https:" ? ";secure" : "");
+}
+function readStore(k){
+  var raw = null;
+  try{ raw = localStorage.getItem(k); }catch(e){}
+  if(!raw) raw = cookieGet(k === KEY ? "cam_lp_s" : "elsoooq_p");
+  return raw;
+}
+function writeStore(k, raw){
+  try{ localStorage.setItem(k, raw); }catch(e){}
+  try{ cookieSet(k === KEY ? "cam_lp_s" : "elsoooq_p", raw); }catch(e){}
 }
 function load(){
-  var raw = null;
-  try{ raw = localStorage.getItem(KEY); }catch(e){}
-  if(!raw) raw = cookieGet();
+  var raw = readStore(KEY);
   try{ return raw ? Object.assign({},DEFAULTS,JSON.parse(raw)) : Object.assign({},DEFAULTS); }
   catch(e){ return Object.assign({},DEFAULTS); }
 }
 function save(s){
   Object.keys(s).forEach(function(k){ if(typeof s[k]==="string") s[k]=s[k].trim(); });
-  var raw = JSON.stringify(s);
-  try{ localStorage.setItem(KEY, raw); }catch(e){}
-  try{ cookieSet(raw); }catch(e){}
-  S = s; render();
+  writeStore(KEY, JSON.stringify(s));
+  S = s; route();
 }
 var S = load();
+
+/* ================= المنتجات ================= */
+/* كل منتج: id, name, price, oldPrice, badge, images[[src,caption]], features[[icon,title,desc]], video, tiers[[qty,discount,label]] */
+var BUILTIN_PRODUCTS = [
+  {
+    id:"1",
+    name:"كاميرا مراقبة جيب صوت وصورة بدون إنترنت",
+    price:1200, oldPrice:1900, badge:"الأكثر مبيعاً",
+    images:[
+      ["img/cam-hero.jpg","كاميرا 1080P Full HD — أمام وخلف"],
+      ["img/feat-pair.jpg","تصميم أنيق ومتين — الوجه والظهر"],
+      ["img/feat-lens.jpg","عدسة دوّارة 180° لأي زاوية تصوير"],
+      ["img/feat-clip.jpg","مشبك معدني قوي — 8سم فقط وخفيفة"],
+      ["img/feat-sd.jpg","تدعم كارت ميموري حتى 128 جيجا"],
+      ["img/scene-kids.jpg","راقب أطفالك في أي وقت"],
+      ["img/scene-home.jpg","حماية منزلك ليلاً برؤية ليلية"],
+      ["img/scene-pets.jpg","راقب حيواناتك أثناء غيابك"],
+      ["img/scene-travel.jpg","وثّق رحلاتك وأسفارك بجودة عالية"]
+    ],
+    features:[
+      ["img/ic-video.png","جودة التصوير 1080","تصوير صوت وصورة بجودة محترمة وتصوير في الوضع الليلي"],
+      ["img/ic-sd.png","تخزين على الميموري","يمكن تخزين كل شيء فيديوهات وصور على كارت ميموري مباشر وسهل"],
+      ["img/ic-batt.png","بطارية قوية","تدوم البطارية 4 ساعات ونص تصوير مستمر برا الشاحن"],
+      ["img/ic-eye.png","سهولة الاستخدام","يمكن استخدامها في أي مكان مخفي بكل سهولة"]
+    ],
+    video:"Rahad6F_gNQ",
+    tiers:[[1,0,""],[2,100,"خصم 100 ج"],[3,200,"خصم 200 ج"]]
+  }
+];
+/* المنتجات المضافة من لوحة التحكم (يتم استبدالها عند تحميل ملف مضبوط) */
+var SAVED_PRODUCTS = [];
+
+function customProducts(){
+  var raw = readStore(PKEY);
+  try{ var a = raw ? JSON.parse(raw) : null; return Array.isArray(a) ? a : SAVED_PRODUCTS.slice(); }
+  catch(e){ return SAVED_PRODUCTS.slice(); }
+}
+function saveCustom(list){ writeStore(PKEY, JSON.stringify(list)); }
+function allProducts(){
+  var out = BUILTIN_PRODUCTS.slice();
+  customProducts().forEach(function(p){
+    var i = out.findIndex(function(x){ return x.id === p.id; });
+    if(i > -1) out[i] = p; else out.push(p);
+  });
+  return out;
+}
+function getProduct(id){ return allProducts().filter(function(p){ return p.id === String(id); })[0] || null; }
+function nextId(){
+  var ids = allProducts().map(function(p){ return parseInt(p.id,10) || 0; });
+  return String(Math.max.apply(null,[0].concat(ids)) + 1);
+}
+
+/* ================= المسارات (elsoooq.com/1) ================= */
+function isStatic(){ return /\.html$/.test(location.pathname); }
+function currentId(){
+  var m = location.pathname.match(/\/(\d+)\/?$/);
+  if(m) return m[1];
+  var q = location.search.match(/[?&]p=(\d+)/);
+  if(q) return q[1];
+  var h = location.hash.match(/^#p(\d+)/);
+  return h ? h[1] : null;
+}
+function plink(id){ return isStatic() ? (location.pathname + "?p=" + id) : ("/" + id); }
+function homeLink(){ return isStatic() ? location.pathname : "/"; }
+function goto(id){
+  var url = id ? plink(id) : homeLink();
+  history.pushState({}, "", url);
+  window.scrollTo(0,0);
+  route();
+}
+
+/* ================= أدوات ================= */
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function waNum(){ return String(S.whatsapp || "201022077100").replace(/\D/g,""); }
+function tiersOf(p){ return (p.tiers && p.tiers.length) ? p.tiers : [[1,0,""]]; }
+function discountFor(p,q){
+  var t = tiersOf(p), d = 0;
+  t.forEach(function(x){ if(Number(x[0]) === Number(q)) d = Number(x[1])||0; });
+  return d;
+}
+function totalFor(p,q){ return (Number(p.price) - discountFor(p,q)) * q; }
+function iconHtml(ic){
+  if(/[\/.]/.test(ic) && /^(https?:|\.|\/|img)/.test(ic))
+    return '<img class="ic" src="'+esc(ic)+'" alt="" loading="lazy" decoding="async" width="52" height="52">';
+  return '<div class="emo">'+esc(ic||"⭐")+'</div>';
+}
+var GLOWS = ["g-orange","g-cyan","g-lime","g-pink","g-violet","g-yellow"];
+
+/* ================= إرسال تليجرام ================= */
 function tgSend(token, chat, text){
   token = String(token||"").trim(); chat = String(chat||"").trim();
   if(!token || !chat) return Promise.reject(new Error("لم يتم ضبط إعدادات الإشعارات بعد. افتح لوحة التحكم واحفظ التوكن وأيدي الشات."));
-  /* إرسال عبر نموذج مخفي: لا يتأثر بحظر CORS في GitHub Pages والدومينات الثابتة */
   return new Promise(function(resolve, reject){
     var id = "tg_" + Date.now();
     var frame = document.createElement("iframe");
@@ -288,76 +351,242 @@ function tgSend(token, chat, text){
   });
 }
 
-function downloadConfiguredPage(settings){
+function downloadConfiguredPage(settings, products){
   var out = document.getElementById("a_msg");
   out.textContent = "جاري تجهيز الملف...";
   fetch(location.pathname + "?export=" + Date.now()).then(function(r){ return r.text(); }).then(function(html){
-    var replacement = "botToken:" + JSON.stringify(settings.botToken) + ", chatId:" + JSON.stringify(settings.chatId);
-    html = html.replace(/botToken:\s*"[^"]*"\s*,\s*chatId:\s*"[^"]*"/, replacement);
+    html = html.replace(/botToken:\s*"[^"]*"\s*,\s*chatId:\s*"[^"]*"/,
+      "botToken:" + JSON.stringify(settings.botToken) + ", chatId:" + JSON.stringify(settings.chatId));
+    html = html.replace(/var SAVED_PRODUCTS = \[\];/,
+      "var SAVED_PRODUCTS = " + JSON.stringify(products) + ";");
     var blob = new Blob([html], {type:"text/html;charset=utf-8"});
     var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "index.html"; a.click();
     setTimeout(function(){ URL.revokeObjectURL(a.href); },1000);
-    out.textContent = "✅ تم تنزيل index.html مضبوطاً — ارفعه مكان الملف القديم على GitHub";
+    out.textContent = "✅ تم تنزيل index.html مضبوطاً بكل المنتجات — ارفعه مكان الملف القديم على GitHub";
   }).catch(function(){ out.textContent = "❌ تعذر تجهيز الملف، حاول مرة أخرى"; });
 }
 
 /* ================= المحافظات والمراكز ================= */
 var AREAS = {"القاهرة": ["مدينة نصر", "مصر الجديدة", "المعادي", "حلوان", "المقطم", "الزيتون", "شبرا", "عين شمس", "المرج", "حدائق القبة", "السيدة زينب", "وسط البلد", "الزمالك", "التجمع الخامس", "الشروق", "بدر", "15 مايو", "المطرية", "الوايلي", "باب الشعرية"], "الجيزة": ["الدقي", "العجوزة", "الهرم", "فيصل", "إمبابة", "بولاق الدكرور", "الوراق", "أوسيم", "كرداسة", "6 أكتوبر", "الشيخ زايد", "البدرشين", "الصف", "أطفيح", "العياط", "منشأة القناطر", "الحوامدية"], "الإسكندرية": ["المنتزه", "شرق", "وسط", "العطارين", "محرم بك", "سيدي جابر", "العجمي", "برج العرب", "الدخيلة", "العامرية", "المندرة", "سموحة", "الورديان"], "القليوبية": ["بنها", "شبرا الخيمة", "القناطر الخيرية", "الخانكة", "كفر شكر", "طوخ", "قها", "العبور", "الخصوص", "شبين القناطر"], "الشرقية": ["الزقازيق", "العاشر من رمضان", "بلبيس", "أبو حماد", "أبو كبير", "فاقوس", "كفر صقر", "ديرب نجم", "الحسينية", "مشتول السوق", "القرين", "منيا القمح", "الإبراهيمية", "صان الحجر"], "الدقهلية": ["المنصورة", "طلخا", "ميت غمر", "دكرنس", "أجا", "السنبلاوين", "بلقاس", "شربين", "المطرية", "منية النصر", "تمي الأمديد", "الجمالية", "بني عبيد", "محلة دمنة", "نبروه"], "المنوفية": ["شبين الكوم", "منوف", "سرس الليان", "أشمون", "الباجور", "قويسنا", "بركة السبع", "تلا", "الشهداء", "السادات"], "الغربية": ["طنطا", "المحلة الكبرى", "كفر الزيات", "زفتى", "السنطة", "بسيون", "قطور", "سمنود", "بلتيم"], "البحيرة": ["دمنهور", "كفر الدوار", "رشيد", "إدكو", "أبو المطامير", "أبو حمص", "الدلنجات", "المحمودية", "الرحمانية", "إيتاي البارود", "حوش عيسى", "شبراخيت", "بدر", "وادي النطرون", "النوبارية"], "كفر الشيخ": ["كفر الشيخ", "دسوق", "فوه", "مطوبس", "برج البرلس", "بلطيم", "الحامول", "بيلا", "الرياض", "سيدي سالم", "قلين"], "دمياط": ["دمياط", "رأس البر", "فارسكور", "الزرقا", "السرو", "الروضة", "كفر البطيخ", "كفر سعد", "ميت أبو غالب"], "بورسعيد": ["بورسعيد", "بورفؤاد", "العرب", "حي الزهور", "حي الضواحي", "حي المناخ", "الجنوب"], "الإسماعيلية": ["الإسماعيلية", "فايد", "القنطرة شرق", "القنطرة غرب", "التل الكبير", "أبو صوير", "القصاصين"], "السويس": ["السويس", "الأربعين", "عتاقة", "الجناين", "فيصل"], "شمال سيناء": ["العريش", "بئر العبد", "الشيخ زويد", "رفح", "نخل", "الحسنة"], "جنوب سيناء": ["شرم الشيخ", "دهب", "نويبع", "طور سيناء", "سانت كاترين", "أبو رديس", "رأس سدر", "طابا"], "بني سويف": ["بني سويف", "الواسطى", "ناصر", "إهناسيا", "ببا", "الفشن", "سمسطا", "بني سويف الجديدة"], "الفيوم": ["الفيوم", "سنورس", "إطسا", "إبشواي", "طامية", "يوسف الصديق", "الفيوم الجديدة"], "المنيا": ["المنيا", "العدوة", "مغاغة", "بني مزار", "مطاي", "سمالوط", "المنيا الجديدة", "أبو قرقاص", "ملوي", "دير مواس"], "أسيوط": ["أسيوط", "ديروط", "منفلوط", "القوصية", "أبنوب", "أبو تيج", "الغنايم", "ساحل سليم", "البداري", "صدفا"], "سوهاج": ["سوهاج", "أخميم", "البلينا", "المراغة", "المنشاة", "دار السلام", "جرجا", "جهينة", "ساقلته", "طما", "طهطا"], "قنا": ["قنا", "أبو تشت", "نجع حمادي", "دشنا", "الوقف", "قفط", "نقادة", "فرشوط", "قوص"], "الأقصر": ["الأقصر", "الأقصر الجديدة", "إسنا", "أرمنت", "الطود", "الزينية", "البياضية", "القرنة"], "أسوان": ["أسوان", "أسوان الجديدة", "دراو", "كوم أمبو", "نصر النوبة", "كلابشة", "إدفو", "الرديسية", "السباعية", "أبو سمبل"], "البحر الأحمر": ["الغردقة", "رأس غارب", "سفاجا", "القصير", "مرسى علم", "شلاتين", "حلايب"], "الوادي الجديد": ["الخارجة", "باريس", "موط", "الفرافرة", "بلاط", "الداخلة"], "مطروح": ["مرسى مطروح", "الحمام", "العلمين", "الضبعة", "النجيلة", "سيدي براني", "السلوم", "سيوة"]};
 
-/* ================= الخصومات ================= */
-function unitDiscount(q){ var m={1:0,2:100,3:200}; return q in m ? m[q] : 200; }
-function totalFor(q){ return (UNIT_PRICE - unitDiscount(q)) * q; }
-
-/* ================= الصور ================= */
-var GALLERY = [
-  ["img/cam-hero.jpg","كاميرا 1080P Full HD — أمام وخلف"],
-  ["img/feat-pair.jpg","تصميم أنيق ومتين — الوجه والظهر"],
-  ["img/feat-lens.jpg","عدسة دوّارة 180° لأي زاوية تصوير"],
-  ["img/feat-clip.jpg","مشبك معدني قوي — 8سم فقط وخفيفة"],
-  ["img/feat-sd.jpg","تدعم كارت ميموري حتى 128 جيجا"],
-  ["img/scene-kids.jpg","راقب أطفالك في أي وقت"],
-  ["img/scene-home.jpg","حماية منزلك ليلاً برؤية ليلية"],
-  ["img/scene-pets.jpg","راقب حيواناتك أثناء غيابك"],
-  ["img/scene-travel.jpg","وثّق رحلاتك وأسفارك بجودة عالية"]
-];
-var slider = document.getElementById("slider"), dots = document.getElementById("dots"), cur = 0;
-GALLERY.forEach(function(g,i){
-  var im = document.createElement("img");
-  im.src = g[0]; im.alt = g[1]; im.loading = i===0?"eager":"lazy"; im.decoding = "async"; if(i===0) im.fetchPriority = "high";
-  if(i===0) im.className = "on";
-  slider.appendChild(im);
-  var b = document.createElement("button");
-  b.setAttribute("aria-label", g[1]); if(i===0) b.className="on";
-  b.onclick = function(){ show(i); };
-  dots.appendChild(b);
-});
-var cap = document.createElement("div"); cap.className = "cap"; cap.textContent = GALLERY[0][1]; slider.appendChild(cap);
-function show(i){
-  cur = i;
-  var imgs = slider.querySelectorAll("img"), bs = dots.querySelectorAll("button");
-  for(var k=0;k<imgs.length;k++){ imgs[k].className = (k===i?"on":""); bs[k].className = (k===i?"on":""); }
-  cap.textContent = GALLERY[i][1];
+/* ================= عدّاد الزيارات ================= */
+var VC_BASE = "https://abacus.jasoncameron.dev";
+var VC_NS = "elsoooq-com";
+var VIEWS = {};
+function vcKeyToday(){ var d=new Date(); return "day-"+d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2); }
+function vcHit(k){ return fetch(VC_BASE+"/hit/"+VC_NS+"/"+k, {cache:"no-store"}).then(function(r){return r.json();}).catch(function(){return null;}); }
+function vcGet(k){ return fetch(VC_BASE+"/get/"+VC_NS+"/"+k, {cache:"no-store"}).then(function(r){return r.json();}).then(function(j){ return (j&&typeof j.value==="number")?j.value:null; }).catch(function(){return null;}); }
+function isAdmin(){ return location.hash === "#admin-2024"; }
+function trackVisit(id){
+  if(isAdmin()) return;
+  try{
+    vcHit("visits"); vcHit(vcKeyToday());
+    if(id) vcHit("p" + id);
+    if(!localStorage.getItem("vc_device")){ localStorage.setItem("vc_device","1"); vcHit("unique"); }
+  }catch(e){}
 }
-var slideInt = setInterval(function(){ show((cur+1)%GALLERY.length); }, 2600);
-if("IntersectionObserver" in window){ new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ if(!slideInt) slideInt = setInterval(function(){ show((cur+1)%GALLERY.length); }, 2600); } else { clearInterval(slideInt); slideInt = null; } }); }).observe(slider); }
-
-/* ================= عرض الإعدادات ================= */
-function waNum(){ return String(S.whatsapp || "201022077100").replace(/\D/g,""); }
-function render(){
-  document.getElementById("pname").textContent = S.productName;
-  document.getElementById("price").textContent = S.price + " ج";
-  document.getElementById("oldprice").textContent = S.oldPrice + " ج";
-  document.getElementById("save").textContent = "وفر " + (Number(S.oldPrice) - Number(S.price)) + " ج";
-  document.getElementById("waLink").href = "https://wa.me/" + waNum();
-  document.getElementById("fbLink").href = S.facebook || "https://facebook.com/elsoooqshop";
-  document.getElementById("telLink").href = "tel:" + (S.phone || "01022077100");
-  document.getElementById("waFollow").href = "https://wa.me/" + waNum() + "?text=" + encodeURIComponent("مرحباً، أرسلت طلباً للكاميرا وأريد متابعة الطلب");
+function loadViews(cb){
+  var list = allProducts(), left = list.length;
+  if(!left) return cb();
+  list.forEach(function(p){
+    vcGet("p" + p.id).then(function(n){
+      VIEWS[p.id] = (n === null ? 0 : n);
+      if(--left === 0) cb();
+    });
+  });
 }
-document.getElementById("yr").textContent = new Date().getFullYear();
-render();
+function topProducts(exclude, n){
+  return allProducts()
+    .filter(function(p){ return p.id !== exclude; })
+    .sort(function(a,b){ return (VIEWS[b.id]||0) - (VIEWS[a.id]||0); })
+    .slice(0, n||3);
+}
 
-/* ================= النموذج ================= */
-var gov = document.getElementById("f_gov"), area = document.getElementById("f_area"), qty = document.getElementById("f_qty");
+/* ================= بناء الصفحات ================= */
+function cardHtml(p, i){
+  var img = (p.images && p.images[0]) ? p.images[0][0] : "";
+  var save = Number(p.oldPrice||0) - Number(p.price||0);
+  return '<a class="glass ' + GLOWS[i % GLOWS.length] + ' pcard" href="' + esc(plink(p.id)) + '" data-nav="' + esc(p.id) + '">' +
+    '<div class="ph">' + (img ? '<img src="'+esc(img)+'" alt="'+esc(p.name)+'" loading="lazy" decoding="async">' : '') +
+      (p.badge ? '<span class="tag">'+esc(p.badge)+'</span>' : (save>0 ? '<span class="tag">وفر '+save+' ج</span>' : '')) +
+    '</div>' +
+    '<div class="pb"><h3>'+esc(p.name)+'</h3>' +
+      '<div class="pp"><b>'+Number(p.price)+' ج</b>' + (p.oldPrice ? '<s>'+Number(p.oldPrice)+' ج</s>' : '') + '</div>' +
+      '<div class="buy">اطلب الآن</div></div></a>';
+}
+
+function renderHome(){
+  document.getElementById("backLink").style.display = "none";
+  document.title = S.storeName + " — متجر إلكتروني | شحن مجاني والدفع عند الاستلام";
+  var list = allProducts();
+  var top = topProducts(null, 3).filter(function(p){ return (VIEWS[p.id]||0) > 0; });
+  var h = '<div class="cta" style="padding:12px;text-align:center;font-size:15px;margin-bottom:12px">🚚 شحن مجاني لكل المحافظات • 💵 الدفع عند الاستلام</div>' +
+    '<section class="glass g-violet hero">' +
+      '<h1>كل اللي محتاجه في مكان واحد</h1>' +
+      '<p>منتجات مختارة بعناية — تدفع بعد ما تستلم وتفحص، وشحن مجاني لكل محافظات مصر خلال يومين لـ 3 أيام.</p>' +
+      '<div class="trust">' +
+        '<div class="glass g-lime"><i>🛡️</i>ضمان استرجاع 14 يوم</div>' +
+        '<div class="glass g-cyan"><i>📦</i>فحص قبل الدفع</div>' +
+        '<div class="glass g-orange"><i>⚡</i>توصيل سريع</div>' +
+      '</div>' +
+    '</section>';
+  if(top.length){
+    h += '<h2 class="sechd">🔥 الأكثر مشاهدة<small>المنتجات اللي الناس بتدخل عليها دلوقتي</small></h2>';
+    h += '<div class="pgrid">' + top.map(cardHtml).join("") + '</div>';
+  }
+  h += '<h2 class="sechd">🛍️ كل المنتجات<small>' + list.length + ' منتج متاح للطلب</small></h2>';
+  h += '<div class="pgrid">' + list.map(cardHtml).join("") + '</div>';
+  h += socialsHtml();
+  document.getElementById("app").innerHTML = h;
+  bindNav();
+  document.getElementById("stickyBar").classList.remove("on");
+}
+
+function socialsHtml(){
+  return '<section class="glass g-cyan pad center" style="margin-top:16px">' +
+    '<h2 style="margin:0;font-size:15px;font-weight:900">تواصل معنا مباشرة</h2>' +
+    '<div class="socials">' +
+      '<a class="soc" href="https://wa.me/'+waNum()+'" target="_blank" rel="noreferrer"><span class="glass g-lime circle"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.13c-.25.7-1.44 1.35-1.98 1.4-.54.06-1.05.26-3.62-.75-3.1-1.22-5.05-4.42-5.2-4.63-.15-.2-1.23-1.64-1.23-3.13 0-1.5.78-2.23 1.06-2.53.28-.3.6-.38.8-.38h.57c.19 0 .43-.03.66.5.25.6.85 2.08.92 2.23.08.15.13.33.03.53-.1.2-.42.63-.6.85-.13.15-.28.32-.12.62.16.3.7 1.2 1.5 1.94 1.03.95 1.86 1.24 2.13 1.39.27.15.43.13.6-.08.16-.2.68-.8.86-1.07.18-.28.36-.23.6-.15.25.09 1.6.76 1.87.9.28.13.46.2.53.31.07.11.07.65-.18 1.36z"/></svg></span>واتساب</a>' +
+      '<a class="soc" href="'+esc(S.facebook||"https://facebook.com/elsoooqshop")+'" target="_blank" rel="noreferrer"><span class="glass g-cyan circle"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06C2 17.08 5.66 21.24 10.44 22v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.91 3.77-3.91 1.1 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.88h2.77l-.44 2.91h-2.33V22C18.34 21.24 22 17.08 22 12.06z"/></svg></span>فيسبوك</a>' +
+      '<a class="soc" href="tel:'+esc(S.phone||"01022077100")+'"><span class="glass g-orange circle"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.1 2.2 2.9 4 5.1 5.1l1.7-1.7c.2-.2.5-.3.8-.2 1 .3 2 .5 3.1.5.4 0 .8.4.8.8V18c0 .4-.4.8-.8.8C9.9 18.8 5.2 14.1 5.2 6.7c0-.4.4-.8.8-.8h2.7c.4 0 .8.4.8.8 0 1.1.2 2.1.5 3.1.1.3 0 .6-.2.8l-1.7 1.7z"/></svg></span>اتصال</a>' +
+    '</div></section>';
+}
+
+var CUR = null, slideInt = null, cur = 0;
+
+function renderProduct(p){
+  CUR = p;
+  document.getElementById("backLink").style.display = "";
+  document.title = S.storeName + " — " + p.name + " | " + p.price + " ج";
+  var save = Number(p.oldPrice||0) - Number(p.price||0);
+  var h = '<div class="cta" style="padding:12px;text-align:center;font-size:15px;margin-bottom:12px">🚚 شحن مجاني لكل المحافظات • 💵 الدفع عند الاستلام</div>' +
+    '<div class="urg">' +
+      '<div class="glass g-pink">⏳ ينتهي العرض <b id="cdown">03:59:59</b></div>' +
+      '<div class="glass g-yellow">🔥 متبقي <b id="stock">7</b> قطع فقط</div>' +
+    '</div>' +
+    '<div class="glass g-lime proof" id="proof"><span>👤 أحمد من القاهرة طلب الآن</span></div>' +
+    '<section class="glass g-violet pad">' +
+      '<h1>'+esc(p.name)+'</h1>' +
+      '<div class="slider" id="slider"></div><div class="dots" id="dots"></div>' +
+      '<div class="row" style="margin-top:12px">' +
+        '<span class="glass g-orange price">'+Number(p.price)+' ج</span>' +
+        (p.oldPrice ? '<span class="old">'+Number(p.oldPrice)+' ج</span>' : '') +
+        (save>0 ? '<span class="glass g-yellow pill">وفر '+save+' ج</span>' : '') +
+      '</div>' +
+      '<button class="cta" style="margin-top:12px;padding:15px;font-size:17px" onclick="openOrder()">اطلب الآن — الدفع عند الاستلام</button>' +
+      '<div class="trust">' +
+        '<div class="glass g-lime"><i>🛡️</i>ضمان استرجاع 14 يوم</div>' +
+        '<div class="glass g-cyan"><i>📦</i>فحص قبل الدفع</div>' +
+        '<div class="glass g-orange"><i>⚡</i>توصيل من يومين لـ 3 أيام</div>' +
+      '</div>' +
+    '</section>';
+
+  if(p.features && p.features.length){
+    h += '<div class="grid2">' + p.features.slice(0,4).map(function(f,i){
+      return '<div class="glass ' + GLOWS[i % GLOWS.length] + ' feat">' + iconHtml(f[0]) +
+        '<div><h3>'+esc(f[1])+'</h3><p>'+esc(f[2])+'</p></div></div>';
+    }).join("") + '</div>';
+  }
+  if(p.video){
+    h += '<section class="glass g-orange" style="padding:12px;margin-top:16px">' +
+      '<h2 style="margin:0 0 8px;text-align:center;font-size:15px;font-weight:900">شاهد المنتج وهو يعمل</h2>' +
+      '<div class="vid"><iframe src="https://www.youtube.com/embed/'+esc(p.video)+'?rel=0" title="'+esc(p.name)+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>' +
+      '</section>';
+  }
+  var others = topProducts(p.id, 3);
+  if(others.length){
+    h += '<h2 class="sechd">🔥 الأكثر مشاهدة<small>منتجات عليها إقبال كبير دلوقتي</small></h2>';
+    h += '<div class="pgrid">' + others.map(cardHtml).join("") + '</div>';
+  }
+  h += socialsHtml();
+  document.getElementById("app").innerHTML = h;
+  bindNav();
+  buildSlider(p);
+  buildQty(p);
+  document.getElementById("o_pname").textContent = "المنتج: " + p.name;
+  document.getElementById("sPrice").textContent = p.price + " ج";
+  document.getElementById("sOld").textContent = p.oldPrice ? p.oldPrice + " ج" : "";
+  startUrgency();
+}
+
+function buildSlider(p){
+  var slider = document.getElementById("slider"), dots = document.getElementById("dots");
+  var G = (p.images && p.images.length) ? p.images : [["", p.name]];
+  cur = 0;
+  G.forEach(function(g,i){
+    var im = document.createElement("img");
+    im.src = g[0]; im.alt = g[1] || p.name; im.loading = i===0?"eager":"lazy"; im.decoding = "async";
+    if(i===0){ im.fetchPriority = "high"; im.className = "on"; }
+    slider.appendChild(im);
+    var b = document.createElement("button");
+    b.setAttribute("aria-label", g[1] || p.name); if(i===0) b.className="on";
+    b.onclick = function(){ show(i); };
+    dots.appendChild(b);
+  });
+  var cap = document.createElement("div"); cap.className = "cap"; cap.textContent = G[0][1] || ""; slider.appendChild(cap);
+  function show(i){
+    cur = i;
+    var imgs = slider.querySelectorAll("img"), bs = dots.querySelectorAll("button");
+    for(var k=0;k<imgs.length;k++){ imgs[k].className = (k===i?"on":""); bs[k].className = (k===i?"on":""); }
+    cap.textContent = G[i][1] || "";
+  }
+  if(slideInt){ clearInterval(slideInt); slideInt = null; }
+  if(G.length > 1){
+    slideInt = setInterval(function(){ show((cur+1)%G.length); }, 2600);
+    if("IntersectionObserver" in window){
+      new IntersectionObserver(function(es){ es.forEach(function(e){
+        if(e.isIntersecting){ if(!slideInt) slideInt = setInterval(function(){ show((cur+1)%G.length); }, 2600); }
+        else { clearInterval(slideInt); slideInt = null; }
+      }); }).observe(slider);
+    }
+  }
+}
+
+function buildQty(p){
+  var box = document.getElementById("qopts"), qty = document.getElementById("f_qty");
+  var t = tiersOf(p);
+  box.style.gridTemplateColumns = "repeat(" + Math.min(t.length,3) + ",1fr)";
+  box.innerHTML = t.map(function(x,i){
+    var q = Number(x[0]), d = Number(x[1])||0;
+    var nm = q===1 ? "قطعة" : (q===2 ? "قطعتين" : q + " قطع");
+    return '<button type="button" class="qopt'+(i===0?" on":"")+'" data-q="'+q+'"><b>'+nm+'</b><i>'+(Number(p.price)-d)+' ج'+(q>1?"/قطعة":"")+'</i><em>'+esc(x[2]||"—")+'</em></button>';
+  }).join("");
+  qty.value = t[0][0];
+  Array.prototype.forEach.call(box.querySelectorAll(".qopt"), function(b){
+    b.onclick = function(){
+      Array.prototype.forEach.call(box.querySelectorAll(".qopt"), function(x){ x.classList.remove("on"); });
+      b.classList.add("on"); qty.value = b.getAttribute("data-q"); updTotal();
+    };
+  });
+  updTotal();
+}
+function updTotal(){
+  if(!CUR) return;
+  document.getElementById("f_total").textContent = totalFor(CUR, Number(document.getElementById("f_qty").value)) + " ج";
+}
+
+function bindNav(){
+  Array.prototype.forEach.call(document.querySelectorAll("[data-nav]"), function(a){
+    a.onclick = function(e){ e.preventDefault(); goto(a.getAttribute("data-nav")); };
+  });
+}
+
+/* ================= التوجيه ================= */
+var urgStarted = false;
+function route(){
+  var id = currentId();
+  var p = id ? getProduct(id) : null;
+  document.getElementById("brandLink").href = homeLink();
+  if(p) renderProduct(p); else renderHome();
+  document.getElementById("waFollow").href = "https://wa.me/" + waNum() + "?text=" + encodeURIComponent("مرحباً، أرسلت طلباً من elsoooq وأريد متابعة الطلب");
+  adminCheck();
+}
+document.getElementById("brandLink").onclick = function(e){ e.preventDefault(); goto(null); };
+document.getElementById("backLink").onclick = function(e){ e.preventDefault(); goto(null); };
+window.addEventListener("popstate", route);
+
+/* ================= نموذج الطلب ================= */
+var gov = document.getElementById("f_gov"), area = document.getElementById("f_area");
 gov.innerHTML = '<option value="">اختر المحافظة</option>';
 Object.keys(AREAS).forEach(function(g){ gov.innerHTML += '<option value="'+g+'">'+g+'</option>'; });
 area.innerHTML = '<option value="">اختر المحافظة أولاً</option>';
@@ -367,16 +596,12 @@ gov.onchange = function(){
   area.innerHTML = '<option value="">اختر المركز</option>';
   (AREAS[gov.value]||[]).forEach(function(a){ area.innerHTML += '<option value="'+a+'">'+a+'</option>'; });
 };
-function updTotal(){ document.getElementById("f_total").textContent = totalFor(Number(qty.value)) + " ج"; }
-Array.prototype.forEach.call(document.querySelectorAll(".qopt"), function(b){
-  b.onclick = function(){
-    Array.prototype.forEach.call(document.querySelectorAll(".qopt"), function(x){ x.classList.remove("on"); });
-    b.classList.add("on"); qty.value = b.getAttribute("data-q"); updTotal();
-  };
-});
-updTotal();
 
-function openOrder(){ document.getElementById("orderOverlay").classList.add("on"); document.body.style.overflow="hidden"; var b=document.getElementById("stickyBar"); if(b) b.classList.remove("on"); }
+function openOrder(){
+  if(!CUR){ goto(allProducts()[0].id); return; }
+  document.getElementById("orderOverlay").classList.add("on"); document.body.style.overflow="hidden";
+  var b=document.getElementById("stickyBar"); if(b) b.classList.remove("on");
+}
 function closeOrder(){
   document.getElementById("orderOverlay").classList.remove("on"); document.body.style.overflow="";
   document.getElementById("orderForm").style.display=""; document.getElementById("orderDone").style.display="none";
@@ -385,10 +610,11 @@ function fail(m){ document.getElementById("f_msg").textContent = m; }
 
 document.getElementById("orderForm").onsubmit = function(e){
   e.preventDefault();
+  if(!CUR) return;
   var name = document.getElementById("f_name").value.trim();
   var phone = document.getElementById("f_phone").value.trim();
   var address = document.getElementById("f_address").value.trim();
-  var q = Number(qty.value);
+  var q = Number(document.getElementById("f_qty").value);
   if(name.length < 3) return fail("اكتب الاسم بالكامل");
   if(!/^01[0-25]\d{8}$/.test(phone)) return fail("رقم الموبايل غير صحيح (11 رقم يبدأ بـ 01)");
   if(!gov.value) return fail("اختر المحافظة");
@@ -396,8 +622,7 @@ document.getElementById("orderForm").onsubmit = function(e){
   if(address.length < 6) return fail("اكتب العنوان بالتفصيل");
   if(!S.botToken || !S.chatId) return fail("لم يتم ضبط إعدادات الإشعارات بعد. تواصل معنا هاتفياً.");
 
-
-  var d = unitDiscount(q);
+  var d = discountFor(CUR,q);
   var text = "🛒 طلب جديد من elsoooq.com\n" +
     "━━━━━━━━━━━━━━━━━━━━\n\n" +
     "👤 الاسم:\n" + name + "\n\n" +
@@ -405,9 +630,9 @@ document.getElementById("orderForm").onsubmit = function(e){
     "📞 الهاتف:\n" + phone + "\n\n" +
     "🔢 العدد:\n" + q + " قطعة" + "\n\n" +
     "━━━━━━━━━━━━━━━━━━━━\n" +
-    "📦 المنتج: " + S.productName + "\n" +
-    "💰 سعر القطعة: " + (UNIT_PRICE-d) + " ج" + (d ? " (خصم " + d + " ج)" : "") + "\n" +
-    "🧾 الإجمالي: " + totalFor(q) + " ج\n" +
+    "📦 المنتج: " + CUR.name + " (رقم " + CUR.id + ")\n" +
+    "💰 سعر القطعة: " + (Number(CUR.price)-d) + " ج" + (d ? " (خصم " + d + " ج)" : "") + "\n" +
+    "🧾 الإجمالي: " + totalFor(CUR,q) + " ج\n" +
     "💳 طريقة الدفع: الدفع عند الاستلام\n" +
     "🏙️ المحافظة: " + gov.value + "\n" +
     "🏘️ المركز: " + area.value + "\n" +
@@ -422,30 +647,56 @@ document.getElementById("orderForm").onsubmit = function(e){
    .then(function(){ btn.disabled = false; btn.textContent = "تأكيد الطلب"; });
 };
 
-/* ================= عدّاد الزوار (يظهر للأدمن فقط) ================= */
-var VC_BASE = "https://abacus.jasoncameron.dev";
-var VC_NS = "elsoooq-com";
-function vcKeyToday(){ var d=new Date(); return "day-"+d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2); }
-function vcHit(k){ return fetch(VC_BASE+"/hit/"+VC_NS+"/"+k, {cache:"no-store"}).then(function(r){return r.json();}).catch(function(){return null;}); }
-function vcGet(k){ return fetch(VC_BASE+"/get/"+VC_NS+"/"+k, {cache:"no-store"}).then(function(r){return r.json();}).then(function(j){ return (j&&typeof j.value==="number")?j.value:null; }).catch(function(){return null;}); }
-(function(){
-  if(location.hash === "#admin-2024") return; /* زيارة الأدمن لا تُحسب */
-  try{
-    vcHit("visits"); vcHit(vcKeyToday());
-    if(!localStorage.getItem("vc_device")){ localStorage.setItem("vc_device","1"); vcHit("unique"); }
-  }catch(e){}
-})();
+/* ============ عناصر التحفيز على الشراء ============ */
+function startUrgency(){
+  var CD = "cam_cd_end";
+  var end = parseInt(localStorage.getItem(CD) || "0", 10);
+  if(!end || end < Date.now()) { end = Date.now() + 4*3600*1000; try{ localStorage.setItem(CD, String(end)); }catch(e){} }
+  function two(n){ return n < 10 ? "0"+n : ""+n; }
+  function tick(){
+    var el = document.getElementById("cdown"); if(!el) return;
+    var s = Math.max(0, Math.floor((end - Date.now())/1000));
+    if(s === 0){ end = Date.now() + 4*3600*1000; try{ localStorage.setItem(CD, String(end)); }catch(e){} }
+    el.textContent = two(Math.floor(s/3600))+":"+two(Math.floor(s%3600/60))+":"+two(s%60);
+  }
+  tick();
+  var SK = "cam_stock", st = parseInt(localStorage.getItem(SK) || "0", 10);
+  if(!st || st < 4){ st = 5 + Math.floor(Math.random()*5); try{ localStorage.setItem(SK, String(st)); }catch(e){} }
+  var sEl = document.getElementById("stock"); if(sEl) sEl.textContent = st;
+
+  if(urgStarted) return;
+  urgStarted = true;
+  setInterval(tick, 1000);
+  var names = ["أحمد","محمود","مصطفى","سارة","كريم","إسلام","هبة","عمرو","ياسمين","خالد"];
+  var govs = ["القاهرة","الجيزة","الإسكندرية","الدقهلية","الشرقية","أسيوط","المنوفية","بورسعيد"];
+  var msgs = 0;
+  setInterval(function(){
+    var pf = document.getElementById("proof"); if(!pf) return;
+    var sp = pf.querySelector("span"); if(!sp) return;
+    msgs++;
+    sp.textContent = (msgs % 4 === 0)
+      ? "🔥 تم شراء " + (18 + Math.floor(Math.random()*12)) + " قطعة اليوم"
+      : "👤 " + names[Math.floor(Math.random()*names.length)] + " من " + govs[Math.floor(Math.random()*govs.length)] + " طلب منذ " + (1 + Math.floor(Math.random()*9)) + " دقائق";
+  }, 4500);
+  window.addEventListener("scroll", function(){
+    var bar = document.getElementById("stickyBar");
+    var show = CUR && window.scrollY > 320 && !document.getElementById("orderOverlay").classList.contains("on");
+    bar.classList.toggle("on", !!show);
+  }, {passive:true});
+}
 
 /* ================= لوحة التحكم المخفية (#admin-2024) ================= */
 var FIELDS = [
   ["botToken","توكن بوت تليجرام"],["chatId","أيدي الشات (Chat ID)"],
-  ["price","السعر الحالي"],["oldPrice","السعر القديم"],["productName","اسم المنتج"],
+  ["storeName","اسم المتجر"],
   ["whatsapp","رقم واتساب (2010xxxxxxxx)"],["facebook","رابط صفحة فيسبوك"],
   ["phone","رقم الاتصال المباشر"],["adminPass","كلمة مرور اللوحة"]
 ];
+var adminOpen = false;
 function adminCheck(){
   var m = document.getElementById("adminMount");
-  if(location.hash !== "#admin-2024"){ m.innerHTML = ""; return; }
+  if(!isAdmin()){ m.innerHTML = ""; adminOpen = false; return; }
+  if(adminOpen){ panel(); return; }
   m.innerHTML =
     '<section class="glass g-pink pad" style="margin-top:20px">' +
       '<h2 style="margin:0;font-size:19px;font-weight:900">لوحة التحكم</h2>' +
@@ -454,23 +705,54 @@ function adminCheck(){
       '<p class="msg" id="a_err"></p>' +
     '</section>';
   document.getElementById("a_login").onclick = function(){
-    if(document.getElementById("a_pass").value === S.adminPass) panel();
+    if(document.getElementById("a_pass").value === S.adminPass){ adminOpen = true; panel(); }
     else document.getElementById("a_err").textContent = "كلمة المرور غير صحيحة";
   };
 }
+window.addEventListener("hashchange", adminCheck);
+
+function emptyForm(){
+  return {id:"", name:"", price:"", oldPrice:"", badge:"", images:"", features:"", video:"", tiers:"0,100,200"};
+}
+var EDIT = emptyForm();
+
 function panel(){
   var html = '<section class="glass g-pink pad" style="margin-top:20px">' +
     '<h2 style="margin:0;font-size:22px;font-weight:900">لوحة التحكم المخفية</h2>' +
-    '<p style="font-size:13px;opacity:.8">الإعدادات محفوظة في هذا المتصفح، والتغييرات تُطبق فوراً على الصفحة.</p>' +
+    '<p style="font-size:13px;opacity:.8">الإعدادات والمنتجات محفوظة في هذا المتصفح. لنشرها لكل الزوار اضغط «تحميل index.html مضبوط» وارفع الملف على GitHub.</p>' +
     '<div class="fgrid">';
   FIELDS.forEach(function(f){
-    html += '<label><span>'+f[1]+'</span><input class="fld" data-k="'+f[0]+'" value="'+String(S[f[0]]).replace(/"/g,'&quot;')+'" /></label>';
+    html += '<label><span>'+f[1]+'</span><input class="fld" data-k="'+f[0]+'" value="'+esc(S[f[0]])+'" /></label>';
   });
   html += '</div><div class="row" style="justify-content:flex-start;margin-top:16px">' +
     '<button class="cta" id="a_save" style="width:auto;padding:12px 22px">حفظ وتطبيق فوراً</button>' +
     '<button class="ghost" id="a_test" style="width:auto;margin:0;padding:12px 22px">إرسال رسالة تجربة</button>' +
     '<button class="ghost" id="a_export" style="width:auto;margin:0;padding:12px 22px">تحميل index.html مضبوط</button>' +
     '</div><p class="msg" id="a_msg"></p></section>';
+
+  /* ===== مولد المنتجات ===== */
+  html += '<section class="glass g-lime pad" style="margin-top:16px">' +
+    '<h2 style="margin:0;font-size:19px;font-weight:900">➕ إضافة / تعديل منتج</h2>' +
+    '<p style="font-size:12px;opacity:.75;line-height:1.7;margin:6px 0 0">املأ النموذج وسيتم بناء صفحة المنتج بنفس التوزيع الحالي على الرابط <b>elsoooq.com/رقم-المنتج</b>.</p>' +
+    '<div class="fgrid">' +
+      '<label><span>رقم المنتج (الرابط) — اتركه فارغاً للتلقائي</span><input class="fld" data-p="id" value="'+esc(EDIT.id)+'" placeholder="'+nextId()+'" /></label>' +
+      '<label><span>اسم المنتج</span><input class="fld" data-p="name" value="'+esc(EDIT.name)+'" placeholder="سماعة بلوتوث لاسلكية" /></label>' +
+      '<label><span>السعر الحالي</span><input class="fld" data-p="price" inputmode="numeric" value="'+esc(EDIT.price)+'" placeholder="1200" /></label>' +
+      '<label><span>السعر القديم</span><input class="fld" data-p="oldPrice" inputmode="numeric" value="'+esc(EDIT.oldPrice)+'" placeholder="1900" /></label>' +
+      '<label><span>شارة المنتج (اختياري)</span><input class="fld" data-p="badge" value="'+esc(EDIT.badge)+'" placeholder="جديد / الأكثر مبيعاً" /></label>' +
+      '<label><span>كود فيديو يوتيوب (اختياري)</span><input class="fld" data-p="video" value="'+esc(EDIT.video)+'" placeholder="Rahad6F_gNQ" /></label>' +
+      '<label class="full"><span>الصور — كل سطر: رابط الصورة | الوصف</span><textarea class="fld" data-p="images" placeholder="https://.../1.jpg | وصف الصورة&#10;https://.../2.jpg | وصف آخر">'+esc(EDIT.images)+'</textarea></label>' +
+      '<label class="full"><span>المواصفات (4 أسطر) — كل سطر: أيقونة (إيموجي أو رابط) | العنوان | الوصف</span><textarea class="fld" data-p="features" placeholder="🔋 | بطارية قوية | تدوم 10 ساعات">'+esc(EDIT.features)+'</textarea></label>' +
+      '<label class="full"><span>خصومات الكمية — خصم القطعة لـ 1 و 2 و 3 قطع</span><input class="fld" data-p="tiers" value="'+esc(EDIT.tiers)+'" placeholder="0,100,200" /></label>' +
+    '</div>' +
+    '<div class="row" style="justify-content:flex-start;margin-top:14px">' +
+      '<button class="cta" id="p_save" style="width:auto;padding:12px 22px">حفظ المنتج</button>' +
+      '<button class="ghost" id="p_clear" style="width:auto;margin:0;padding:12px 22px">نموذج فارغ</button>' +
+    '</div><p class="msg" id="p_msg"></p>' +
+    '<div class="adminlist" id="p_list"></div>' +
+    '</section>';
+
+  /* ===== الزوار ===== */
   html += '<div class="glass pad" style="margin-top:16px;padding:14px">' +
     '<div class="row" style="justify-content:space-between;align-items:center;margin:0">' +
       '<strong style="font-size:16px">👁️ زوار الموقع</strong>' +
@@ -480,12 +762,21 @@ function panel(){
       '<div style="text-align:center"><div style="font-size:22px;font-weight:900" id="v_total">…</div><div style="font-size:12px;opacity:.75">إجمالي الزيارات</div></div>' +
       '<div style="text-align:center"><div style="font-size:22px;font-weight:900" id="v_unique">…</div><div style="font-size:12px;opacity:.75">زوار مختلفون</div></div>' +
       '<div style="text-align:center"><div style="font-size:22px;font-weight:900" id="v_today">…</div><div style="font-size:12px;opacity:.75">زيارات اليوم</div></div>' +
-    '</div></div>';
+    '</div>' +
+    '<div class="adminlist" id="v_products"></div></div>';
+
   document.getElementById("adminMount").innerHTML = html;
+
   function loadVisits(){
     ["v_total","v_unique","v_today"].forEach(function(id){ var e=document.getElementById(id); if(e) e.textContent="…"; });
-    [["visits","v_total"],["unique","v_unique"],[vcKeyToday(),"v_today"]].forEach(function(p){
-      vcGet(p[0]).then(function(n){ var e=document.getElementById(p[1]); if(e) e.textContent = (n===null?"—":String(n)); });
+    [["visits","v_total"],["unique","v_unique"],[vcKeyToday(),"v_today"]].forEach(function(pr){
+      vcGet(pr[0]).then(function(n){ var e=document.getElementById(pr[1]); if(e) e.textContent = (n===null?"—":String(n)); });
+    });
+    loadViews(function(){
+      var box = document.getElementById("v_products"); if(!box) return;
+      box.innerHTML = allProducts().map(function(p){
+        return '<div class="arow"><span>'+esc(p.name)+'</span><small>'+(VIEWS[p.id]||0)+' زيارة</small></div>';
+      }).join("");
     });
   }
   loadVisits();
@@ -501,71 +792,101 @@ function panel(){
     document.getElementById("a_msg").textContent = "✅ تم الحفظ والتطبيق";
   };
   document.getElementById("a_test").onclick = function(){
+    save(draft());
     var out = document.getElementById("a_msg");
     out.textContent = "جاري الحفظ والاختبار...";
-    save(draft()); panel();
-    out = document.getElementById("a_msg");
     tgSend(S.botToken, S.chatId, "✅ تجربة اتصال ناجحة — الإعدادات محفوظة وطلبات الموقع ستصلك هنا")
       .then(function(){ out.textContent = "✅ تم الحفظ وإرسال رسالة تجربة"; })
       .catch(function(e){ out.textContent = "❌ " + (e.message || "فشل الاتصال"); });
   };
   document.getElementById("a_export").onclick = function(){
-    var configured = draft(); save(configured); downloadConfiguredPage(configured);
+    var configured = draft(); save(configured);
+    downloadConfiguredPage(configured, customProducts());
   };
+
+  /* ==== منطق مولد المنتجات ==== */
+  function pdraft(){
+    var d = {};
+    document.querySelectorAll('#adminMount [data-p]').forEach(function(i){ d[i.getAttribute("data-p")] = i.value; });
+    return d;
+  }
+  function parseLines(v, n){
+    return String(v||"").split("\n").map(function(l){ return l.trim(); }).filter(Boolean).map(function(l){
+      var parts = l.split("|").map(function(x){ return x.trim(); });
+      while(parts.length < n) parts.push("");
+      return parts.slice(0,n);
+    });
+  }
+  document.getElementById("p_clear").onclick = function(){ EDIT = emptyForm(); panel(); };
+  document.getElementById("p_save").onclick = function(){
+    var d = pdraft(), msg = document.getElementById("p_msg");
+    if(!d.name || !d.name.trim()) { msg.textContent = "اكتب اسم المنتج"; return; }
+    if(!Number(d.price)) { msg.textContent = "اكتب سعر صحيح"; return; }
+    var imgs = parseLines(d.images, 2);
+    if(!imgs.length) { msg.textContent = "أضف صورة واحدة على الأقل"; return; }
+    var tv = String(d.tiers||"0,100,200").split(",").map(function(x){ return Number(x.trim())||0; });
+    var tiers = [1,2,3].map(function(q,i){
+      var dd = tv[i]||0;
+      return [q, dd, dd ? ("خصم " + dd + " ج") : ""];
+    });
+    var prod = {
+      id: String(d.id && d.id.trim() ? d.id.trim().replace(/\D/g,"") : nextId()),
+      name: d.name.trim(),
+      price: Number(d.price), oldPrice: Number(d.oldPrice)||0,
+      badge: (d.badge||"").trim(),
+      images: imgs,
+      features: parseLines(d.features, 3).slice(0,4),
+      video: (d.video||"").trim(),
+      tiers: tiers
+    };
+    var list = customProducts();
+    var i = list.findIndex(function(x){ return x.id === prod.id; });
+    if(i > -1) list[i] = prod; else list.push(prod);
+    saveCustom(list);
+    EDIT = emptyForm();
+    msg.textContent = "✅ تم حفظ المنتج — رابطه: /" + prod.id;
+    route();
+  };
+
+  var list = customProducts();
+  document.getElementById("p_list").innerHTML = !list.length
+    ? '<p style="font-size:12px;opacity:.7;margin:10px 0 0">لا توجد منتجات مضافة بعد.</p>'
+    : list.map(function(p){
+        return '<div class="arow">' +
+          (p.images && p.images[0] ? '<img src="'+esc(p.images[0][0])+'" alt="">' : '') +
+          '<span>'+esc(p.name)+'<br><small>/'+esc(p.id)+' — '+Number(p.price)+' ج</small></span>' +
+          '<button data-edit="'+esc(p.id)+'" style="background:rgba(80,180,255,.25)">تعديل</button>' +
+          '<button data-del="'+esc(p.id)+'">حذف</button></div>';
+      }).join("");
+  document.querySelectorAll('#p_list [data-del]').forEach(function(b){
+    b.onclick = function(){
+      var id = b.getAttribute("data-del");
+      saveCustom(customProducts().filter(function(x){ return x.id !== id; }));
+      route();
+    };
+  });
+  document.querySelectorAll('#p_list [data-edit]').forEach(function(b){
+    b.onclick = function(){
+      var p = customProducts().filter(function(x){ return x.id === b.getAttribute("data-edit"); })[0];
+      if(!p) return;
+      EDIT = {
+        id:p.id, name:p.name, price:String(p.price), oldPrice:String(p.oldPrice||""), badge:p.badge||"",
+        images:(p.images||[]).map(function(g){ return g[0] + " | " + (g[1]||""); }).join("\n"),
+        features:(p.features||[]).map(function(f){ return f.join(" | "); }).join("\n"),
+        video:p.video||"",
+        tiers:(p.tiers||[]).map(function(t){ return t[1]; }).join(",")
+      };
+      panel();
+      window.scrollTo(0, document.getElementById("adminMount").offsetTop);
+    };
+  });
 }
-window.addEventListener("hashchange", adminCheck);
-adminCheck();
 
-/* ============ عناصر التحفيز على الشراء ============ */
-(function(){
-  /* 1) عداد عكسي 4 ساعات يتجدد تلقائياً */
-  var CD = "cam_cd_end";
-  var end = parseInt(localStorage.getItem(CD) || "0", 10);
-  if(!end || end < Date.now()) { end = Date.now() + 4*3600*1000; try{ localStorage.setItem(CD, String(end)); }catch(e){} }
-  var el = document.getElementById("cdown");
-  function two(n){ return n < 10 ? "0"+n : ""+n; }
-  function tick(){
-    var s = Math.max(0, Math.floor((end - Date.now())/1000));
-    if(s === 0){ end = Date.now() + 4*3600*1000; try{ localStorage.setItem(CD, String(end)); }catch(e){} }
-    el.textContent = two(Math.floor(s/3600))+":"+two(Math.floor(s%3600/60))+":"+two(s%60);
-  }
-  tick(); setInterval(tick, 1000);
-
-  /* 2) المخزون المتبقي */
-  var SK = "cam_stock", st = parseInt(localStorage.getItem(SK) || "0", 10);
-  if(!st || st < 4){ st = 5 + Math.floor(Math.random()*5); try{ localStorage.setItem(SK, String(st)); }catch(e){} }
-  document.getElementById("stock").textContent = st;
-
-  /* 3) إثبات اجتماعي متغير */
-  var names = ["أحمد","محمود","مصطفى","سارة","كريم","إسلام","هبة","عمرو","ياسمين","خالد"];
-  var govs = ["القاهرة","الجيزة","الإسكندرية","الدقهلية","الشرقية","أسيوط","المنوفية","بورسعيد"];
-  var pf = document.getElementById("proof");
-  var pfSpan = pf.querySelector("span");
-  var msgs = 0;
-  function proof(){
-    msgs++;
-    var t = (msgs % 4 === 0)
-      ? "🔥 تم شراء " + (18 + Math.floor(Math.random()*12)) + " قطعة اليوم"
-      : "👤 " + names[Math.floor(Math.random()*names.length)] + " من " + govs[Math.floor(Math.random()*govs.length)] + " طلب منذ " + (1 + Math.floor(Math.random()*9)) + " دقائق";
-    pfSpan.textContent = t;
-  }
-  setInterval(proof, 4500);
-
-  /* 4) زر ثابت أسفل الشاشة */
-  var bar = document.getElementById("stickyBar");
-  function sync(){
-    document.getElementById("sPrice").textContent = document.getElementById("price").textContent;
-    document.getElementById("sOld").textContent = document.getElementById("oldprice").textContent;
-  }
-  sync();
-  window.addEventListener("scroll", function(){
-    var show = window.scrollY > 320 && !document.getElementById("orderOverlay").classList.contains("on");
-    bar.classList.toggle("on", show);
-    if(show) sync();
-  }, {passive:true});
-})();
-
-
+/* ================= الإقلاع ================= */
+document.getElementById("yr").textContent = new Date().getFullYear();
+route();
+trackVisit(currentId());
+loadViews(function(){ if(!isAdmin()) route(); });
 </script>
 </body>
 </html>
