@@ -831,8 +831,8 @@ function panel(){
     var d = pdraft(), msg = document.getElementById("p_msg");
     if(!d.name || !d.name.trim()) { msg.textContent = "اكتب اسم المنتج"; return; }
     if(!Number(d.price)) { msg.textContent = "اكتب سعر صحيح"; return; }
-    var imgs = parseLines(d.images, 2);
-    if(!imgs.length) { msg.textContent = "أضف صورة واحدة على الأقل"; return; }
+    var imgs = UPLOADS.map(function(g){ return [g[0], g[1]||""]; }).concat(parseLines(d.images, 2));
+    if(!imgs.length) { msg.textContent = "ارفع صورة واحدة على الأقل"; return; }
     var tv = String(d.tiers||"0,100,200").split(",").map(function(x){ return Number(x.trim())||0; });
     var tiers = [1,2,3].map(function(q,i){
       var dd = tv[i]||0;
