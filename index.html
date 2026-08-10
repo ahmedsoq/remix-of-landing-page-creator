@@ -826,7 +826,33 @@ function panel(){
       return parts.slice(0,n);
     });
   }
-  document.getElementById("p_clear").onclick = function(){ EDIT = emptyForm(); panel(); };
+  document.getElementById("p_clear").onclick = function(){ EDIT = emptyForm(); UPLOADS = []; panel(); };
+  document.getElementById("p_tpl").onclick = function(){
+    EDIT = {
+      id:"", name:"كاميرا مراقبة جيب 1080P", price:"1200", oldPrice:"1900", badge:"الأكثر مبيعاً",
+      desc:"كاميرا صغيرة تسجل صوت وصورة بجودة 1080P بدون إنترنت — رؤية ليلية ومشبك معدني قوي، تشتغل في أي مكان.",
+      stock:"7", hours:"4", images:"",
+      features:"🎥 | جودة التصوير 1080P | تصوير صوت وصورة بوضوح عالي نهاراً وليلاً\n💾 | تخزين على الميموري | يمكن تخزين كل شيء على كارت ميموري حتى 128 جيجا\n🔋 | بطارية قوية | تدوم 4 ساعات ونصف تصوير متواصل\n✋ | سهولة الاستخدام | يمكن استخدامها في أي مكان مخفي بمشبك معدني",
+      video:"Rahad6F_gNQ", tiers:"0,100,200"
+    };
+    UPLOADS = []; panel();
+  };
+  var fileInput = document.getElementById("p_files");
+  document.getElementById("p_zone").onclick = function(){ fileInput.click(); };
+  fileInput.onchange = function(){
+    var fs = Array.prototype.slice.call(fileInput.files || []);
+    if(!fs.length) return;
+    var out = document.getElementById("p_msg");
+    out.textContent = "جاري معالجة الصور...";
+    var left = fs.length;
+    fs.forEach(function(f){
+      shrinkImage(f, function(url){
+        if(url) UPLOADS.push([url, ""]);
+        if(--left === 0){ fileInput.value = ""; out.textContent = "✅ تم إضافة الصور — راجع المعاينة ثم اضغط حفظ المنتج"; drawUploads(); }
+      });
+    });
+  };
+  drawUploads();
   document.getElementById("p_save").onclick = function(){
     var d = pdraft(), msg = document.getElementById("p_msg");
     if(!d.name || !d.name.trim()) { msg.textContent = "اكتب اسم المنتج"; return; }
