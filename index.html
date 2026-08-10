@@ -429,19 +429,19 @@ function cardHtml(p, i){
 
 function renderHome(){
   document.getElementById("backLink").style.display = "none";
-  document.title = S.storeName + " — متجر إلكتروني | شحن مجاني والدفع عند الاستلام";
+  document.title = S.storeName + " — متجر إلكتروني | الدفع عند الاستلام";
   var list = allProducts();
   var top = topProducts(null, 3).filter(function(p){ return (VIEWS[p.id]||0) > 0; });
-  var h = '<div class="cta" style="padding:12px;text-align:center;font-size:15px;margin-bottom:12px">🚚 شحن مجاني لكل المحافظات • 💵 الدفع عند الاستلام</div>' +
-    '<section class="glass g-violet hero">' +
-      '<h1>كل اللي محتاجه في مكان واحد</h1>' +
-      '<p>منتجات مختارة بعناية — تدفع بعد ما تستلم وتفحص، وشحن مجاني لكل محافظات مصر خلال يومين لـ 3 أيام.</p>' +
-      '<div class="trust">' +
-        '<div class="glass g-lime"><i>🛡️</i>ضمان استرجاع 14 يوم</div>' +
-        '<div class="glass g-cyan"><i>📦</i>فحص قبل الدفع</div>' +
-        '<div class="glass g-orange"><i>⚡</i>توصيل سريع</div>' +
+  var h = '<section class="glass g-violet hero">' +
+      '<h1>' + esc(S.storeName) + ' — منتجات مختارة بأسعار مميزة</h1>' +
+      '<p>الدفع عند الاستلام • فحص قبل الدفع • توصيل من يومين لـ 3 أيام</p>' +
+      '<div class="chips">' +
+        '<span>💵 الدفع عند الاستلام</span>' +
+        '<span>🛡️ استرجاع 14 يوم</span>' +
+        '<span>🚚 شحن 55 ج لكل مصر</span>' +
       '</div>' +
     '</section>';
+
   if(top.length){
     h += '<h2 class="sechd">🔥 الأكثر مشاهدة<small>المنتجات اللي الناس بتدخل عليها دلوقتي</small></h2>';
     h += '<div class="pgrid">' + top.map(cardHtml).join("") + '</div>';
