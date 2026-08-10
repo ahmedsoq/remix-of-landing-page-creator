@@ -3,602 +3,276 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>elsoooq - بوليصة شحن</title>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 <style>
-body{font-family:Arial;background:#eee;padding:10px;}
-.container{max-width:600px;margin:auto;}
-.box{background:#fff;padding:15px;border-radius:10px;margin-bottom:15px;}
+:root{--ink:#111;--line:#c9c9c9;--muted:#6b7280;--brand:#111827;}
+*{box-sizing:border-box;}
+body{font-family:"Segoe UI",Tahoma,Arial,sans-serif;background:#f1f3f6;margin:0;padding:14px;color:var(--ink);}
+.wrap{max-width:620px;margin:auto;}
 
-input,select,textarea{
-width:100%;
-padding:12px;
-margin:6px 0;
-border:1px solid #ccc;
-border-radius:6px;
-font-size:16px;
+/* ===== واجهة الإدخال ===== */
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:18px;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.05);}
+.card h2{margin:0 0 4px;font-size:19px;}
+.card .sub{margin:0 0 14px;color:var(--muted);font-size:13px;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;}
+.field{display:flex;flex-direction:column;gap:5px;}
+.field.full{grid-column:1 / -1;}
+label{font-size:12.5px;font-weight:600;color:#374151;}
+input,select,textarea{width:100%;padding:10px 11px;border:1px solid #d1d5db;border-radius:9px;font-size:15px;font-family:inherit;background:#fff;outline:none;}
+input:focus,select:focus,textarea:focus{border-color:#111827;box-shadow:0 0 0 3px rgba(17,24,39,.08);}
+textarea{resize:vertical;min-height:62px;}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+button{padding:11px;border:none;border-radius:9px;font-size:15px;font-weight:600;color:#fff;cursor:pointer;font-family:inherit;}
+button:active{transform:translateY(1px);}
+.generate{background:#111827;grid-column:1 / -1;}
+.print{background:#2563eb;}
+.pdf{background:#dc2626;}
+.wa{background:#25D366;grid-column:1 / -1;}
+.hint{font-size:12px;color:var(--muted);margin-top:10px;text-align:center;}
+.err{color:#dc2626;font-size:12.5px;margin-top:8px;display:none;}
+
+/* ===== البوليصة 10×15 سم ===== */
+#sheet{display:none;}
+#sheet.show{display:block;}
+.label{width:100mm;height:150mm;background:#fff;margin:0 auto;padding:3mm;border:1px solid #000;display:flex;flex-direction:column;gap:1.4mm;font-size:9px;line-height:1.35;overflow:hidden;}
+.lb-head{display:flex;justify-content:space-between;align-items:center;background:#111;color:#fff;padding:1.6mm 2mm;border-radius:1mm;}
+.lb-head b{font-size:12px;letter-spacing:.5px;}
+.lb-head span{font-size:8px;}
+.bc{text-align:center;border:1px solid #000;border-radius:1mm;padding:1mm 0 .4mm;}
+.bc svg{width:100%;height:11mm;}
+.bc .oid{font-size:10px;font-weight:700;letter-spacing:1px;margin-top:.4mm;}
+.sec{border:1px solid var(--line);border-radius:1mm;padding:1.2mm 1.8mm;}
+.sec .t{display:inline-block;background:#111;color:#fff;font-size:7.5px;padding:.4mm 1.6mm;border-radius:.8mm;margin-bottom:1mm;}
+.r{display:flex;justify-content:space-between;gap:2mm;padding:.5mm 0;border-bottom:1px dotted #ddd;}
+.r:last-child{border-bottom:none;}
+.r span:first-child{color:#555;flex:0 0 18mm;}
+.r span:last-child{font-weight:600;text-align:left;flex:1;word-break:break-word;}
+.total{display:flex;justify-content:space-between;align-items:center;background:#111;color:#fff;padding:1.6mm 2mm;border-radius:1mm;font-size:11px;font-weight:700;}
+.mid{display:flex;gap:1.4mm;align-items:stretch;}
+.mid .sec{flex:1;}
+.qrbox{width:20mm;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:1mm;padding:1mm;}
+.qrbox img,.qrbox canvas{width:16mm !important;height:16mm !important;}
+.qrbox small{font-size:6px;color:#666;margin-top:.5mm;}
+.note-txt{min-height:6mm;}
+.policy{text-align:center;font-size:7.5px;color:#333;border:1px dashed #999;border-radius:1mm;padding:1mm;}
+.lb-foot{margin-top:auto;border-top:1px solid #000;padding-top:1.2mm;text-align:center;font-size:7.5px;line-height:1.5;}
+.lb-foot b{font-size:9px;}
+.lb-foot a{color:#000;text-decoration:none;}
+
+/* ===== الطباعة: البوليصة فقط في ورقة واحدة ===== */
+@page{size:100mm 150mm;margin:0;}
+@media print{
+  html,body{background:#fff !important;margin:0 !important;padding:0 !important;width:100mm;height:150mm;}
+  body>*{display:none !important;}
+  body>#print-area{display:block !important;}
+  #print-area{position:static;width:100mm;height:150mm;}
+  .label{width:100mm;height:150mm;border:none;page-break-after:avoid;page-break-inside:avoid;break-inside:avoid;box-shadow:none;margin:0;}
 }
-
-button{
-width:100%;
-padding:12px;
-margin-top:10px;
-border:none;
-border-radius:6px;
-font-size:16px;
-cursor:pointer;
-}
-
-.generate{background:#28a745;color:#fff;}
-.print{background:#007bff;color:#fff;}
-.pdf{background:#dc3545;color:#fff;}
-
-.invoice{
-display:none;
-background:#fff;
-padding:10px;
-border:2px solid #000;
-}
-
-.section{border:1px solid #000;margin-top:10px;padding:8px;}
-.row{display:flex;justify-content:space-between;border-bottom:1px solid #000;padding:4px;}
-.center{text-align:center;}
-.barcode{border:2px dashed #000;padding:10px;margin:10px;text-align:center;font-weight:bold;}
-.company-info{font-size:14px;text-align:center;margin-top:10px;border-top:1px solid #000;padding-top:8px;}
-.company-info a{color:#000;text-decoration:none;}
 </style>
 </head>
-
 <body>
 
-<div class="container">
+<div class="wrap">
+<div class="card">
+<h2>إنشاء بوليصة شحن</h2>
+<p class="sub">املأ البيانات ثم اضغط إنشاء البوليصة</p>
 
-<div class="box">
-<h2>إنشاء بوليصة</h2>
-
-<input id="name" placeholder="اسم العميل">
-<input id="phone" placeholder="رقم العميل">
-
-<select id="gov" onchange="loadCities()">
-<option value="">اختر المحافظة</option>
-</select>
-
-<select id="city">
-<option>اختر المركز</option>
-</select>
-
-<input id="street" placeholder="الشارع بالتفصيل">
-
-<input id="product" placeholder="المنتج">
-<input id="amount" placeholder="المبلغ">
-<textarea id="note" placeholder="ملاحظة"></textarea>
-
-<button class="generate" onclick="generate()">إنشاء البوليصة</button>
+<div class="grid">
+  <div class="field"><label>اسم العميل</label><input id="name" placeholder="مثال: أحمد محمد"></div>
+  <div class="field"><label>رقم الهاتف</label><input id="phone" inputmode="tel" placeholder="01xxxxxxxxx"></div>
+  <div class="field"><label>المحافظة</label>
+    <select id="gov" onchange="loadCities()"><option value="">اختر المحافظة</option></select>
+  </div>
+  <div class="field"><label>المركز / الحي</label>
+    <select id="city"><option value="">اختر المركز</option></select>
+  </div>
+  <div class="field full"><label>العنوان بالتفصيل</label><input id="street" placeholder="الشارع - رقم العقار - علامة مميزة"></div>
+  <div class="field"><label>المنتج</label><input id="product" placeholder="وصف المنتج"></div>
+  <div class="field"><label>المبلغ (جنيه)</label><input id="amount" inputmode="decimal" placeholder="0"></div>
+  <div class="field"><label>عدد القطع</label><input id="pieces" inputmode="numeric" value="1"></div>
+  <div class="field"><label>نوع الشحن</label>
+    <select id="stype"><option>عادي</option><option>سريع</option><option>مرتجع</option></select>
+  </div>
+  <div class="field full"><label>ملاحظات</label><textarea id="note" placeholder="ملاحظات للمندوب"></textarea></div>
 </div>
 
-<div id="invoice" class="invoice">
+<div class="err" id="err">من فضلك أكمل البيانات المطلوبة (الاسم، الهاتف، المحافظة، المركز).</div>
 
-<div class="center"><b>ELSOOOQ SHIPPING</b></div>
-<div class="barcode" id="orderId"></div>
-
-<div class="section">
-<div class="row"><span>العميل</span><span id="c_name"></span></div>
-<div class="row"><span>الهاتف</span><span id="c_phone"></span></div>
-<div class="row"><span>العنوان</span><span id="c_address"></span></div>
+<div class="btns">
+  <button class="generate" onclick="generate()">إنشاء البوليصة</button>
+  <button class="print" onclick="printLabel()">طباعة</button>
+  <button class="pdf" onclick="downloadPDF()">تحميل PDF</button>
+  <button class="wa" onclick="sendWhatsApp()">إرسال PDF على واتساب</button>
+</div>
+<p class="hint">الطباعة بمقاس 10×15 سم (ورقة واحدة فقط) — وزر واتساب يجهّز ملف PDF ثم يفتح المحادثة لإرفاقه.</p>
+</div>
 </div>
 
-<div class="section">
-<div class="row"><span>المنتج</span><span id="c_product"></span></div>
-<div class="row"><span>المبلغ</span><span id="c_amount"></span></div>
+<div id="print-area">
+<div id="sheet">
+<div class="label" id="labelEl">
+
+  <div class="lb-head"><b>ELSOOOQ SHIPPING</b><span id="l_date"></span></div>
+
+  <div class="bc"><svg id="barcode"></svg><div class="oid" id="orderId"></div></div>
+
+  <div class="sec">
+    <span class="t">بيانات المستلم</span>
+    <div class="r"><span>الاسم</span><span id="c_name"></span></div>
+    <div class="r"><span>الهاتف</span><span id="c_phone"></span></div>
+    <div class="r"><span>العنوان</span><span id="c_address"></span></div>
+  </div>
+
+  <div class="mid">
+    <div class="sec">
+      <span class="t">تفاصيل الشحنة</span>
+      <div class="r"><span>المنتج</span><span id="c_product"></span></div>
+      <div class="r"><span>القطع</span><span id="c_pieces"></span></div>
+      <div class="r"><span>الخدمة</span><span id="c_type"></span></div>
+    </div>
+    <div class="qrbox"><div id="qrcode"></div><small>تتبع</small></div>
+  </div>
+
+  <div class="total"><span>المبلغ المطلوب (COD)</span><span id="c_amount"></span></div>
+
+  <div class="sec note-txt">
+    <span class="t">ملاحظات</span>
+    <div id="c_note"></div>
+  </div>
+
+  <div class="policy">المعاينة متاحة بعد سداد قيمة الشحنة — بدون توقيع</div>
+
+  <div class="lb-foot">
+    <div><b>elsoooq</b></div>
+    <div>فيسبوك: <a href="https://www.facebook.com/elsoooqshop">facebook.com/elsoooqshop</a></div>
+    <div>هاتف / واتساب: 01022077100</div>
+  </div>
+
 </div>
-
-<div class="section">
-<div class="row"><span>ملاحظات</span><span id="c_note"></span></div>
 </div>
-
-<div id="qrcode" class="center"></div>
-
-<div class="center">شكراً لثقتك ❤️</div>
-
-<div class="company-info">
-<div><b>elsoooq</b></div>
-<div>فيسبوك: <a href="https://www.facebook.com/elsoooqshop" target="_blank">facebook.com/elsoooqshop</a></div>
-<div>هاتف / واتساب: 01022077100</div>
-</div>
-
-<button class="print" onclick="window.print()">طباعة</button>
-<button class="pdf" onclick="downloadPDF()">PDF</button>
-<button style="background:#25D366;color:#fff;" onclick="sendToCustomer()">واتساب</button>
-
-</div>
-
 </div>
 
 <script>
-
-// كل محافظات ومراكز مصر
 const egypt = {
-"القاهرة": [
-"مدينة نصر",
-"مصر الجديدة",
-"المعادي",
-"حلوان",
-"عين شمس",
-"الزيتون",
-"المطرية",
-"السلام",
-"النزهة",
-"مدينة بدر",
-"القاهرة الجديدة",
-"التجمع الخامس",
-"الشروق",
-"العبور",
-"المرج",
-"شبرا",
-"روض الفرج",
-"الساحل",
-"الشرابية",
-"الوايلي",
-"الظاهر",
-"العباسية",
-"وسط البلد",
-"عابدين",
-"السيدة زينب",
-"مصر القديمة",
-"الخليفة",
-"المقطم",
-"البساتين",
-"دار السلام",
-"طرة",
-"15 مايو",
-"التبين",
-"الزاوية الحمراء",
-"حدائق القبة",
-"منشية ناصر",
-"الأزبكية",
-"بولاق",
-"الموسكي",
-"الجمالية",
-"باب الشعرية",
-"الدرب الأحمر",
-"الزمالك",
-"جاردن سيتي"
-],
-"الجيزة": [
-"الهرم",
-"فيصل",
-"الدقي",
-"العجوزة",
-"المهندسين",
-"6 أكتوبر",
-"الشيخ زايد",
-"إمبابة",
-"بولاق الدكرور",
-"الوراق",
-"العمرانية",
-"المنيب",
-"كرداسة",
-"أوسيم",
-"البدرشين",
-"الحوامدية",
-"العياط",
-"الصف",
-"أطفيح",
-"منشأة القناطر",
-"أبو النمرس",
-"الباويطي/الواحات البحرية",
-"حدائق الأهرام",
-"المريوطية",
-"صفط اللبن",
-"ناهيا",
-"كفر طهرمس",
-"الطالبية",
-"المنيرة الغربية"
-],
-"الإسكندرية": [
-"سيدي جابر",
-"العجمي",
-"المنتزه",
-"محرم بك",
-"سموحة",
-"ميامي",
-"لوران",
-"سان ستيفانو",
-"العصافرة",
-"المندرة",
-"أبو قير",
-"فيكتوريا",
-"كامب شيزار",
-"الإبراهيمية",
-"محطة الرمل",
-"المنشية",
-"العطارين",
-"اللبان",
-"الجمرك",
-"كرموز",
-"باكوس",
-"الحضرة",
-"سيدي بشر",
-"برج العرب",
-"برج العرب الجديدة",
-"العامرية",
-"الدخيلة",
-"المكس",
-"بولكلي",
-"جليم",
-"رشدي",
-"الشاطبي",
-"السيوف",
-"المعمورة"
-],
-"الدقهلية": [
-"المنصورة",
-"طلخا",
-"ميت غمر",
-"دكرنس",
-"أجا",
-"منية النصر",
-"السنبلاوين",
-"الكردي",
-"بني عبيد",
-"المنزلة",
-"تمي الأمديد",
-"الجمالية",
-"شربين",
-"المطرية",
-"بلقاس",
-"ميت سلسيل",
-"جمصة",
-"محلة دمنة",
-"نبروه"
-],
-"الشرقية": [
-"الزقازيق",
-"بلبيس",
-"العاشر من رمضان",
-"منيا القمح",
-"أبو حماد",
-"القرين",
-"ههيا",
-"أبو كبير",
-"فاقوس",
-"الصالحية الجديدة",
-"الإبراهيمية",
-"ديرب نجم",
-"كفر صقر",
-"أولاد صقر",
-"الحسينية",
-"صان الحجر",
-"منشأة أبو عمر",
-"مشتول السوق",
-"القنايات"
-],
-"الغربية": [
-"طنطا",
-"المحلة الكبرى",
-"كفر الزيات",
-"زفتى",
-"السنطة",
-"قطور",
-"بسيون",
-"سمنود"
-],
-"المنوفية": [
-"شبين الكوم",
-"منوف",
-"سرس الليان",
-"أشمون",
-"الباجور",
-"قويسنا",
-"بركة السبع",
-"تلا",
-"الشهداء",
-"السادات"
-],
-"القليوبية": [
-"بنها",
-"قليوب",
-"شبرا الخيمة",
-"القناطر الخيرية",
-"الخانكة",
-"كفر شكر",
-"طوخ",
-"قها",
-"العبور",
-"الخصوص",
-"شبين القناطر",
-"مسطرد"
-],
-"البحيرة": [
-"دمنهور",
-"كفر الدوار",
-"رشيد",
-"إدكو",
-"أبو المطامير",
-"أبو حمص",
-"الدلنجات",
-"المحمودية",
-"الرحمانية",
-"إيتاي البارود",
-"حوش عيسى",
-"شبراخيت",
-"كوم حمادة",
-"بدر",
-"وادي النطرون",
-"النوبارية الجديدة"
-],
-"كفر الشيخ": [
-"كفر الشيخ",
-"دسوق",
-"فوه",
-"مطوبس",
-"برج البرلس",
-"بلطيم",
-"مصيف بلطيم",
-"الحامول",
-"بيلا",
-"الرياض",
-"سيدي سالم",
-"قلين",
-"سيدي غازي"
-],
-"أسيوط": [
-"أسيوط",
-"ديروط",
-"منفلوط",
-"القوصية",
-"أبنوب",
-"أبو تيج",
-"الغنايم",
-"ساحل سليم",
-"البداري",
-"صدفا",
-"الفتح",
-"أسيوط الجديدة"
-],
-"سوهاج": [
-"سوهاج",
-"أخميم",
-"البلينا",
-"المراغة",
-"المنشاة",
-"دار السلام",
-"جرجا",
-"جهينة",
-"ساقلته",
-"طما",
-"طهطا",
-"الكوثر",
-"سوهاج الجديدة"
-],
-"قنا": [
-"قنا",
-"أبو تشت",
-"نجع حمادي",
-"دشنا",
-"الوقف",
-"قفط",
-"نقادة",
-"فرشوط",
-"قوص"
-],
-"الأقصر": [
-"الأقصر",
-"الأقصر الجديدة",
-"إسنا",
-"طيبة الجديدة",
-"الطود",
-"الزينية",
-"البياضية",
-"القرنة",
-"أرمنت"
-],
-"أسوان": [
-"أسوان",
-"أسوان الجديدة",
-"دراو",
-"كوم أمبو",
-"نصر النوبة",
-"كلابشة",
-"إدفو",
-"الرديسية",
-"البصيلية",
-"السباعية",
-"أبو سمبل السياحية"
-],
-"بني سويف": [
-"بني سويف",
-"بني سويف الجديدة",
-"الواسطى",
-"ناصر",
-"إهناسيا",
-"ببا",
-"الفشن",
-"سمسطا",
-"الشرقية/شرق النيل"
-],
-"المنيا": [
-"المنيا",
-"المنيا الجديدة",
-"العدوة",
-"مغاغة",
-"بني مزار",
-"مطاي",
-"سمالوط",
-"المدينة الفكرية",
-"ملوي",
-"دير مواس",
-"أبو قرقاص"
-],
-"الفيوم": [
-"الفيوم",
-"الفيوم الجديدة",
-"طامية",
-"سنورس",
-"إطسا",
-"إبشواي",
-"يوسف الصديق"
-],
-"دمياط": [
-"دمياط",
-"دمياط الجديدة",
-"رأس البر",
-"فارسكور",
-"الزرقا",
-"السرو",
-"الروضة",
-"كفر البطيخ",
-"عزبة البرج",
-"ميت أبو غالب",
-"كفر سعد"
-],
-"بورسعيد": [
-"بورسعيد",
-"بورفؤاد",
-"حي الشرق",
-"حي الضواحي",
-"حي الزهور",
-"حي المناخ",
-"حي العرب",
-"حي الجنوب"
-],
-"الإسماعيلية": [
-"الإسماعيلية",
-"فايد",
-"القنطرة شرق",
-"القنطرة غرب",
-"التل الكبير",
-"أبو صوير",
-"القصاصين الجديدة",
-"نفيشة",
-"الشيخ زايد"
-],
-"السويس": [
-"السويس",
-"الأربعين",
-"عتاقة",
-"الجناين",
-"فيصل",
-"السلام",
-"عين السخنة"
-],
-"مطروح": [
-"مرسى مطروح",
-"الحمام",
-"العلمين",
-"الضبعة",
-"النجيلة",
-"سيدي براني",
-"السلوم",
-"سيوة",
-"مارينا"
-],
-"شمال سيناء": [
-"العريش",
-"الشيخ زويد",
-"رفح",
-"بئر العبد",
-"الحسنة",
-"نخل"
-],
-"جنوب سيناء": [
-"الطور",
-"شرم الشيخ",
-"دهب",
-"نويبع",
-"طابا",
-"سانت كاترين",
-"أبو رديس",
-"أبو زنيمة",
-"رأس سدر"
-],
-"الوادي الجديد": [
-"الخارجة",
-"الداخلة",
-"الفرافرة",
-"باريس",
-"بلاط"
-],
-"البحر الأحمر": [
-"الغردقة",
-"رأس غارب",
-"سفاجا",
-"القصير",
-"مرسى علم",
-"الشلاتين",
-"حلايب",
-"الجونة",
-"سهل حشيش"
-]
+"القاهرة": ["مدينة نصر","مصر الجديدة","المعادي","حلوان","عين شمس","الزيتون","المطرية","السلام","النزهة","مدينة بدر","القاهرة الجديدة","التجمع الخامس","الشروق","العبور","المرج","شبرا","روض الفرج","الساحل","الشرابية","الوايلي","الظاهر","العباسية","وسط البلد","عابدين","السيدة زينب","مصر القديمة","الخليفة","المقطم","البساتين","دار السلام","طرة","15 مايو","التبين","الزاوية الحمراء","حدائق القبة","منشية ناصر","الأزبكية","بولاق","الموسكي","الجمالية","باب الشعرية","الدرب الأحمر","الزمالك","جاردن سيتي"],
+"الجيزة": ["الهرم","فيصل","الدقي","العجوزة","المهندسين","6 أكتوبر","الشيخ زايد","إمبابة","بولاق الدكرور","الوراق","العمرانية","المنيب","كرداسة","أوسيم","البدرشين","الحوامدية","العياط","الصف","أطفيح","منشأة القناطر","أبو النمرس","الباويطي/الواحات البحرية","حدائق الأهرام","المريوطية","صفط اللبن","ناهيا","كفر طهرمس","الطالبية","المنيرة الغربية"],
+"الإسكندرية": ["سيدي جابر","العجمي","المنتزه","محرم بك","سموحة","ميامي","لوران","سان ستيفانو","العصافرة","المندرة","أبو قير","فيكتوريا","كامب شيزار","الإبراهيمية","محطة الرمل","المنشية","العطارين","اللبان","الجمرك","كرموز","باكوس","الحضرة","سيدي بشر","برج العرب","برج العرب الجديدة","العامرية","الدخيلة","المكس","بولكلي","جليم","رشدي","الشاطبي","السيوف","المعمورة"],
+"الدقهلية": ["المنصورة","طلخا","ميت غمر","دكرنس","أجا","منية النصر","السنبلاوين","الكردي","بني عبيد","المنزلة","تمي الأمديد","الجمالية","شربين","المطرية","بلقاس","ميت سلسيل","جمصة","محلة دمنة","نبروه"],
+"الشرقية": ["الزقازيق","بلبيس","العاشر من رمضان","منيا القمح","أبو حماد","القرين","ههيا","أبو كبير","فاقوس","الصالحية الجديدة","الإبراهيمية","ديرب نجم","كفر صقر","أولاد صقر","الحسينية","صان الحجر","منشأة أبو عمر","مشتول السوق","القنايات"],
+"الغربية": ["طنطا","المحلة الكبرى","كفر الزيات","زفتى","السنطة","قطور","بسيون","سمنود"],
+"المنوفية": ["شبين الكوم","منوف","سرس الليان","أشمون","الباجور","قويسنا","بركة السبع","تلا","الشهداء","السادات"],
+"القليوبية": ["بنها","قليوب","شبرا الخيمة","القناطر الخيرية","الخانكة","كفر شكر","طوخ","قها","العبور","الخصوص","شبين القناطر","مسطرد"],
+"البحيرة": ["دمنهور","كفر الدوار","رشيد","إدكو","أبو المطامير","أبو حمص","الدلنجات","المحمودية","الرحمانية","إيتاي البارود","حوش عيسى","شبراخيت","كوم حمادة","بدر","وادي النطرون","النوبارية الجديدة"],
+"كفر الشيخ": ["كفر الشيخ","دسوق","فوه","مطوبس","برج البرلس","بلطيم","مصيف بلطيم","الحامول","بيلا","الرياض","سيدي سالم","قلين","سيدي غازي"],
+"أسيوط": ["أسيوط","ديروط","منفلوط","القوصية","أبنوب","أبو تيج","الغنايم","ساحل سليم","البداري","صدفا","الفتح","أسيوط الجديدة"],
+"سوهاج": ["سوهاج","أخميم","البلينا","المراغة","المنشاة","دار السلام","جرجا","جهينة","ساقلته","طما","طهطا","الكوثر","سوهاج الجديدة"],
+"قنا": ["قنا","أبو تشت","نجع حمادي","دشنا","الوقف","قفط","نقادة","فرشوط","قوص"],
+"الأقصر": ["الأقصر","الأقصر الجديدة","إسنا","طيبة الجديدة","الطود","الزينية","البياضية","القرنة","أرمنت"],
+"أسوان": ["أسوان","أسوان الجديدة","دراو","كوم أمبو","نصر النوبة","كلابشة","إدفو","الرديسية","البصيلية","السباعية","أبو سمبل السياحية"],
+"بني سويف": ["بني سويف","بني سويف الجديدة","الواسطى","ناصر","إهناسيا","ببا","الفشن","سمسطا","الشرقية/شرق النيل"],
+"المنيا": ["المنيا","المنيا الجديدة","العدوة","مغاغة","بني مزار","مطاي","سمالوط","المدينة الفكرية","ملوي","دير مواس","أبو قرقاص"],
+"الفيوم": ["الفيوم","الفيوم الجديدة","طامية","سنورس","إطسا","إبشواي","يوسف الصديق"],
+"دمياط": ["دمياط","دمياط الجديدة","رأس البر","فارسكور","الزرقا","السرو","الروضة","كفر البطيخ","عزبة البرج","ميت أبو غالب","كفر سعد"],
+"بورسعيد": ["بورسعيد","بورفؤاد","حي الشرق","حي الضواحي","حي الزهور","حي المناخ","حي العرب","حي الجنوب"],
+"الإسماعيلية": ["الإسماعيلية","فايد","القنطرة شرق","القنطرة غرب","التل الكبير","أبو صوير","القصاصين الجديدة","نفيشة","الشيخ زايد"],
+"السويس": ["السويس","الأربعين","عتاقة","الجناين","فيصل","السلام","عين السخنة"],
+"مطروح": ["مرسى مطروح","الحمام","العلمين","الضبعة","النجيلة","سيدي براني","السلوم","سيوة","مارينا"],
+"شمال سيناء": ["العريش","الشيخ زويد","رفح","بئر العبد","الحسنة","نخل"],
+"جنوب سيناء": ["الطور","شرم الشيخ","دهب","نويبع","طابا","سانت كاترين","أبو رديس","أبو زنيمة","رأس سدر"],
+"الوادي الجديد": ["الخارجة","الداخلة","الفرافرة","باريس","بلاط"],
+"البحر الأحمر": ["الغردقة","رأس غارب","سفاجا","القصير","مرسى علم","الشلاتين","حلايب","الجونة","سهل حشيش"]
 };
 
-// تحميل المحافظات
-window.onload = function(){
-for(let gov in egypt){
-let option=document.createElement("option");
-option.text=gov;
-document.getElementById("gov").add(option);
-}
-}
+var ready=false;
 
-// تحميل المراكز
+window.onload=function(){
+  var g=document.getElementById("gov");
+  for(var k in egypt){var o=document.createElement("option");o.text=k;o.value=k;g.add(o);}
+};
+
 function loadCities(){
-let gov=document.getElementById("gov").value;
-let city=document.getElementById("city");
-
-city.innerHTML="";
-if(!gov){return;}
-egypt[gov].forEach(c=>{
-let option=document.createElement("option");
-option.text=c;
-city.add(option);
-});
+  var gov=document.getElementById("gov").value;
+  var city=document.getElementById("city");
+  city.innerHTML='<option value="">اختر المركز</option>';
+  if(!gov) return;
+  egypt[gov].forEach(function(c){var o=document.createElement("option");o.text=c;o.value=c;city.add(o);});
 }
 
-// إنشاء بوليصة
+function v(id){return (document.getElementById(id).value||"").trim();}
+
 function generate(){
+  var err=document.getElementById("err");
+  if(!v("name")||!v("phone")||!v("gov")||!v("city")){err.style.display="block";return;}
+  err.style.display="none";
 
-let order="ORD"+Math.floor(100000+Math.random()*900000);
+  var order="ORD"+Math.floor(100000+Math.random()*900000);
+  document.getElementById("sheet").classList.add("show");
 
-document.getElementById("invoice").style.display="block";
+  document.getElementById("orderId").innerText=order;
+  document.getElementById("l_date").innerText=new Date().toLocaleDateString("ar-EG");
+  document.getElementById("c_name").innerText=v("name");
+  document.getElementById("c_phone").innerText=v("phone");
+  document.getElementById("c_address").innerText=v("gov")+" - "+v("city")+(v("street")?" - "+v("street"):"");
+  document.getElementById("c_product").innerText=v("product")||"-";
+  document.getElementById("c_pieces").innerText=v("pieces")||"1";
+  document.getElementById("c_type").innerText=v("stype");
+  document.getElementById("c_amount").innerText=(v("amount")||"0")+" جنيه";
+  document.getElementById("c_note").innerText=v("note")||"-";
 
-orderId.innerText=order;
-c_name.innerText=name.value;
-c_phone.innerText=phone.value;
+  try{ JsBarcode("#barcode",order,{format:"CODE128",displayValue:false,margin:0,height:40,width:2}); }catch(e){}
 
-c_address.innerText=gov.value+" - "+city.value+" - "+street.value;
+  document.getElementById("qrcode").innerHTML="";
+  try{ new QRCode(document.getElementById("qrcode"),{text:"https://www.facebook.com/elsoooqshop",width:120,height:120,correctLevel:QRCode.CorrectLevel.L}); }catch(e){}
 
-c_product.innerText=product.value;
-c_amount.innerText=amount.value+" جنيه";
-c_note.innerText=note.value;
-
-// QR
-document.getElementById("qrcode").innerHTML="";
-new QRCode(document.getElementById("qrcode"),{
-text:"https://www.facebook.com/elsoooqshop",
-width:100,
-height:100
-});
+  ready=true;
+  document.getElementById("sheet").scrollIntoView({behavior:"smooth"});
 }
 
-// PDF
+function check(){ if(!ready){alert("أنشئ البوليصة أولاً");return false;} return true; }
+
+function printLabel(){ if(!check())return; window.print(); }
+
+function pdfOpts(){
+  return {margin:0,filename:"elsoooq-"+document.getElementById("orderId").innerText+".pdf",
+    image:{type:"jpeg",quality:0.98},
+    html2canvas:{scale:3,useCORS:true},
+    jsPDF:{unit:"mm",format:[100,150],orientation:"portrait"},
+    pagebreak:{mode:["avoid-all"]}};
+}
+
 function downloadPDF(){
-html2pdf().from(document.getElementById("invoice")).save("elsoooq.pdf");
+  if(!check())return;
+  html2pdf().set(pdfOpts()).from(document.getElementById("labelEl")).save();
 }
 
-// واتساب — الإرسال دائماً إلى الرقم المحدد 01030630315
-function sendToCustomer(){
-let phoneNum="01030630315";
-if(phoneNum.startsWith("0")) phoneNum="2"+phoneNum;
+// واتساب — يجهّز ملف PDF ثم يفتح محادثة الرقم المحدد لإرفاقه
+function sendWhatsApp(){
+  if(!check())return;
+  var num="201030630315";
+  var order=document.getElementById("orderId").innerText;
+  var msg="بوليصة شحن elsoooq\nرقم الطلب: "+order
+    +"\nالعميل: "+v("name")
+    +"\nالهاتف: "+v("phone")
+    +"\nالعنوان: "+document.getElementById("c_address").innerText
+    +"\nالمنتج: "+(v("product")||"-")
+    +"\nالمبلغ: "+(v("amount")||"0")+" جنيه"
+    +"\n(مرفق ملف PDF للبوليصة)";
 
-let msg="طلبك رقم: "+orderId.innerText;
-window.open("https://wa.me/"+phoneNum+"?text="+encodeURIComponent(msg));
+  html2pdf().set(pdfOpts()).from(document.getElementById("labelEl")).outputPdf("blob").then(function(blob){
+    var file=new File([blob],"elsoooq-"+order+".pdf",{type:"application/pdf"});
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      navigator.share({files:[file],text:msg}).catch(function(){});
+    }else{
+      var a=document.createElement("a");
+      a.href=URL.createObjectURL(blob);a.download=file.name;a.click();
+      setTimeout(function(){URL.revokeObjectURL(a.href);},4000);
+      window.open("https://wa.me/"+num+"?text="+encodeURIComponent(msg),"_blank");
+    }
+  });
 }
-
 </script>
 
 </body>
