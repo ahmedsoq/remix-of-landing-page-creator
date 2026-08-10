@@ -886,6 +886,7 @@ function panel(){
         video:p.video||"",
         tiers:(p.tiers||[]).map(function(t){ return t[1]; }).join(",")
       };
+      UPLOADS = (p.images||[]).map(function(g){ return [g[0], g[1]||""]; });
       panel();
       window.scrollTo(0, document.getElementById("adminMount").offsetTop);
     };
