@@ -659,20 +659,26 @@ document.getElementById("orderForm").onsubmit = function(e){
 
 /* ============ عناصر التحفيز على الشراء ============ */
 function startUrgency(){
-  var CD = "cam_cd_end";
+  var pid = CUR ? CUR.id : "x";
+  var HRS = (CUR && Number(CUR.hours)) ? Number(CUR.hours) : 4;
+  var SPAN = HRS*3600*1000;
+  var CD = "cd_" + pid;
   var end = parseInt(localStorage.getItem(CD) || "0", 10);
-  if(!end || end < Date.now()) { end = Date.now() + 4*3600*1000; try{ localStorage.setItem(CD, String(end)); }catch(e){} }
+  if(!end || end < Date.now()) { end = Date.now() + SPAN; try{ localStorage.setItem(CD, String(end)); }catch(e){} }
   function two(n){ return n < 10 ? "0"+n : ""+n; }
   function tick(){
     var el = document.getElementById("cdown"); if(!el) return;
     var s = Math.max(0, Math.floor((end - Date.now())/1000));
-    if(s === 0){ end = Date.now() + 4*3600*1000; try{ localStorage.setItem(CD, String(end)); }catch(e){} }
+    if(s === 0){ end = Date.now() + SPAN; try{ localStorage.setItem(CD, String(end)); }catch(e){} }
     el.textContent = two(Math.floor(s/3600))+":"+two(Math.floor(s%3600/60))+":"+two(s%60);
   }
   tick();
-  var SK = "cam_stock", st = parseInt(localStorage.getItem(SK) || "0", 10);
-  if(!st || st < 4){ st = 5 + Math.floor(Math.random()*5); try{ localStorage.setItem(SK, String(st)); }catch(e){} }
+  var SK = "stk_" + pid, st = parseInt(localStorage.getItem(SK) || "0", 10);
+  var base = (CUR && Number(CUR.stock)) ? Number(CUR.stock) : 0;
+  if(base) st = base;
+  else if(!st || st < 4){ st = 5 + Math.floor(Math.random()*5); try{ localStorage.setItem(SK, String(st)); }catch(e){} }
   var sEl = document.getElementById("stock"); if(sEl) sEl.textContent = st;
+
 
   if(urgStarted) return;
   urgStarted = true;
