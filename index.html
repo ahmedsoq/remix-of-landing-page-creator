@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>elsoooq — متجر إلكتروني | شحن مجاني والدفع عند الاستلام</title>
-<meta name="description" content="متجر elsoooq — منتجات مختارة بأسعار مميزة، شحن مجاني لكل محافظات مصر والدفع عند الاستلام مع فحص المنتج قبل الدفع." />
+<title>elsoooq — متجر إلكتروني | الدفع عند الاستلام</title>
+<meta name="description" content="متجر elsoooq — منتجات مختارة بأسعار مميزة، الدفع عند الاستلام مع فحص المنتج قبل الدفع وشحن 55 ج لكل محافظات مصر." />
 <meta property="og:title" content="elsoooq — متجر إلكتروني | الدفع عند الاستلام" />
-<meta property="og:description" content="منتجات مختارة بأسعار مميزة، شحن مجاني لكل محافظات مصر والدفع عند الاستلام." />
+<meta property="og:description" content="منتجات مختارة بأسعار مميزة، الدفع عند الاستلام وشحن 55 ج لكل محافظات مصر." />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -655,6 +655,7 @@ document.getElementById("orderForm").onsubmit = function(e){
     "━━━━━━━━━━━━━━━━━━━━\n" +
     "📦 المنتج: " + CUR.name + " (رقم " + CUR.id + ")\n" +
     "💰 سعر القطعة: " + (Number(CUR.price)-d) + " ج" + (d ? " (خصم " + d + " ج)" : "") + "\n" +
+    "🚚 الشحن: " + SHIP + " ج\n" +
     "🧾 الإجمالي: " + totalFor(CUR,q) + " ج\n" +
     "💳 طريقة الدفع: الدفع عند الاستلام\n" +
     "🏙️ المحافظة: " + gov.value + "\n" +

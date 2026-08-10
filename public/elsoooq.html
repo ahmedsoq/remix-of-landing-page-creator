@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>elsoooq — متجر إلكتروني | شحن مجاني والدفع عند الاستلام</title>
-<meta name="description" content="متجر elsoooq — منتجات مختارة بأسعار مميزة، شحن مجاني لكل محافظات مصر والدفع عند الاستلام مع فحص المنتج قبل الدفع." />
+<title>elsoooq — متجر إلكتروني | الدفع عند الاستلام</title>
+<meta name="description" content="متجر elsoooq — منتجات مختارة بأسعار مميزة، الدفع عند الاستلام مع فحص المنتج قبل الدفع وشحن 55 ج لكل محافظات مصر." />
 <meta property="og:title" content="elsoooq — متجر إلكتروني | الدفع عند الاستلام" />
-<meta property="og:description" content="منتجات مختارة بأسعار مميزة، شحن مجاني لكل محافظات مصر والدفع عند الاستلام." />
+<meta property="og:description" content="منتجات مختارة بأسعار مميزة، الدفع عند الاستلام وشحن 55 ج لكل محافظات مصر." />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -125,11 +125,14 @@ body{padding-bottom:76px}
 .pcard .pp b{font-size:16px;font-weight:900;color:var(--yellow)}
 .pcard .pp s{font-size:12px;opacity:.55}
 .pcard .buy{margin-top:auto;text-align:center;padding:9px;border-radius:14px;font-size:12.5px;font-weight:900;background:linear-gradient(90deg,var(--orange),var(--yellow));color:#12060a}
-.sechd{margin:22px 0 0;font-size:17px;font-weight:900;text-align:center}
-.sechd small{display:block;font-size:12px;font-weight:700;opacity:.7;margin-top:4px}
-.hero{padding:18px 16px;text-align:center;margin-bottom:12px}
-.hero h1{font-size:24px}
-.hero p{margin:8px 0 0;font-size:13px;opacity:.85;line-height:1.7}
+.sechd{margin:18px 0 0;font-size:15.5px;font-weight:900;text-align:center}
+.sechd small{display:block;font-size:11.5px;font-weight:700;opacity:.65;margin-top:3px}
+.hero{padding:12px 14px;text-align:center;margin-bottom:10px}
+.hero h1{font-size:17px;line-height:1.45}
+.hero p{margin:4px 0 0;font-size:12px;opacity:.8;line-height:1.6}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:9px}
+.chips span{font-size:11px;font-weight:900;padding:6px 10px;border-radius:99px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14)}
+
 .adminlist{display:grid;gap:8px;margin-top:10px}
 .arow{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:14px;background:rgba(255,255,255,.07)}
 .arow img{width:40px;height:40px;border-radius:10px;object-fit:cover;background:rgba(0,0,0,.3)}
@@ -187,7 +190,10 @@ body{padding-bottom:76px}
         <div class="qopts" id="qopts"></div>
         <input type="hidden" id="f_qty" value="1" />
       </div>
+      <div class="full tot" style="background:rgba(255,255,255,.07);border-radius:14px;font-size:13px;font-weight:800"><span>سعر المنتجات</span><span id="f_sub">—</span></div>
+      <div class="full tot" style="background:rgba(255,255,255,.07);border-radius:14px;font-size:13px;font-weight:800"><span>الشحن</span><span id="f_ship">55 ج</span></div>
       <div class="glass g-orange full tot"><span>الإجمالي</span><span id="f_total" style="font-size:18px">—</span></div>
+
       <p class="msg full" id="f_msg"></p>
       <button type="submit" class="cta full" style="padding:15px;font-size:17px" id="f_submit">تأكيد الطلب</button>
     </form>
@@ -329,7 +335,10 @@ function discountFor(p,q){
   t.forEach(function(x){ if(Number(x[0]) === Number(q)) d = Number(x[1])||0; });
   return d;
 }
-function totalFor(p,q){ return (Number(p.price) - discountFor(p,q)) * q; }
+var SHIP = 55;
+function subtotalFor(p,q){ return (Number(p.price) - discountFor(p,q)) * q; }
+function totalFor(p,q){ return subtotalFor(p,q) + SHIP; }
+
 function iconHtml(ic){
   if(/[\/.]/.test(ic) && /^(https?:|\.|\/|img)/.test(ic))
     return '<img class="ic" src="'+esc(ic)+'" alt="" loading="lazy" decoding="async" width="52" height="52">';
@@ -426,19 +435,19 @@ function cardHtml(p, i){
 
 function renderHome(){
   document.getElementById("backLink").style.display = "none";
-  document.title = S.storeName + " — متجر إلكتروني | شحن مجاني والدفع عند الاستلام";
+  document.title = S.storeName + " — متجر إلكتروني | الدفع عند الاستلام";
   var list = allProducts();
   var top = topProducts(null, 3).filter(function(p){ return (VIEWS[p.id]||0) > 0; });
-  var h = '<div class="cta" style="padding:12px;text-align:center;font-size:15px;margin-bottom:12px">🚚 شحن مجاني لكل المحافظات • 💵 الدفع عند الاستلام</div>' +
-    '<section class="glass g-violet hero">' +
-      '<h1>كل اللي محتاجه في مكان واحد</h1>' +
-      '<p>منتجات مختارة بعناية — تدفع بعد ما تستلم وتفحص، وشحن مجاني لكل محافظات مصر خلال يومين لـ 3 أيام.</p>' +
-      '<div class="trust">' +
-        '<div class="glass g-lime"><i>🛡️</i>ضمان استرجاع 14 يوم</div>' +
-        '<div class="glass g-cyan"><i>📦</i>فحص قبل الدفع</div>' +
-        '<div class="glass g-orange"><i>⚡</i>توصيل سريع</div>' +
+  var h = '<section class="glass g-violet hero">' +
+      '<h1>' + esc(S.storeName) + ' — منتجات مختارة بأسعار مميزة</h1>' +
+      '<p>الدفع عند الاستلام • فحص قبل الدفع • توصيل من يومين لـ 3 أيام</p>' +
+      '<div class="chips">' +
+        '<span>💵 الدفع عند الاستلام</span>' +
+        '<span>🛡️ استرجاع 14 يوم</span>' +
+        '<span>🚚 شحن 55 ج لكل مصر</span>' +
       '</div>' +
     '</section>';
+
   if(top.length){
     h += '<h2 class="sechd">🔥 الأكثر مشاهدة<small>المنتجات اللي الناس بتدخل عليها دلوقتي</small></h2>';
     h += '<div class="pgrid">' + top.map(cardHtml).join("") + '</div>';
@@ -468,7 +477,7 @@ function renderProduct(p){
   document.getElementById("backLink").style.display = "";
   document.title = S.storeName + " — " + p.name + " | " + p.price + " ج";
   var save = Number(p.oldPrice||0) - Number(p.price||0);
-  var h = '<div class="cta" style="padding:12px;text-align:center;font-size:15px;margin-bottom:12px">🚚 شحن مجاني لكل المحافظات • 💵 الدفع عند الاستلام</div>' +
+  var h = '<div class="cta" style="padding:10px;text-align:center;font-size:13.5px;margin-bottom:10px">💵 الدفع عند الاستلام • 🚚 التوصيل من يومين لـ 3 أيام</div>' +
     '<div class="urg">' +
       '<div class="glass g-pink">⏳ ينتهي العرض <b id="cdown">03:59:59</b></div>' +
       '<div class="glass g-yellow">🔥 متبقي <b id="stock">7</b> قطع فقط</div>' +
@@ -572,8 +581,12 @@ function buildQty(p){
 }
 function updTotal(){
   if(!CUR) return;
-  document.getElementById("f_total").textContent = totalFor(CUR, Number(document.getElementById("f_qty").value)) + " ج";
+  var q = Number(document.getElementById("f_qty").value);
+  document.getElementById("f_sub").textContent = subtotalFor(CUR,q) + " ج";
+  document.getElementById("f_ship").textContent = SHIP + " ج";
+  document.getElementById("f_total").textContent = totalFor(CUR, q) + " ج";
 }
+
 
 function bindNav(){
   Array.prototype.forEach.call(document.querySelectorAll("[data-nav]"), function(a){
@@ -642,6 +655,7 @@ document.getElementById("orderForm").onsubmit = function(e){
     "━━━━━━━━━━━━━━━━━━━━\n" +
     "📦 المنتج: " + CUR.name + " (رقم " + CUR.id + ")\n" +
     "💰 سعر القطعة: " + (Number(CUR.price)-d) + " ج" + (d ? " (خصم " + d + " ج)" : "") + "\n" +
+    "🚚 الشحن: " + SHIP + " ج\n" +
     "🧾 الإجمالي: " + totalFor(CUR,q) + " ج\n" +
     "💳 طريقة الدفع: الدفع عند الاستلام\n" +
     "🏙️ المحافظة: " + gov.value + "\n" +
