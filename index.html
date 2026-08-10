@@ -880,7 +880,8 @@ function panel(){
       if(!p) return;
       EDIT = {
         id:p.id, name:p.name, price:String(p.price), oldPrice:String(p.oldPrice||""), badge:p.badge||"",
-        images:(p.images||[]).map(function(g){ return g[0] + " | " + (g[1]||""); }).join("\n"),
+        desc:p.desc||"", stock:String(p.stock||""), hours:String(p.hours||""),
+        images:"",
         features:(p.features||[]).map(function(f){ return f.join(" | "); }).join("\n"),
         video:p.video||"",
         tiers:(p.tiers||[]).map(function(t){ return t[1]; }).join(",")
