@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>elsoooq - بوليصة شحن</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<style>
+body {font-family: Arial;background:#f5f5f5;padding:20px;}
+.container {max-width:900px;margin:auto;}
+.box {background:#fff;padding:20px;border-radius:10px;margin-bottom:20px;}
+input,select,textarea {width:100%;padding:10px;margin:8px 0;border-radius:6px;border:1px solid #ccc;}
+button {padding:10px 15px;margin:5px;border:none;border-radius:6px;cursor:pointer;}
+.generate{background:#28a745;color:#fff;}
+.print{background:#007bff;color:#fff;}
+.pdf{background:#dc3545;color:#fff;}
+.invoice{display:none;}
+.header{text-align:center;border-bottom:2px solid #000;}
+.footer{text-align:center;margin-top:20px;color:green;font-weight:bold;}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="box">
+<h2>إنشاء بوليصة شحن</h2>
+
+<input id="name" placeholder="اسم العميل">
+
+<select id="gov" onchange="loadCities()">
+<option value="">اختر المحافظة</option>
+<option>القاهرة</option>
+<option>الجيزة</option>
+<option>الإسكندرية</option>
+<option>الدقهلية</option>
+<option>الشرقية</option>
+<option>الغربية</option>
+<option>المنوفية</option>
+<option>القليوبية</option>
+<option>البحيرة</option>
+<option>كفر الشيخ</option>
+<option>أسيوط</option>
+<option>سوهاج</option>
+<option>قنا</option>
+<option>الأقصر</option>
+<option>أسوان</option>
+</select>
+
+<select id="city">
+<option>اختر المركز</option>
+</select>
+
+<input id="street" placeholder="اسم الشارع بالتفصيل">
+
+<input id="product" placeholder="المنتج والعدد">
+<input id="amount" placeholder="مبلغ التحصيل">
+<textarea id="note" placeholder="ملاحظة"></textarea>
+
+<button class="generate" onclick="generate()">إنشاء البوليصة</button>
+</div>
+
+<div id="invoice" class="box invoice">
+
+<div class="header">
+<h2>elsoooq</h2>
+<p>📞 01022077100</p>
+<p>facebook.com/elsoooqshop</p>
+<p id="date"></p>
+<p id="orderId"></p>
+</div>
+
+<p><b>اسم العميل:</b> <span id="c_name"></span></p>
+<p><b>العنوان:</b> <span id="c_address"></span></p>
+<p><b>المنتج:</b> <span id="c_product"></span></p>
+<p><b>المبلغ:</b> <span id="c_amount"></span></p>
+<p><b>ملاحظة:</b> <span id="c_note"></span></p>
+
+<div id="qrcode" style="text-align:center;margin-top:15px;"></div>
+
+<div class="footer">
+❤️ شكراً لثقتك في elsoooq ❤️
+</div>
+
+<button class="print" onclick="window.print()">طباعة</button>
+<button class="pdf" onclick="downloadPDF()">PDF</button>
+
+</div>
+
+</div>
+
+<script>
+const data = {
+"القاهرة":["مدينة نصر","مصر الجديدة","المعادي","حلوان"],
+"الجيزة":["الهرم","فيصل","العجوزة","الدقي"],
+"الإسكندرية":["سيدي جابر","العجمي","المنتزه"],
+"الدقهلية":["المنصورة","ميت غمر"],
+"الشرقية":["الزقازيق","بلبيس"],
+"الغربية":["طنطا","المحلة"],
+"المنوفية":["شبين الكوم","منوف"],
+"القليوبية":["بنها","شبرا"],
+"البحيرة":["دمنهور","كفر الدوار"],
+"كفر الشيخ":["كفر الشيخ","دسوق"],
+"أسيوط":["أسيوط","ديروط"],
+"سوهاج":["سوهاج","جرجا"],
+"قنا":["قنا","نجع حمادي"],
+"الأقصر":["الأقصر"],
+"أسوان":["أسوان"]
+};
+
+function loadCities(){
+let gov = document.getElementById("gov").value;
+let city = document.getElementById("city");
+city.innerHTML = "";
+
+data[gov].forEach(c=>{
+let option = document.createElement("option");
+option.text = c;
+city.add(option);
+});
+}
+
+function generate(){
+document.getElementById("invoice").style.display="block";
+
+let order="ORD-"+Math.floor(100000+Math.random()*900000);
+
+document.getElementById("orderId").innerText="رقم الطلب: "+order;
+document.getElementById("date").innerText=new Date().toLocaleString();
+
+document.getElementById("c_name").innerText=name.value;
+
+let address = gov.value+" - "+city.value+" - "+street.value;
+document.getElementById("c_address").innerText=address;
+
+document.getElementById("c_product").innerText=product.value;
+document.getElementById("c_amount").innerText=amount.value+" جنيه";
+document.getElementById("c_note").innerText=note.value;
+
+document.getElementById("qrcode").innerHTML="";
+new QRCode(document.getElementById("qrcode"), {
+text: "https://www.facebook.com/elsoooqshop",
+width:120,
+height:120
+});
+}
+
+function downloadPDF(){
+html2pdf().from(document.getElementById("invoice")).save("elsoooq.pdf");
+}
+</script>
+
+</body>
+  </html>
