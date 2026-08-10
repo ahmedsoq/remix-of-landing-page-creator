@@ -476,6 +476,7 @@ function renderProduct(p){
     '<div class="glass g-lime proof" id="proof"><span>👤 أحمد من القاهرة طلب الآن</span></div>' +
     '<section class="glass g-violet pad">' +
       '<h1>'+esc(p.name)+'</h1>' +
+      (p.desc ? '<p style="margin:6px 0 10px;font-size:13.5px;line-height:1.8;opacity:.9">'+esc(p.desc)+'</p>' : '') +
       '<div class="slider" id="slider"></div><div class="dots" id="dots"></div>' +
       '<div class="row" style="margin-top:12px">' +
         '<span class="glass g-orange price">'+Number(p.price)+' ج</span>' +
