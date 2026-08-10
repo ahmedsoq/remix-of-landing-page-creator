@@ -581,8 +581,12 @@ function buildQty(p){
 }
 function updTotal(){
   if(!CUR) return;
-  document.getElementById("f_total").textContent = totalFor(CUR, Number(document.getElementById("f_qty").value)) + " ج";
+  var q = Number(document.getElementById("f_qty").value);
+  document.getElementById("f_sub").textContent = subtotalFor(CUR,q) + " ج";
+  document.getElementById("f_ship").textContent = SHIP + " ج";
+  document.getElementById("f_total").textContent = totalFor(CUR, q) + " ج";
 }
+
 
 function bindNav(){
   Array.prototype.forEach.call(document.querySelectorAll("[data-nav]"), function(a){
