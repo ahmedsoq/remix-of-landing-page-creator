@@ -136,6 +136,15 @@ body{padding-bottom:76px}
 .arow span{flex:1;font-size:12.5px;font-weight:900}
 .arow small{font-size:11px;opacity:.7}
 .arow button{border:none;background:rgba(255,60,60,.25);color:#fff;font-family:inherit;font-weight:900;border-radius:10px;padding:6px 10px;cursor:pointer;font-size:11.5px}
+.upzone{border:2px dashed rgba(255,255,255,.35);border-radius:16px;padding:14px;text-align:center;background:rgba(255,255,255,.05);cursor:pointer;font-size:13px;font-weight:900}
+.upzone input{display:none}
+.upgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-top:10px}
+.upitem{position:relative;background:rgba(255,255,255,.07);border-radius:14px;padding:6px}
+.upitem img{width:100%;height:84px;object-fit:cover;border-radius:10px;background:rgba(0,0,0,.3)}
+.upitem input{width:100%;margin-top:5px;padding:5px 6px;border-radius:8px;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.25);color:#fff;font-family:inherit;font-size:11px}
+.upitem .x{position:absolute;top:2px;left:2px;border:none;background:rgba(255,50,50,.85);color:#fff;border-radius:50%;width:22px;height:22px;font-weight:900;cursor:pointer;font-size:12px}
+.upitem .mv{display:flex;gap:4px;margin-top:4px}
+.upitem .mv button{flex:1;border:none;background:rgba(255,255,255,.15);color:#fff;border-radius:8px;padding:3px;cursor:pointer;font-weight:900;font-size:11px}
 @media (prefers-reduced-motion: reduce){*{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}html{scroll-behavior:auto}}
 </style>
 </head>
@@ -467,6 +476,7 @@ function renderProduct(p){
     '<div class="glass g-lime proof" id="proof"><span>👤 أحمد من القاهرة طلب الآن</span></div>' +
     '<section class="glass g-violet pad">' +
       '<h1>'+esc(p.name)+'</h1>' +
+      (p.desc ? '<p style="margin:6px 0 10px;font-size:13.5px;line-height:1.8;opacity:.9">'+esc(p.desc)+'</p>' : '') +
       '<div class="slider" id="slider"></div><div class="dots" id="dots"></div>' +
       '<div class="row" style="margin-top:12px">' +
         '<span class="glass g-orange price">'+Number(p.price)+' ج</span>' +
@@ -649,20 +659,26 @@ document.getElementById("orderForm").onsubmit = function(e){
 
 /* ============ عناصر التحفيز على الشراء ============ */
 function startUrgency(){
-  var CD = "cam_cd_end";
+  var pid = CUR ? CUR.id : "x";
+  var HRS = (CUR && Number(CUR.hours)) ? Number(CUR.hours) : 4;
+  var SPAN = HRS*3600*1000;
+  var CD = "cd_" + pid;
   var end = parseInt(localStorage.getItem(CD) || "0", 10);
-  if(!end || end < Date.now()) { end = Date.now() + 4*3600*1000; try{ localStorage.setItem(CD, String(end)); }catch(e){} }
+  if(!end || end < Date.now()) { end = Date.now() + SPAN; try{ localStorage.setItem(CD, String(end)); }catch(e){} }
   function two(n){ return n < 10 ? "0"+n : ""+n; }
   function tick(){
     var el = document.getElementById("cdown"); if(!el) return;
     var s = Math.max(0, Math.floor((end - Date.now())/1000));
-    if(s === 0){ end = Date.now() + 4*3600*1000; try{ localStorage.setItem(CD, String(end)); }catch(e){} }
+    if(s === 0){ end = Date.now() + SPAN; try{ localStorage.setItem(CD, String(end)); }catch(e){} }
     el.textContent = two(Math.floor(s/3600))+":"+two(Math.floor(s%3600/60))+":"+two(s%60);
   }
   tick();
-  var SK = "cam_stock", st = parseInt(localStorage.getItem(SK) || "0", 10);
-  if(!st || st < 4){ st = 5 + Math.floor(Math.random()*5); try{ localStorage.setItem(SK, String(st)); }catch(e){} }
+  var SK = "stk_" + pid, st = parseInt(localStorage.getItem(SK) || "0", 10);
+  var base = (CUR && Number(CUR.stock)) ? Number(CUR.stock) : 0;
+  if(base) st = base;
+  else if(!st || st < 4){ st = 5 + Math.floor(Math.random()*5); try{ localStorage.setItem(SK, String(st)); }catch(e){} }
   var sEl = document.getElementById("stock"); if(sEl) sEl.textContent = st;
+
 
   if(urgStarted) return;
   urgStarted = true;
@@ -712,9 +728,58 @@ function adminCheck(){
 window.addEventListener("hashchange", adminCheck);
 
 function emptyForm(){
-  return {id:"", name:"", price:"", oldPrice:"", badge:"", images:"", features:"", video:"", tiers:"0,100,200"};
+  return {id:"", name:"", price:"", oldPrice:"", badge:"", desc:"", stock:"", hours:"", images:"", features:"", video:"", tiers:"0,100,200"};
 }
-var EDIT = emptyForm();
+var EDIT = emptyForm(), UPLOADS = [];
+
+function ytId(v){
+  v = String(v||"").trim();
+  var m = v.match(/(?:shorts\/|watch\?v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{6,})/);
+  return m ? m[1] : v.replace(/[^A-Za-z0-9_-]/g, "");
+}
+/* تصغير وضغط الصورة المرفوعة قبل الحفظ */
+function shrinkImage(file, cb){
+  if(!file || !/^image\//.test(file.type)) return cb(null);
+  var fr = new FileReader();
+  fr.onload = function(){
+    var img = new Image();
+    img.onload = function(){
+      var max = 900, w = img.width, h = img.height;
+      if(w > max || h > max){ var r = Math.min(max/w, max/h); w = Math.round(w*r); h = Math.round(h*r); }
+      var c = document.createElement("canvas"); c.width = w; c.height = h;
+      var x = c.getContext("2d"); x.fillStyle = "#0b0b12"; x.fillRect(0,0,w,h); x.drawImage(img,0,0,w,h);
+      try{ cb(c.toDataURL("image/jpeg", 0.72)); }catch(e){ cb(fr.result); }
+    };
+    img.onerror = function(){ cb(null); };
+    img.src = fr.result;
+  };
+  fr.onerror = function(){ cb(null); };
+  fr.readAsDataURL(file);
+}
+/* معاينة الصور المرفوعة داخل اللوحة */
+function drawUploads(){
+  var box = document.getElementById("p_prev"); if(!box) return;
+  if(!UPLOADS.length){ box.innerHTML = '<p style="font-size:12px;opacity:.7;margin:0">لا توجد صور مرفوعة بعد.</p>'; return; }
+  box.innerHTML = UPLOADS.map(function(g,i){
+    return '<div class="upitem"><button class="x" data-rm="'+i+'" title="حذف">✕</button>' +
+      '<img src="'+esc(g[0])+'" alt="">' +
+      '<input data-cap="'+i+'" value="'+esc(g[1]||"")+'" placeholder="وصف الصورة" />' +
+      '<div class="mv"><button data-mv="'+i+'" data-d="-1">◀</button><button data-mv="'+i+'" data-d="1">▶</button></div></div>';
+  }).join("");
+  box.querySelectorAll("[data-rm]").forEach(function(b){
+    b.onclick = function(){ UPLOADS.splice(Number(b.getAttribute("data-rm")),1); drawUploads(); };
+  });
+  box.querySelectorAll("[data-cap]").forEach(function(inp){
+    inp.oninput = function(){ UPLOADS[Number(inp.getAttribute("data-cap"))][1] = inp.value; };
+  });
+  box.querySelectorAll("[data-mv]").forEach(function(b){
+    b.onclick = function(){
+      var i = Number(b.getAttribute("data-mv")), j = i + Number(b.getAttribute("data-d"));
+      if(j < 0 || j >= UPLOADS.length) return;
+      var t = UPLOADS[i]; UPLOADS[i] = UPLOADS[j]; UPLOADS[j] = t; drawUploads();
+    };
+  });
+}
 
 function panel(){
   var html = '<section class="glass g-pink pad" style="margin-top:20px">' +
@@ -740,13 +805,22 @@ function panel(){
       '<label><span>السعر الحالي</span><input class="fld" data-p="price" inputmode="numeric" value="'+esc(EDIT.price)+'" placeholder="1200" /></label>' +
       '<label><span>السعر القديم</span><input class="fld" data-p="oldPrice" inputmode="numeric" value="'+esc(EDIT.oldPrice)+'" placeholder="1900" /></label>' +
       '<label><span>شارة المنتج (اختياري)</span><input class="fld" data-p="badge" value="'+esc(EDIT.badge)+'" placeholder="جديد / الأكثر مبيعاً" /></label>' +
-      '<label><span>كود فيديو يوتيوب (اختياري)</span><input class="fld" data-p="video" value="'+esc(EDIT.video)+'" placeholder="Rahad6F_gNQ" /></label>' +
-      '<label class="full"><span>الصور — كل سطر: رابط الصورة | الوصف</span><textarea class="fld" data-p="images" placeholder="https://.../1.jpg | وصف الصورة&#10;https://.../2.jpg | وصف آخر">'+esc(EDIT.images)+'</textarea></label>' +
+      '<label><span>فيديو يوتيوب (رابط أو كود)</span><input class="fld" data-p="video" value="'+esc(EDIT.video)+'" placeholder="https://youtube.com/shorts/Rahad6F_gNQ" /></label>' +
+      '<label><span>عدد القطع المتبقية (شريط التحفيز)</span><input class="fld" data-p="stock" inputmode="numeric" value="'+esc(EDIT.stock)+'" placeholder="7" /></label>' +
+      '<label><span>مدة العرض بالساعات (العدّاد)</span><input class="fld" data-p="hours" inputmode="numeric" value="'+esc(EDIT.hours)+'" placeholder="4" /></label>' +
+      '<label class="full"><span>وصف المنتج (يظهر تحت الاسم)</span><textarea class="fld" data-p="desc" placeholder="وصف قصير يشجع على الشراء">'+esc(EDIT.desc)+'</textarea></label>' +
+      '<div class="full">' +
+        '<span style="font-size:12.5px;font-weight:900;display:block;margin-bottom:6px">صور المنتج — ارفعها من جهازك مباشرة</span>' +
+        '<div class="upzone" id="p_zone">📤 اضغط لاختيار الصور من الجهاز (يمكن اختيار أكثر من صورة)<input type="file" id="p_files" accept="image/*" multiple /></div>' +
+        '<div class="upgrid" id="p_prev"></div>' +
+      '</div>' +
+      '<label class="full"><span>أو روابط صور إضافية — كل سطر: رابط الصورة | الوصف</span><textarea class="fld" data-p="images" placeholder="https://.../1.jpg | وصف الصورة">'+esc(EDIT.images)+'</textarea></label>' +
       '<label class="full"><span>المواصفات (4 أسطر) — كل سطر: أيقونة (إيموجي أو رابط) | العنوان | الوصف</span><textarea class="fld" data-p="features" placeholder="🔋 | بطارية قوية | تدوم 10 ساعات">'+esc(EDIT.features)+'</textarea></label>' +
       '<label class="full"><span>خصومات الكمية — خصم القطعة لـ 1 و 2 و 3 قطع</span><input class="fld" data-p="tiers" value="'+esc(EDIT.tiers)+'" placeholder="0,100,200" /></label>' +
     '</div>' +
     '<div class="row" style="justify-content:flex-start;margin-top:14px">' +
       '<button class="cta" id="p_save" style="width:auto;padding:12px 22px">حفظ المنتج</button>' +
+      '<button class="ghost" id="p_tpl" style="width:auto;margin:0;padding:12px 22px">تعبئة بقالب الكاميرا</button>' +
       '<button class="ghost" id="p_clear" style="width:auto;margin:0;padding:12px 22px">نموذج فارغ</button>' +
     '</div><p class="msg" id="p_msg"></p>' +
     '<div class="adminlist" id="p_list"></div>' +
@@ -817,13 +891,39 @@ function panel(){
       return parts.slice(0,n);
     });
   }
-  document.getElementById("p_clear").onclick = function(){ EDIT = emptyForm(); panel(); };
+  document.getElementById("p_clear").onclick = function(){ EDIT = emptyForm(); UPLOADS = []; panel(); };
+  document.getElementById("p_tpl").onclick = function(){
+    EDIT = {
+      id:"", name:"كاميرا مراقبة جيب 1080P", price:"1200", oldPrice:"1900", badge:"الأكثر مبيعاً",
+      desc:"كاميرا صغيرة تسجل صوت وصورة بجودة 1080P بدون إنترنت — رؤية ليلية ومشبك معدني قوي، تشتغل في أي مكان.",
+      stock:"7", hours:"4", images:"",
+      features:"🎥 | جودة التصوير 1080P | تصوير صوت وصورة بوضوح عالي نهاراً وليلاً\n💾 | تخزين على الميموري | يمكن تخزين كل شيء على كارت ميموري حتى 128 جيجا\n🔋 | بطارية قوية | تدوم 4 ساعات ونصف تصوير متواصل\n✋ | سهولة الاستخدام | يمكن استخدامها في أي مكان مخفي بمشبك معدني",
+      video:"Rahad6F_gNQ", tiers:"0,100,200"
+    };
+    UPLOADS = []; panel();
+  };
+  var fileInput = document.getElementById("p_files");
+  document.getElementById("p_zone").onclick = function(){ fileInput.click(); };
+  fileInput.onchange = function(){
+    var fs = Array.prototype.slice.call(fileInput.files || []);
+    if(!fs.length) return;
+    var out = document.getElementById("p_msg");
+    out.textContent = "جاري معالجة الصور...";
+    var left = fs.length;
+    fs.forEach(function(f){
+      shrinkImage(f, function(url){
+        if(url) UPLOADS.push([url, ""]);
+        if(--left === 0){ fileInput.value = ""; out.textContent = "✅ تم إضافة الصور — راجع المعاينة ثم اضغط حفظ المنتج"; drawUploads(); }
+      });
+    });
+  };
+  drawUploads();
   document.getElementById("p_save").onclick = function(){
     var d = pdraft(), msg = document.getElementById("p_msg");
     if(!d.name || !d.name.trim()) { msg.textContent = "اكتب اسم المنتج"; return; }
     if(!Number(d.price)) { msg.textContent = "اكتب سعر صحيح"; return; }
-    var imgs = parseLines(d.images, 2);
-    if(!imgs.length) { msg.textContent = "أضف صورة واحدة على الأقل"; return; }
+    var imgs = UPLOADS.map(function(g){ return [g[0], g[1]||""]; }).concat(parseLines(d.images, 2));
+    if(!imgs.length) { msg.textContent = "ارفع صورة واحدة على الأقل"; return; }
     var tv = String(d.tiers||"0,100,200").split(",").map(function(x){ return Number(x.trim())||0; });
     var tiers = [1,2,3].map(function(q,i){
       var dd = tv[i]||0;
@@ -835,15 +935,19 @@ function panel(){
       price: Number(d.price), oldPrice: Number(d.oldPrice)||0,
       badge: (d.badge||"").trim(),
       images: imgs,
+      desc: (d.desc||"").trim(),
+      stock: Number(d.stock)||0,
+      hours: Number(d.hours)||0,
       features: parseLines(d.features, 3).slice(0,4),
-      video: (d.video||"").trim(),
+      video: ytId(d.video||""),
       tiers: tiers
     };
     var list = customProducts();
     var i = list.findIndex(function(x){ return x.id === prod.id; });
     if(i > -1) list[i] = prod; else list.push(prod);
-    saveCustom(list);
-    EDIT = emptyForm();
+    try{ saveCustom(list); }
+    catch(e){ msg.textContent = "❌ مساحة المتصفح ممتلئة — احذف منتجاً قديماً أو استخدم صور أقل"; return; }
+    EDIT = emptyForm(); UPLOADS = [];
     msg.textContent = "✅ تم حفظ المنتج — رابطه: /" + prod.id;
     route();
   };
@@ -871,11 +975,13 @@ function panel(){
       if(!p) return;
       EDIT = {
         id:p.id, name:p.name, price:String(p.price), oldPrice:String(p.oldPrice||""), badge:p.badge||"",
-        images:(p.images||[]).map(function(g){ return g[0] + " | " + (g[1]||""); }).join("\n"),
+        desc:p.desc||"", stock:String(p.stock||""), hours:String(p.hours||""),
+        images:"",
         features:(p.features||[]).map(function(f){ return f.join(" | "); }).join("\n"),
         video:p.video||"",
         tiers:(p.tiers||[]).map(function(t){ return t[1]; }).join(",")
       };
+      UPLOADS = (p.images||[]).map(function(g){ return [g[0], g[1]||""]; });
       panel();
       window.scrollTo(0, document.getElementById("adminMount").offsetTop);
     };
