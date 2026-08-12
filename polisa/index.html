@@ -3,677 +3,308 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>elsoooq - بوليصة شحن</title>
+<title>elsoooq - بوليصة شحن (محسّنة)</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 <style>
-:root{--ink:#111827;--line:#cbd5e1;--muted:#64748b;--brand:#0f172a;--blue:#1d4ed8;--green:#15803d;--red:#b91c1c;}
-*{box-sizing:border-box;}
-html{background:#eef2f7;}
-body{font-family:Tahoma,"Segoe UI",Arial,sans-serif;background:#eef2f7;margin:0;padding:24px 14px;color:var(--ink);}
-.wrap{max-width:760px;margin:auto;}
-
-/* ===== واجهة الإدخال ===== */
-.card{background:#fff;border:1px solid #dbe3ed;border-radius:10px;padding:22px;margin-bottom:20px;box-shadow:0 12px 35px rgba(15,23,42,.08);}
-.card h2{margin:0 0 5px;font-size:22px;}
-.card .sub{margin:0 0 18px;color:var(--muted);font-size:13px;}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;}
-.field{display:flex;flex-direction:column;gap:5px;}
-.field.full{grid-column:1 / -1;}
-label{font-size:12.5px;font-weight:600;color:#374151;}
-input,select,textarea{width:100%;padding:11px 12px;border:1px solid #cbd5e1;border-radius:6px;font-size:14px;font-family:inherit;background:#fff;outline:none;}
-input:focus,select:focus,textarea:focus{border-color:#111827;box-shadow:0 0 0 3px rgba(17,24,39,.08);}
-textarea{resize:vertical;min-height:62px;}
-.btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
-button{min-height:44px;padding:11px;border:none;border-radius:6px;font-size:14px;font-weight:700;color:#fff;cursor:pointer;font-family:inherit;}
-button:active{transform:translateY(1px);}
-.generate{background:var(--brand);grid-column:1 / -1;}
-.print{background:var(--blue);}
-.pdf{background:var(--red);}
-.wa{background:var(--green);grid-column:1 / -1;}
-.hint{font-size:12px;color:var(--muted);margin-top:10px;text-align:center;}
-.err{color:#dc2626;font-size:12.5px;margin-top:8px;display:none;}
-
-/* ===== البوليصة 10×15 سم ===== */
-#print-area{width:100%;}
-#sheet{display:none;padding:16px 0 28px;}
-#sheet.show{display:block;}
-.label{direction:rtl;width:100mm;height:150mm;background:#fff;margin:0 auto;padding:2.5mm;border:1px solid #000;display:grid;grid-template-rows:auto auto auto auto auto auto auto;align-content:stretch;gap:1.2mm;font-size:9px;line-height:1.32;overflow:hidden;}
-.lb-head{display:flex;justify-content:space-between;align-items:center;background:#111;color:#fff;padding:1.6mm 2mm;border-radius:1mm;}
-.lb-head b{font-size:12px;letter-spacing:.5px;}
-.lb-head span{font-size:8px;}
-.bc{text-align:center;border:1px solid #000;border-radius:1mm;padding:1mm 0 .4mm;}
-.bc svg{display:block;width:100%;height:10mm;}
-.bc .oid{font-size:10px;font-weight:700;letter-spacing:1px;margin-top:.4mm;}
-.sec{border:1px solid var(--line);border-radius:1mm;padding:1.2mm 1.8mm;}
-.sec .t{display:inline-block;background:#111;color:#fff;font-size:7.5px;padding:.4mm 1.6mm;border-radius:.8mm;margin-bottom:1mm;}
-.r{display:flex;justify-content:space-between;gap:2mm;padding:.5mm 0;border-bottom:1px dotted #ddd;}
-.r:last-child{border-bottom:none;}
-.r span:first-child{color:#555;flex:0 0 18mm;}
-.r span:last-child{font-weight:600;text-align:left;flex:1;word-break:break-word;}
-.total{display:flex;justify-content:space-between;align-items:center;background:#111;color:#fff;padding:1.6mm 2mm;border-radius:1mm;font-size:11px;font-weight:700;}
-.mid{display:flex;gap:1.4mm;align-items:stretch;min-height:26mm;}
-.mid .sec{flex:1;}
-.qrbox{width:20mm;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:1mm;padding:1mm;}
-.qrbox img,.qrbox canvas{width:16mm !important;height:16mm !important;}
-.qrbox small{font-size:6px;color:#666;margin-top:.5mm;}
-.note-txt{min-height:12mm;}
-.policy{text-align:center;font-size:7.5px;color:#333;border:1px dashed #999;border-radius:1mm;padding:1mm;}
-.lb-foot{border-top:1px solid #000;padding-top:1.2mm;text-align:center;font-size:7.5px;line-height:1.45;align-self:end;}
-.lb-foot b{font-size:9px;}
-.lb-foot a{color:#000;text-decoration:none;}
-.thanks{font-weight:700;margin-bottom:.5mm;}
-
-/* ===== الطباعة: البوليصة فقط في ورقة واحدة ===== */
-@page{size:100mm 150mm;margin:0;}
-@media print{
-  html,body{background:#fff !important;margin:0 !important;padding:0 !important;width:100mm !important;height:150mm !important;overflow:hidden !important;}
-  .wrap{display:none !important;}
-  #print-area,#sheet{display:block !important;margin:0 !important;padding:0 !important;width:100mm !important;height:150mm !important;overflow:hidden !important;}
-  #print-area{position:absolute !important;inset:0 !important;}
-  .label{width:100mm !important;height:150mm !important;border:none !important;page-break-after:avoid !important;page-break-inside:avoid !important;break-inside:avoid !important;box-shadow:none !important;margin:0 !important;}
+:root{
+  --ink:#111827;
+  --line:#cbd5e1;
+  --muted:#64748b;
+  --brand:#0f172a;
+  --label-width-mm:100mm; /* default width */
+  --label-height-mm:150mm; /* default height */
+  --label-padding-mm:2.5mm; /* inner padding */
 }
-@media(max-width:640px){body{padding:12px 10px}.card{padding:16px}.grid{grid-template-columns:1fr}.field.full{grid-column:auto}.btns{grid-template-columns:1fr}.generate,.wa{grid-column:auto}#sheet{overflow-x:auto}.label{transform-origin:top center;max-width:100%}}
+*{box-sizing:border-box}
+html{background:#f3f4f6}
+body{font-family:Tahoma, "Segoe UI", Arial, sans-serif;background:#f3f4f6;margin:0;padding:20px;color:var(--ink)}
+.wrap{max-width:1100px;margin:0 auto;display:flex;gap:18px;flex-wrap:wrap}
+.panel{background:#fff;border:1px solid #e6eef6;border-radius:10px;padding:20px;flex:0 0 420px;box-shadow:0 10px 30px rgba(15,23,42,.06)}
+.preview{flex:1;min-width:320px;display:flex;flex-direction:column;align-items:center}
+.panel h2{margin:0 0 8px;font-size:18px}
+.label-presets{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.preset-btn{padding:8px 10px;border-radius:8px;border:1px solid #e5eef8;background:#fff;cursor:pointer}
+.field{margin-bottom:10px}
+.field label{display:block;font-size:13px;margin-bottom:6px;color:#334155}
+.input,textarea,select{width:100%;padding:9px;border:1px solid #d1d9e6;border-radius:8px}
+.row{display:flex;gap:8px}
+.row .col{flex:1}
+.actions{display:flex;gap:8px;margin-top:10px}
+.btn{padding:10px 12px;border-radius:8px;border:0;cursor:pointer;font-weight:700}
+.btn.primary{background:var(--brand);color:#fff}
+.btn.ghost{background:#fafafa;border:1px solid #e6eef8}
+.hint{font-size:13px;color:var(--muted);margin-top:8px}
+
+/* Preview label (real-size scaled down on screen) */
+.preview-wrap{background:transparent;padding:12px}
+#label-frame{width:calc(var(--label-width-mm) * 0.75); /* scale for on-screen preview ~75% of mm to px conversion */
+  transform-origin:top right; /* for RTL */
+}
+@media (min-width:900px){
+  /* increase preview scale on large screens */
+  #label-frame{width:calc(var(--label-width-mm) * 0.9);} 
+}
+
+.label{direction:rtl;background:#fff;padding:calc(var(--label-padding-mm));border:1px solid #ddd;border-radius:6px;box-shadow:0 6px 18px rgba(17,24,39,0.06);display:flex;flex-direction:column;gap:6px}
+.lb-head{display:flex;justify-content:space-between;align-items:center;background:#111;color:#fff;padding:6px;border-radius:4px}
+.lb-head b{font-size:12px}
+.barcode{display:flex;flex-direction:column;align-items:center;padding:4px;border:1px solid #000;border-radius:6px}
+.barcode svg{width:100%;height:36px}
+.order-id{text-align:center;font-weight:700;margin-top:4px}
+.sections{display:flex;gap:8px}
+.right{flex:1}
+.left{width:36mm}
+.sec{border:1px solid var(--line);border-radius:6px;padding:6px;background:#fff}
+.sec .t{display:inline-block;background:#111;color:#fff;padding:3px 8px;border-radius:12px;font-size:11px}
+.r{display:flex;justify-content:space-between;gap:6px;padding:6px 0;border-bottom:1px dashed #eee}
+.r:last-child{border-bottom:none}
+.cod{display:flex;justify-content:space-between;align-items:center;background:#111;color:#fff;padding:8px;border-radius:6px;font-weight:700}
+.qrbox{width:36mm;height:36mm;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;border-radius:4px}
+.qrbox canvas, .qrbox img{width:32mm !important;height:32mm !important}
+.note{min-height:18mm;border:1px dashed #e2e8f0;border-radius:6px;padding:8px;text-align:center;color:var(--muted)}
+.footer{text-align:center;border-top:1px solid #eee;padding-top:6px;font-size:11px;color:var(--muted)}
+
+/* Print rules: dynamic size using CSS variables */
+@page { size: var(--label-width-mm) var(--label-height-mm); margin: 0; }
+@media print{
+  html,body{background:#fff;margin:0;padding:0}
+  .wrap,.panel{display:none}
+  #print-area{display:block;width:var(--label-width-mm);height:var(--label-height-mm);overflow:hidden}
+  .label{padding:calc(var(--label-padding-mm));box-shadow:none;border:none}
+}
+
+/* Responsive helpers */
+@media(max-width:720px){.wrap{padding:10px}.panel{flex:1 1 100%}.preview{order:2}}
 </style>
 </head>
 <body>
-
 <div class="wrap">
-<div class="card">
-<h2>إنشاء بوليصة شحن</h2>
-<p class="sub">املأ البيانات ثم اضغط إنشاء البوليصة</p>
+  <div class="panel" aria-label="ضبط البوليصة">
+    <h2>إعدادات البوليصة</h2>
+    <p class="hint">اختر مقاس جاهز أو أدخل مقاس مخصص (بالمليمتر). المعاينة تعرض البوليصة بالحجم الحقيقي تقريباً على الشاشة.</p>
 
-<div class="grid">
-  <div class="field"><label>اسم العميل</label><input id="name" placeholder="مثال: أحمد محمد"></div>
-  <div class="field"><label>رقم الهاتف</label><input id="phone" inputmode="tel" placeholder="01xxxxxxxxx"></div>
-  <div class="field"><label>المحافظة</label>
-    <select id="gov" onchange="loadCities()"><option value="">اختر المحافظة</option></select>
-  </div>
-  <div class="field"><label>المركز / الحي</label>
-    <select id="city"><option value="">اختر المركز</option></select>
-  </div>
-  <div class="field full"><label>العنوان بالتفصيل</label><input id="street" placeholder="الشارع - رقم العقار - علامة مميزة"></div>
-  <div class="field"><label>المنتج</label><input id="product" placeholder="وصف المنتج"></div>
-  <div class="field"><label>المبلغ (جنيه)</label><input id="amount" inputmode="decimal" placeholder="0"></div>
-  <div class="field"><label>عدد القطع</label><input id="pieces" inputmode="numeric" value="1"></div>
-  <div class="field"><label>نوع الشحن</label>
-    <select id="stype"><option>عادي</option><option>سريع</option><option>مرتجع</option></select>
-  </div>
-  <div class="field full"><label>ملاحظات</label><textarea id="note" placeholder="ملاحظات للمندوب"></textarea></div>
-</div>
-
-<div class="err" id="err">من فضلك أكمل البيانات المطلوبة (الاسم، الهاتف، المحافظة، المركز).</div>
-
-<div class="btns">
-  <button class="generate" onclick="generate()">إنشاء البوليصة</button>
-  <button class="print" onclick="printLabel()">طباعة</button>
-  <button class="pdf" onclick="downloadPDF()">تحميل PDF</button>
-  <button class="wa" onclick="sendWhatsApp()">تجهيز PDF وإرساله على واتساب</button>
-</div>
-<p class="hint">الطباعة الحرارية بمقاس 10×15 سم — زر واتساب ينزّل نسخة PDF الجاهزة ثم يفتح الرقم المحدد لإرفاقها.</p>
-</div>
-</div>
-
-<div id="print-area">
-<div id="sheet">
-<div class="label" id="labelEl">
-
-  <div class="lb-head"><b>ELSOOOQ 
-    </b><span id="l_date"></span></div>
-
-  <div class="bc"><svg id="barcode"></svg><div class="oid" id="orderId"></div></div>
-
-  <div class="sec">
-    <span class="t">بيانات المستلم</span>
-    <div class="r"><span>الاسم</span><span id="c_name"></span></div>
-    <div class="r"><span>الهاتف</span><span id="c_phone"></span></div>
-    <div class="r"><span>العنوان</span><span id="c_address"></span></div>
-  </div>
-
-  <div class="mid">
-    <div class="sec">
-      <span class="t">تفاصيل الشحنة</span>
-      <div class="r"><span>المنتج</span><span id="c_product"></span></div>
-      <div class="r"><span>القطع</span><span id="c_pieces"></span></div>
-      <div class="r"><span>الخدمة</span><span id="c_type"></span></div>
+    <div class="field">
+      <label>المقاسات الجاهزة</label>
+      <div class="label-presets">
+        <button class="preset-btn" data-w="100" data-h="150">100 × 150 مم (10×15 سم)</button>
+        <button class="preset-btn" data-w="80" data-h="200">80 × 200 مم</button>
+        <button class="preset-btn" data-w="80" data-h="60">80 × 60 مم (قصيرة)</button>
+        <button class="preset-btn" data-w="58" data-h="120">58 × 120 مم (طابعة 58)</button>
+      </div>
     </div>
-    <div class="qrbox"><div id="qrcode"></div><small>تتبع</small></div>
+
+    <div class="row">
+      <div class="col field">
+        <label>عرض البوليصة (مم)</label>
+        <input id="labelWidth" class="input" type="number" value="100" min="10">
+      </div>
+      <div class="col field">
+        <label>ارتفاع البوليصة (مم)</label>
+        <input id="labelHeight" class="input" type="number" value="150" min="10">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>حشوة داخلية (مم)</label>
+      <input id="labelPadding" class="input" type="number" value="2.5" step="0.5" min="0">
+    </div>
+
+    <hr>
+
+    <div class="field">
+      <label>رقم الطلب / باركود</label>
+      <input id="orderIdInput" class="input" value="ORD465731">
+    </div>
+
+    <div class="row">
+      <div class="col field"><label>اسم المستلم</label><input id="nameInput" class="input" value="ايهاب بوليد"></div>
+      <div class="col field"><label>الهاتف</label><input id="phoneInput" class="input" value="01125012480"></div>
+    </div>
+
+    <div class="field"><label>العنوان</label><input id="addressInput" class="input" value="القاهرة - حلوان - كورنيش النيل"></div>
+
+    <div class="row">
+      <div class="col field"><label>المنتج</label><input id="productInput" class="input" value="كاميرا X5"></div>
+      <div class="col field"><label>الكمية</label><input id="qtyInput" class="input" value="1"></div>
+    </div>
+
+    <div class="field"><label>المبلغ (جنيه)</label><input id="amountInput" class="input" value="570"></div>
+
+    <div class="field"><label>ملاحظات</label><textarea id="noteInput" class="input">-</textarea></div>
+
+    <div class="row actions">
+      <button id="updateBtn" class="btn primary">تحديث المعاينة</button>
+      <button id="printBtn" class="btn ghost">طباعة سريعة</button>
+      <button id="pdfBtn" class="btn ghost">تصدير PDF</button>
+    </div>
+
+    <p class="hint">ملاحظة: تأكد من إعداد الطابعة بحيث لا تضيف هوامش (margins = 0) عند الطباعة.</p>
   </div>
 
-  <div class="total"><span>المبلغ المطلوب (COD)</span><span id="c_amount"></span></div>
+  <div class="preview">
+    <h2 style="margin:0 0 8px">معاينة البوليصة</h2>
+    <div class="preview-wrap" id="print-area">
+      <!-- label-frame gives a scaled preview; actual printed size controlled by CSS variables and @page -->
+      <div id="label-frame">
+        <div class="label" id="labelEl" style="min-width:calc(var(--label-width-mm));min-height:calc(var(--label-height-mm));">
 
-  <div class="sec note-txt">
-    <span class="t">ملاحظات</span>
-    <div id="c_note"></div>
+          <div class="lb-head"><b id="storeName">ELSOOOQ</b><div id="dateText"></div></div>
+
+          <div class="barcode">
+            <svg id="barcode"></svg>
+            <div class="order-id" id="orderText">ORD465731</div>
+          </div>
+
+          <div class="sections">
+            <div class="right">
+              <div class="sec">
+                <span class="t">بيانات المستلم</span>
+                <div class="r"><span>الاسم</span><span id="pvName">-</span></div>
+                <div class="r"><span>الهاتف</span><span id="pvPhone">-</span></div>
+                <div class="r"><span>العنوان</span><span id="pvAddress">-</span></div>
+              </div>
+            </div>
+            <div class="left">
+              <div class="sec" style="display:flex;flex-direction:column;gap:6px;align-items:stretch">
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <div>
+                    <div style="font-weight:700" id="pvProduct">-</div>
+                    <div style="color:var(--muted)" id="pvQty">-</div>
+                  </div>
+                </div>
+                <div class="qrbox"><div id="pvQr"></div></div>
+              </div>
+              <div style="margin-top:6px" class="cod"><div>المبلغ المطلوب (COD)</div><div id="pvAmount">0 جنيه</div></div>
+            </div>
+          </div>
+
+          <div class="note" id="pvNote">-</div>
+
+          <div class="footer">
+            <div style="font-weight:700">elsoooq</div>
+            <div><a href="https://www.facebook.com/elsoooqshop" target="_blank">facebook.com/elsoooqshop</a></div>
+            <div>هاتف / واتساب: 01022077100</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
   </div>
-
-  <div class="policy"> 
-    يسمح للعميل بالعماينة</div>
-
-  <div class="lb-foot">
-    <div class="thanks">شكراً لاختياركم elsoooq</div>
-    <div><b>elsoooq</b></div>
-    <div>فيسبوك: <a href="https://www.facebook.com/elsoooqshop">facebook.com/elsoooqshop</a></div>
-    <div>هاتف / واتساب: 01022077100</div>
-  </div>
-
-</div>
-</div>
 </div>
 
 <script>
-const egypt = {
-"القاهرة": [
-"مدينة نصر",
-"مصر الجديدة",
-"المعادي",
-"حلوان",
-"عين شمس",
-"الزيتون",
-"المطرية",
-"السلام",
-"النزهة",
-"مدينة بدر",
-"القاهرة الجديدة",
-"التجمع الخامس",
-"الشروق",
-"العبور",
-"المرج",
-"شبرا",
-"روض الفرج",
-"الساحل",
-"الشرابية",
-"الوايلي",
-"الظاهر",
-"العباسية",
-"وسط البلد",
-"عابدين",
-"السيدة زينب",
-"مصر القديمة",
-"الخليفة",
-"المقطم",
-"البساتين",
-"دار السلام",
-"طرة",
-"15 مايو",
-"التبين",
-"الزاوية الحمراء",
-"حدائق القبة",
-"منشية ناصر",
-"الأزبكية",
-"بولاق",
-"الموسكي",
-"الجمالية",
-"باب الشعرية",
-"الدرب الأحمر",
-"الزمالك",
-"جاردن سيتي"
-],
-"الجيزة": [
-"الهرم",
-"فيصل",
-"الدقي",
-"العجوزة",
-"المهندسين",
-"6 أكتوبر",
-"الشيخ زايد",
-"إمبابة",
-"بولاق الدكرور",
-"الوراق",
-"العمرانية",
-"المنيب",
-"كرداسة",
-"أوسيم",
-"البدرشين",
-"الحوامدية",
-"العياط",
-"الصف",
-"أطفيح",
-"منشأة القناطر",
-"أبو النمرس",
-"الباويطي/الواحات البحرية",
-"حدائق الأهرام",
-"المريوطية",
-"صفط اللبن",
-"ناهيا",
-"كفر طهرمس",
-"الطالبية",
-"المنيرة الغربية"
-],
-"الإسكندرية": [
-"سيدي جابر",
-"العجمي",
-"المنتزه",
-"محرم بك",
-"سموحة",
-"ميامي",
-"لوران",
-"سان ستيفانو",
-"العصافرة",
-"المندرة",
-"أبو قير",
-"فيكتوريا",
-"كامب شيزار",
-"الإبراهيمية",
-"محطة الرمل",
-"المنشية",
-"العطارين",
-"اللبان",
-"الجمرك",
-"كرموز",
-"باكوس",
-"الحضرة",
-"سيدي بشر",
-"برج العرب",
-"برج العرب الجديدة",
-"العامرية",
-"الدخيلة",
-"المكس",
-"بولكلي",
-"جليم",
-"رشدي",
-"الشاطبي",
-"السيوف",
-"المعمورة"
-],
-"الدقهلية": [
-"المنصورة",
-"طلخا",
-"ميت غمر",
-"دكرنس",
-"أجا",
-"منية النصر",
-"السنبلاوين",
-"الكردي",
-"بني عبيد",
-"المنزلة",
-"تمي الأمديد",
-"الجمالية",
-"شربين",
-"المطرية",
-"بلقاس",
-"ميت سلسيل",
-"جمصة",
-"محلة دمنة",
-"نبروه"
-],
-"الشرقية": [
-"الزقازيق",
-"بلبيس",
-"العاشر من رمضان",
-"منيا القمح",
-"أبو حماد",
-"القرين",
-"ههيا",
-"أبو كبير",
-"فاقوس",
-"الصالحية الجديدة",
-"الإبراهيمية",
-"ديرب نجم",
-"كفر صقر",
-"أولاد صقر",
-"الحسينية",
-"صان الحجر",
-"منشأة أبو عمر",
-"مشتول السوق",
-"القنايات"
-],
-"الغربية": [
-"طنطا",
-"المحلة الكبرى",
-"كفر الزيات",
-"زفتى",
-"السنطة",
-"قطور",
-"بسيون",
-"سمنود"
-],
-"المنوفية": [
-"شبين الكوم",
-"منوف",
-"سرس الليان",
-"أشمون",
-"الباجور",
-"قويسنا",
-"بركة السبع",
-"تلا",
-"الشهداء",
-"السادات"
-],
-"القليوبية": [
-"بنها",
-"قليوب",
-"شبرا الخيمة",
-"القناطر الخيرية",
-"الخانكة",
-"كفر شكر",
-"طوخ",
-"قها",
-"العبور",
-"الخصوص",
-"شبين القناطر",
-"مسطرد"
-],
-"البحيرة": [
-"دمنهور",
-"كفر الدوار",
-"رشيد",
-"إدكو",
-"أبو المطامير",
-"أبو حمص",
-"الدلنجات",
-"المحمودية",
-"الرحمانية",
-"إيتاي البارود",
-"حوش عيسى",
-"شبراخيت",
-"كوم حمادة",
-"بدر",
-"وادي النطرون",
-"النوبارية الجديدة"
-],
-"كفر الشيخ": [
-"كفر الشيخ",
-"دسوق",
-"فوه",
-"مطوبس",
-"برج البرلس",
-"بلطيم",
-"مصيف بلطيم",
-"الحامول",
-"بيلا",
-"الرياض",
-"سيدي سالم",
-"قلين",
-"سيدي غازي"
-],
-"أسيوط": [
-"أسيوط",
-"ديروط",
-"منفلوط",
-"القوصية",
-"أبنوب",
-"أبو تيج",
-"الغنايم",
-"ساحل سليم",
-"البداري",
-"صدفا",
-"الفتح",
-"أسيوط الجديدة"
-],
-"سوهاج": [
-"سوهاج",
-"أخميم",
-"البلينا",
-"المراغة",
-"المنشاة",
-"دار السلام",
-"جرجا",
-"جهينة",
-"ساقلته",
-"طما",
-"طهطا",
-"الكوثر",
-"سوهاج الجديدة"
-],
-"قنا": [
-"قنا",
-"أبو تشت",
-"نجع حمادي",
-"دشنا",
-"الوقف",
-"قفط",
-"نقادة",
-"فرشوط",
-"قوص"
-],
-"الأقصر": [
-"الأقصر",
-"الأقصر الجديدة",
-"إسنا",
-"طيبة الجديدة",
-"الطود",
-"الزينية",
-"البياضية",
-"القرنة",
-"أرمنت"
-],
-"أسوان": [
-"أسوان",
-"أسوان الجديدة",
-"دراو",
-"كوم أمبو",
-"نصر النوبة",
-"كلابشة",
-"إدفو",
-"الرديسية",
-"البصيلية",
-"السباعية",
-"أبو سمبل السياحية"
-],
-"بني سويف": [
-"بني سويف",
-"بني سويف الجديدة",
-"الواسطى",
-"ناصر",
-"إهناسيا",
-"ببا",
-"الفشن",
-"سمسطا",
-"الشرقية/شرق النيل"
-],
-"المنيا": [
-"المنيا",
-"المنيا الجديدة",
-"العدوة",
-"مغاغة",
-"بني مزار",
-"مطاي",
-"سمالوط",
-"المدينة الفكرية",
-"ملوي",
-"دير مواس",
-"أبو قرقاص"
-],
-"الفيوم": [
-"الفيوم",
-"الفيوم الجديدة",
-"طامية",
-"سنورس",
-"إطسا",
-"إبشواي",
-"يوسف الصديق"
-],
-"دمياط": [
-"دمياط",
-"دمياط الجديدة",
-"رأس البر",
-"فارسكور",
-"الزرقا",
-"السرو",
-"الروضة",
-"كفر البطيخ",
-"عزبة البرج",
-"ميت أبو غالب",
-"كفر سعد"
-],
-"بورسعيد": [
-"بورسعيد",
-"بورفؤاد",
-"حي الشرق",
-"حي الضواحي",
-"حي الزهور",
-"حي المناخ",
-"حي العرب",
-"حي الجنوب"
-],
-"الإسماعيلية": [
-"الإسماعيلية",
-"فايد",
-"القنطرة شرق",
-"القنطرة غرب",
-"التل الكبير",
-"أبو صوير",
-"القصاصين الجديدة",
-"نفيشة",
-"الشيخ زايد"
-],
-"السويس": [
-"السويس",
-"الأربعين",
-"عتاقة",
-"الجناين",
-"فيصل",
-"السلام",
-"عين السخنة"
-],
-"مطروح": [
-"مرسى مطروح",
-"الحمام",
-"العلمين",
-"الضبعة",
-"النجيلة",
-"سيدي براني",
-"السلوم",
-"سيوة",
-"مارينا"
-],
-"شمال سيناء": [
-"العريش",
-"الشيخ زويد",
-"رفح",
-"بئر العبد",
-"الحسنة",
-"نخل"
-],
-"جنوب سيناء": [
-"الطور",
-"شرم الشيخ",
-"دهب",
-"نويبع",
-"طابا",
-"سانت كاترين",
-"أبو رديس",
-"أبو زنيمة",
-"رأس سدر"
-],
-"الوادي الجديد": [
-"الخارجة",
-"الداخلة",
-"الفرافرة",
-"باريس",
-"بلاط"
-],
-"البحر الأحمر": [
-"الغردقة",
-"رأس غارب",
-"سفاجا",
-"القصير",
-"مرسى علم",
-"الشلاتين",
-"حلايب",
-"الجونة",
-"سهل حشيش"
-]
-};
+// utility
+function setVar(name, value){document.documentElement.style.setProperty(name, value+'mm');}
 
-var ready=false;
+// elements
+const orderIdInput = document.getElementById('orderIdInput');
+const nameInput = document.getElementById('nameInput');
+const phoneInput = document.getElementById('phoneInput');
+const addressInput = document.getElementById('addressInput');
+const productInput = document.getElementById('productInput');
+const qtyInput = document.getElementById('qtyInput');
+const amountInput = document.getElementById('amountInput');
+const noteInput = document.getElementById('noteInput');
+const updateBtn = document.getElementById('updateBtn');
+const printBtn = document.getElementById('printBtn');
+const pdfBtn = document.getElementById('pdfBtn');
+const labelWidth = document.getElementById('labelWidth');
+const labelHeight = document.getElementById('labelHeight');
+const labelPadding = document.getElementById('labelPadding');
+const presets = document.querySelectorAll('.preset-btn');
 
-window.onload=function(){
-  var g=document.getElementById("gov");
-  for(var k in egypt){var o=document.createElement("option");o.text=k;o.value=k;g.add(o);}
-};
+// preview elements
+const orderText = document.getElementById('orderText');
+const pvName = document.getElementById('pvName');
+const pvPhone = document.getElementById('pvPhone');
+const pvAddress = document.getElementById('pvAddress');
+const pvProduct = document.getElementById('pvProduct');
+const pvQty = document.getElementById('pvQty');
+const pvAmount = document.getElementById('pvAmount');
+const pvNote = document.getElementById('pvNote');
+const pvQr = document.getElementById('pvQr');
+const pvDate = document.getElementById('dateText');
 
-function loadCities(){
-  var gov=document.getElementById("gov").value;
-  var city=document.getElementById("city");
-  city.innerHTML='<option value="">اختر المركز</option>';
-  if(!gov) return;
-  egypt[gov].forEach(function(c){var o=document.createElement("option");o.text=c;o.value=c;city.add(o);});
+// initialize from inputs
+function applySize(){
+  const w = parseFloat(labelWidth.value) || 100;
+  const h = parseFloat(labelHeight.value) || 150;
+  const p = parseFloat(labelPadding.value) || 2.5;
+  document.documentElement.style.setProperty('--label-width-mm', w+'mm');
+  document.documentElement.style.setProperty('--label-height-mm', h+'mm');
+  document.documentElement.style.setProperty('--label-padding-mm', p+'mm');
+
+  // also update inline min-width/height for the preview element so preview scales
+  const frame = document.getElementById('label-frame');
+  // frame width is CSS calc of var(--label-width-mm) but on some browsers using mm in calc causes issues
+  // set a style width in px computed from mm -> px approximate (1mm = 3.78px at 96dpi), but we rely on CSS scaling
 }
 
-function v(id){return (document.getElementById(id).value||"").trim();}
+// render preview
+let currentQR;
+function render(){
+  const id = orderIdInput.value || ('ORD'+Math.floor(100000+Math.random()*900000));
+  orderText.textContent = id;
+  pvName.textContent = nameInput.value || '-';
+  pvPhone.textContent = phoneInput.value || '-';
+  pvAddress.textContent = addressInput.value || '-';
+  pvProduct.textContent = productInput.value || '-';
+  pvQty.textContent = qtyInput.value || '-';
+  pvAmount.textContent = (amountInput.value||'0') + ' جنيه';
+  pvNote.textContent = noteInput.value || '-';
+  pvDate.textContent = new Date().toLocaleDateString('ar-EG');
 
-function generate(){
-  var err=document.getElementById("err");
-  if(!v("name")||!v("phone")||!v("gov")||!v("city")){err.style.display="block";return;}
-  err.style.display="none";
+  // barcode
+  try{ JsBarcode('#barcode', id, {format:'CODE128',displayValue:false,margin:0,height:40,width:1.6}); }catch(e){console.warn(e);}
 
-  var order="ORD"+Math.floor(100000+Math.random()*900000);
-  document.getElementById("sheet").classList.add("show");
-
-  document.getElementById("orderId").innerText=order;
-  document.getElementById("l_date").innerText=new Date().toLocaleDateString("ar-EG");
-  document.getElementById("c_name").innerText=v("name");
-  document.getElementById("c_phone").innerText=v("phone");
-  document.getElementById("c_address").innerText=v("gov")+" - "+v("city")+(v("street")?" - "+v("street"):"");
-  document.getElementById("c_product").innerText=v("product")||"-";
-  document.getElementById("c_pieces").innerText=v("pieces")||"1";
-  document.getElementById("c_type").innerText=v("stype");
-  document.getElementById("c_amount").innerText=(v("amount")||"0")+" جنيه";
-  document.getElementById("c_note").innerText=v("note")||"-";
-
-  try{ JsBarcode("#barcode",order,{format:"CODE128",displayValue:false,margin:0,height:40,width:2}); }catch(e){}
-
-  document.getElementById("qrcode").innerHTML="";
-  try{ new QRCode(document.getElementById("qrcode"),{text:"https://www.facebook.com/elsoooqshop",width:120,height:120,correctLevel:QRCode.CorrectLevel.L}); }catch(e){}
-
-  ready=true;
-  document.getElementById("sheet").scrollIntoView({behavior:"smooth"});
+  // QR
+  pvQr.innerHTML = '';
+  try{ new QRCode(pvQr, {text: window.location.href + '#'+id, width:120, height:120, correctLevel: QRCode.CorrectLevel.H}); }catch(e){console.warn(e)}
 }
 
-function check(){ if(!ready){alert("أنشئ البوليصة أولاً");return false;} return true; }
-
-function printLabel(){ if(!check())return; window.print(); }
-
-function createPdfBlob(){
-  var el=document.getElementById("labelEl");
-  return html2pdf().set({
-    margin:0,
-    filename:"elsoooq-"+document.getElementById("orderId").innerText+".pdf",
-    image:{type:"jpeg",quality:1},
-    html2canvas:{scale:3,useCORS:true,backgroundColor:"#ffffff",scrollX:0,scrollY:0},
-    jsPDF:{unit:"mm",format:[100,150],orientation:"portrait",compress:true},
-    pagebreak:{mode:["avoid-all"]}
-  }).from(el).outputPdf("blob");
-}
-
-function downloadPDF(){
-  if(!check())return;
-  createPdfBlob().then(function(blob){
-    var a=document.createElement("a");
-    a.href=URL.createObjectURL(blob);
-    a.download="elsoooq-"+document.getElementById("orderId").innerText+".pdf";
-    document.body.appendChild(a);a.click();a.remove();
-    setTimeout(function(){URL.revokeObjectURL(a.href);},4000);
+// preset buttons
+presets.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    labelWidth.value = btn.dataset.w;
+    labelHeight.value = btn.dataset.h;
+    applySize();
+    render();
   });
-}
+});
 
-// واتساب — يجهّز ملف PDF ثم يفتح محادثة الرقم المحدد لإرفاقه
-function sendWhatsApp(){
-  if(!check())return;
-  var num="201030630315";
-  var order=document.getElementById("orderId").innerText;
-  var msg="بوليصة شحن elsoooq\nرقم الطلب: "+order
-    +"\nالعميل: "+v("name")
-    +"\nالهاتف: "+v("phone")
-    +"\nالعنوان: "+document.getElementById("c_address").innerText
-    +"\nالمنتج: "+(v("product")||"-")
-    +"\nالمبلغ: "+(v("amount")||"0")+" جنيه"
-    +"\n(مرفق ملف PDF للبوليصة)";
+// update handlers with debounce for snappy UX
+function debounce(fn, wait=120){let t; return (...a)=>{clearTimeout(t); t=setTimeout(()=>fn(...a), wait)}}
+[labelWidth,labelHeight,labelPadding,orderIdInput,nameInput,phoneInput,addressInput,productInput,qtyInput,amountInput,noteInput].forEach(el=>el.addEventListener('input', debounce(()=>{applySize();render();}))); 
 
-  createPdfBlob().then(function(blob){
-    var file=new File([blob],"elsoooq-"+order+".pdf",{type:"application/pdf"});
-    var url=URL.createObjectURL(blob);
-    var a=document.createElement("a");
-    a.href=url;a.download=file.name;document.body.appendChild(a);a.click();a.remove();
-    setTimeout(function(){URL.revokeObjectURL(url);},10000);
-    setTimeout(function(){window.open("https://wa.me/"+num+"?text="+encodeURIComponent(msg),"_blank");},500);
-  });
-}
+updateBtn.addEventListener('click', (e)=>{ e.preventDefault(); applySize(); render(); });
+
+printBtn.addEventListener('click', (e)=>{ e.preventDefault(); applySize(); render(); setTimeout(()=>{window.print()},80); });
+
+pdfBtn.addEventListener('click', async (e)=>{
+  e.preventDefault(); applySize(); render();
+  // compute width/height in mm
+  const w = parseFloat(labelWidth.value) || 100;
+  const h = parseFloat(labelHeight.value) || 150;
+
+  const opt = {
+    margin: 0,
+    filename: (orderIdInput.value||'label') + '.pdf',
+    image: { type: 'jpeg', quality: 1 },
+    html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+    jsPDF: { unit: 'mm', format: [w, h], orientation: 'portrait' }
+  };
+
+  const el = document.getElementById('labelEl');
+  try{
+    await html2pdf().set(opt).from(el).save();
+  }catch(err){console.error(err); alert('حدث خطأ أثناء التصدير، افتح الكونسول للمزيد');}
+});
+
+// initial
+applySize(); render();
+
 </script>
-
 </body>
-  </html>
-  
+</html>
