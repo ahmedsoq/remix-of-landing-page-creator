@@ -637,7 +637,7 @@ function trackVisit(id){
   if(isAdmin()) return;
   try{
     vcHit("visits"); vcHit(vcKeyToday());
-    if(id) vcHit("p" + id);
+    if(id) vcHit("prod-" + id);
     if(!localStorage.getItem("vc_device")){ localStorage.setItem("vc_device","1"); vcHit("unique"); }
   }catch(e){}
 }
@@ -645,7 +645,7 @@ function loadViews(cb){
   var list = allProducts(), left = list.length;
   if(!left) return cb();
   list.forEach(function(p){
-    vcGet("p" + p.id).then(function(n){
+    vcGet("prod-" + p.id).then(function(n){
       VIEWS[p.id] = (n === null ? 0 : n);
       if(--left === 0) cb();
     });
