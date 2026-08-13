@@ -45,19 +45,13 @@ async function callImageModel(prompt: string, imageDataUrl: string): Promise<str
   };
 
   const item = data.data?.[0];
-  if (!item) {
-    console.log("Image model response:", JSON.stringify(data).slice(0, 2000));
-    throw new Error("No image returned from model");
-  }
-
+  if (!item) throw new Error("No image returned from model");
   if (item.b64_json) {
     const parsed = extractMimeAndBase64(imageDataUrl);
     const mime = parsed?.mime ?? "image/png";
     return `data:${mime};base64,${item.b64_json}`;
   }
   if (item.url) return item.url;
-
-  console.log("Image model item:", JSON.stringify(item).slice(0, 1000));
   throw new Error("No image URL or data returned from model");
 }
 
