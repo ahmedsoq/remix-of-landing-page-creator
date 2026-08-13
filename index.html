@@ -542,28 +542,85 @@ function iconHtml(ic){
 }
 var GLOWS = ["g-orange","g-cyan","g-lime","g-pink","g-violet","g-yellow"];
 
-/* ================= إرسال تليجرام ================= */
-function tgSend(token, chat, text){
-  token = String(token||"").trim(); chat = String(chat||"").trim();
-  if(!token || !chat) return Promise.reject(new Error("لم يتم ضبط إعدادات الإشعارات بعد. افتح لوحة التحكم واحفظ التوكن وأيدي الشات."));
-  return new Promise(function(resolve, reject){
-    var id = "tg_" + Date.now();
-    var frame = document.createElement("iframe");
-    frame.name = id; frame.style.display = "none";
-    var form = document.createElement("form");
-    form.method = "POST"; form.target = id; form.style.display = "none";
-    form.action = "https://api.telegram.org/bot" + token + "/sendMessage";
-    [["chat_id",chat],["text",text],["disable_web_page_preview","true"]].forEach(function(pair){
-      var input = document.createElement("input"); input.name = pair[0]; input.value = pair[1]; form.appendChild(input);
+/* ================= نظام الإشعارات (تليجرام) — إصدار جديد ================= */
+function tgClean(v){ return String(v==null?"":v).trim(); }
+function tgToken(){ return tgClean(S.botToken).replace(/^bot/i,""); }
+function tgChat(){
+  var c = tgClean(S.chatId);
+  if(/^@/.test(c)) return c;
+  return c.replace(/[^\d\-]/g,"");
+}
+function tgErrText(code, desc){
+  desc = desc || "";
+  if(code === 401) return "التوكن غير صحيح — انسخه من BotFather كاملاً.";
+  if(code === 404) return "التوكن غير صحيح أو ناقص (404).";
+  if(/chat not found/i.test(desc)) return "أيدي الشات غير صحيح، أو لم ترسل /start للبوت من حسابك.";
+  if(/bot was blocked/i.test(desc)) return "أنت حظرت البوت — افتح محادثة البوت واضغط Start.";
+  if(/not enough rights|kicked/i.test(desc)) return "البوت غير مضاف كمشرف في القناة/الجروب.";
+  return desc || ("خطأ " + code);
+}
+function tgApi(method, params, timeout){
+  var token = tgToken();
+  if(!token) return Promise.reject(new Error("توكن البوت غير مضبوط."));
+  var url = "https://api.telegram.org/bot" + token + "/" + method;
+  var body = new URLSearchParams();
+  Object.keys(params||{}).forEach(function(k){ if(params[k] != null) body.append(k, String(params[k])); });
+  var ctl = ("AbortController" in window) ? new AbortController() : null;
+  var timer = setTimeout(function(){ if(ctl) ctl.abort(); }, timeout || 15000);
+  return fetch(url, { method:"POST", body: body, signal: ctl ? ctl.signal : undefined })
+    .then(function(r){ return r.json().catch(function(){ return {ok:false, error_code:r.status, description:"رد غير مفهوم من تليجرام"}; }); })
+    .then(function(j){
+      clearTimeout(timer);
+      if(j && j.ok) return j.result;
+      throw new Error(tgErrText(j && j.error_code, j && j.description));
+    }, function(err){
+      clearTimeout(timer);
+      throw new Error("تعذر الاتصال بتيليجرام (الشبكة/الإنترنت). " + (err && err.name === "AbortError" ? "انتهت المهلة." : ""));
     });
-    var done = false;
-    function finish(){ if(done) return; done = true; setTimeout(function(){ frame.remove(); form.remove(); },500); resolve({ok:true}); }
-    frame.onload = function(){ setTimeout(finish,350); };
-    frame.onerror = function(){ reject(new Error("تعذر الاتصال بتيليجرام. تحقق من الإنترنت ثم حاول مرة أخرى.")); };
-    document.body.appendChild(frame); document.body.appendChild(form); form.submit();
-    setTimeout(finish,3500);
+}
+function tgSend(token, chat, text){
+  var t = tgClean(token).replace(/^bot/i,""), c = tgClean(chat);
+  if(!t || !c) return Promise.reject(new Error("لم يتم ضبط إعدادات الإشعارات بعد. افتح لوحة التحكم واحفظ التوكن وأيدي الشات."));
+  var saveT = S.botToken, saveC = S.chatId;
+  S.botToken = t; S.chatId = c;
+  return tgApi("sendMessage", { chat_id: tgChat(), text: text, disable_web_page_preview: "true" })
+    .then(function(r){ S.botToken = saveT; S.chatId = saveC; return r; },
+          function(e){ S.botToken = saveT; S.chatId = saveC; throw e; });
+}
+function tgVerify(token, chat){
+  var t = tgClean(token).replace(/^bot/i,""), c = tgClean(chat);
+  if(!t) return Promise.reject(new Error("اكتب توكن البوت."));
+  if(!c) return Promise.reject(new Error("اكتب أيدي الشات."));
+  var saveT = S.botToken, saveC = S.chatId; S.botToken = t; S.chatId = c;
+  var restore = function(){ S.botToken = saveT; S.chatId = saveC; };
+  return tgApi("getMe").then(function(me){
+    return tgApi("sendMessage", { chat_id: tgChat(), text: "✅ تجربة اتصال ناجحة — بوت @" + (me.username||"") + " جاهز، وطلبات الموقع هتوصلك هنا." })
+      .then(function(){ restore(); return me; });
+  }, function(e){ restore(); throw e; })
+   .catch(function(e){ restore(); throw e; });
+}
+/* طابور الطلبات الفاشلة — لا يضيع أي طلب */
+function tgQueue(){ try{ return JSON.parse(localStorage.getItem("tg_queue")||"[]"); }catch(e){ return []; } }
+function tgQueuePush(text){ try{ var q = tgQueue(); q.push({t:text, at:Date.now()}); localStorage.setItem("tg_queue", JSON.stringify(q.slice(-50))); }catch(e){} }
+function tgQueueFlush(){
+  var q = tgQueue(); if(!q.length || !tgToken() || !tgChat()) return;
+  var item = q[0];
+  tgSend(S.botToken, S.chatId, item.t).then(function(){
+    try{ var cur = tgQueue(); cur.shift(); localStorage.setItem("tg_queue", JSON.stringify(cur)); }catch(e){}
+    setTimeout(tgQueueFlush, 800);
+  }).catch(function(){});
+}
+function tgSendRetry(text, tries){
+  tries = tries || 3;
+  return tgSend(S.botToken, S.chatId, text).catch(function(err){
+    if(tries > 1 && /الاتصال|الشبكة|المهلة/.test(err.message||"")){
+      return new Promise(function(res){ setTimeout(res, 1200); }).then(function(){ return tgSendRetry(text, tries-1); });
+    }
+    throw err;
   });
 }
+setTimeout(tgQueueFlush, 2500);
+window.addEventListener("online", function(){ setTimeout(tgQueueFlush, 500); });
 
 /* ============ محرك تحديث الكود تلقائياً بعد أي تعديل ============ */
 var SRC_CACHE = null, CODE_CACHE = null;
@@ -896,11 +953,18 @@ document.getElementById("orderForm").onsubmit = function(e){
 
   var btn = document.getElementById("f_submit");
   btn.disabled = true; btn.textContent = "جاري الإرسال..."; fail("");
-  tgSend(S.botToken, S.chatId, text).then(function(){
+  tgSendRetry(text).then(function(){
     document.getElementById("orderForm").style.display = "none";
     document.getElementById("orderDone").style.display = "block";
-  }).catch(function(err){ fail(err.message || "حدث خطأ، حاول مرة أخرى"); })
-   .then(function(){ btn.disabled = false; btn.textContent = "تأكيد الطلب"; });
+    btn.disabled = false; btn.textContent = "تأكيد الطلب";
+  }).catch(function(err){
+    tgQueuePush(text);
+    var wa = "https://wa.me/" + waNum() + "?text=" + encodeURIComponent(text);
+    fail("تعذر إرسال الطلب تلقائياً. اضغط هنا لإرساله على واتساب فوراً.");
+    var m = document.getElementById("f_msg");
+    m.innerHTML = '<a href="'+wa+'" target="_blank" rel="noopener" style="color:#ff9a4d;text-decoration:underline">📲 اضغط لإرسال طلبك على واتساب — سنتواصل معك فوراً</a>';
+    btn.disabled = false; btn.textContent = "إعادة المحاولة";
+  });
 };
 
 /* ============ عناصر التحفيز على الشراء ============ */
@@ -1216,8 +1280,8 @@ function panel(){
     save(draft());
     var out = document.getElementById("a_msg");
     out.textContent = "جاري الحفظ والاختبار...";
-    tgSend(S.botToken, S.chatId, "✅ تجربة اتصال ناجحة — الإعدادات محفوظة وطلبات الموقع ستصلك هنا")
-      .then(function(){ out.textContent = "✅ تم الحفظ وإرسال رسالة تجربة"; })
+    tgVerify(S.botToken, S.chatId)
+      .then(function(me){ out.textContent = "✅ تم الحفظ — البوت @" + (me.username||"") + " أرسل رسالة تجربة بنجاح"; tgQueueFlush(); })
       .catch(function(e){ out.textContent = "❌ " + (e.message || "فشل الاتصال"); });
   };
   document.getElementById("a_export").onclick = function(){
