@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
+const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/images/generations";
 const IMAGE_MODEL = "google/gemini-2.5-flash-image";
 
 interface StudioBody {
@@ -28,16 +28,10 @@ async function callImageModel(prompt: string, imageDataUrl: string): Promise<str
     },
     body: JSON.stringify({
       model: IMAGE_MODEL,
-      messages: [
-        {
-          role: "user",
-          content: [
-            { type: "text", text: prompt },
-            { type: "image_url", image_url: { url: imageDataUrl } },
-          ],
-        },
-      ],
-      modalities: ["image", "text"],
+      prompt,
+      image: imageDataUrl,
+      n: 1,
+      size: "1024x1024",
     }),
   });
 
@@ -47,34 +41,24 @@ async function callImageModel(prompt: string, imageDataUrl: string): Promise<str
   }
 
   const data = (await res.json()) as {
-    choices?: Array<{
-      message?: {
-        content?: string | Array<{ type?: string; image_url?: { url?: string } }>;
-      };
-    }>;
+    data?: Array<{ url?: string; b64_json?: string }>;
   };
 
-  const content = data.choices?.[0]?.message?.content;
-  if (!content) {
-    console.log("Image model response (no content):", JSON.stringify(data).slice(0, 2000));
-    throw new Error("No content returned from image model");
-  }
-
-  if (typeof content === "string") {
-    // Some models may return a markdown image URL
-    const urlMatch = content.match(/\((data:image\/[^;]+;base64,[^)]+)\)/);
-    if (urlMatch && urlMatch[1]) return urlMatch[1];
-    console.log("Image model text response:", content.slice(0, 500));
-    throw new Error("Unexpected text response from image model");
-  }
-
-  const imageBlock = content.find((c) => c.type === "image_url" || c.image_url);
-  const imageUrl = imageBlock?.image_url?.url;
-  if (!imageUrl) {
-    console.log("Image model content blocks:", JSON.stringify(content).slice(0, 1000));
+  const item = data.data?.[0];
+  if (!item) {
+    console.log("Image model response:", JSON.stringify(data).slice(0, 2000));
     throw new Error("No image returned from model");
   }
-  return imageUrl;
+
+  if (item.b64_json) {
+    const parsed = extractMimeAndBase64(imageDataUrl);
+    const mime = parsed?.mime ?? "image/png";
+    return `data:${mime};base64,${item.b64_json}`;
+  }
+  if (item.url) return item.url;
+
+  console.log("Image model item:", JSON.stringify(item).slice(0, 1000));
+  throw new Error("No image URL or data returned from model");
 }
 
 export const Route = createFileRoute("/api/public/image-studio")({
