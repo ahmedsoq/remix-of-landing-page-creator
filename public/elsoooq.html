@@ -108,10 +108,10 @@ footer{margin-top:20px;text-align:center;font-size:11px;opacity:.6}
 .sticky button{flex:1;padding:13px;font-size:15px;border-radius:16px}
 body{padding-bottom:76px}
 /* ====== المتجر ====== */
-.topbar{display:flex;flex-direction:column;align-items:center;gap:7px;padding:12px 12px 10px;margin-bottom:8px;text-align:center;position:relative;overflow:hidden}
+.topbar{display:flex;flex-direction:column;align-items:center;gap:5px;padding:7px 8px 7px;margin-bottom:8px;text-align:center;position:relative;overflow:hidden}
 .topbar::after{content:"";position:absolute;inset:-40% -10% auto;height:120px;background:radial-gradient(closest-side,rgba(255,122,24,.35),transparent);pointer-events:none}
 .topbar .backl{position:absolute;top:10px;inset-inline-start:10px}
-.brand{font-size:22px;font-weight:900;letter-spacing:.5px;text-decoration:none;color:#fff;display:flex;align-items:center;gap:6px}
+.brand{font-size:17px;font-weight:900;letter-spacing:.5px;text-decoration:none;color:#fff;display:flex;align-items:center;gap:6px}
 .brand em{font-style:normal;background:linear-gradient(90deg,var(--orange),var(--yellow));-webkit-background-clip:text;background-clip:text;color:transparent}
 .backl{font-size:12px;font-weight:900;text-decoration:none;color:#fff;opacity:.85;padding:6px 10px;border-radius:99px;background:rgba(255,255,255,.1)}
 .pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
@@ -133,11 +133,15 @@ body{padding-bottom:76px}
 .hero h1{font-size:17px;line-height:1.45}
 .hero p{margin:4px 0 0;font-size:12px;opacity:.8;line-height:1.6}
 .codbar{display:flex;justify-content:center;margin:2px 0 10px}
-.codpill{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;padding:8px 16px;max-width:100%;border-radius:12px;color:#fff;background:linear-gradient(100deg,var(--orange,#ff7a18),#ff2d55,#ff4fa3);box-shadow:0 10px 24px -8px rgba(255,90,20,.85),inset 0 1px 0 rgba(255,255,255,.45);border:2px solid rgba(255,255,255,.35)}
-.codpill b{font-size:14px;font-weight:900;letter-spacing:.6px;line-height:1.1}
-.codpill span{font-size:11px;font-weight:800;opacity:.95}
-.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;margin-top:6px}
-.chips span{font-size:10px;font-weight:900;padding:5px 8px;border-radius:99px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14)}
+.codpill{display:flex;flex-direction:column;align-items:center;gap:1px;text-align:center;padding:5px 12px;max-width:100%;border-radius:10px;color:#fff;background:linear-gradient(100deg,var(--orange,#ff7a18),#ff2d55,#ff4fa3);box-shadow:0 10px 24px -8px rgba(255,90,20,.85),inset 0 1px 0 rgba(255,255,255,.45);border:2px solid rgba(255,255,255,.35)}
+.codpill b{font-size:12.5px;font-weight:900;letter-spacing:.4px;line-height:1.1}
+.codpill span{font-size:9.5px;font-weight:800;opacity:.95}
+.chips{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:2px;width:100%}
+.chips span{font-size:9px;font-weight:900;padding:5px 4px;border-radius:9px;line-height:1.2;color:#fff;border:1px solid rgba(255,255,255,.22)}
+.chips span.c1{background:linear-gradient(135deg,#0ea5e9,#2563eb)}
+.chips span.c2{background:linear-gradient(135deg,#a855f7,#6366f1)}
+.chips span.c3{background:linear-gradient(135deg,#10b981,#059669)}
+.topbar .headrow{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;flex-wrap:wrap}
 
 .adminlist{display:grid;gap:8px;margin-top:10px}
 .arow{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:14px;background:rgba(255,255,255,.07)}
@@ -172,9 +176,11 @@ body{padding-bottom:76px}
 <div class="wrap">
   <div class="glass topbar" id="topbar">
     <a class="backl" href="#" id="backLink" style="display:none">← كل المنتجات</a>
-    <a class="brand" href="#" id="brandLink">🛍️ <em>elsoooq</em></a>
-    <span class="codpill"><b>💵 الدفع عند الاستلام</b><span>اطلب الآن وادفع للمندوب عند وصول الطلب</span></span>
-    <div class="chips"><span>🚚 شحن لكل المحافظات</span><span>🔄 استبدال خلال 14 يوم</span><span>✅ منتجات أصلية</span></div>
+    <div class="headrow">
+      <a class="brand" href="#" id="brandLink">🛍️ <em>elsoooq</em></a>
+      <span class="codpill"><b>💵 الدفع عند الاستلام</b><span>ادفع للمندوب عند وصول الطلب</span></span>
+    </div>
+    <div class="chips"><span class="c1">🚚 شحن لكل المحافظات</span><span class="c2">🔄 استبدال 14 يوم</span><span class="c3">✅ منتجات أصلية</span></div>
   </div>
   <div id="app"></div>
   <div id="adminMount"></div>
