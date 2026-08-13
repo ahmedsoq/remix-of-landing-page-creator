@@ -264,8 +264,8 @@ function writeStore(k, raw){
 }
 function load(){
   var raw = readStore(KEY);
-  try{ return raw ? Object.assign({},DEFAULTS,JSON.parse(raw)) : Object.assign({},DEFAULTS); }
-  catch(e){ return Object.assign({},DEFAULTS); }
+  try{ return raw ? Object.assign({},DEFAULTS,SAVED_SETTINGS,JSON.parse(raw)) : Object.assign({},DEFAULTS,SAVED_SETTINGS); }
+  catch(e){ return Object.assign({},DEFAULTS,SAVED_SETTINGS); }
 }
 function save(s){
   Object.keys(s).forEach(function(k){ if(typeof s[k]==="string") s[k]=s[k].trim(); });
@@ -332,6 +332,7 @@ var BUILTIN_PRODUCTS = [
 ];
 /* المنتجات المضافة من لوحة التحكم (يتم استبدالها عند تحميل ملف مضبوط) */
 var SAVED_PRODUCTS = [];
+var SAVED_SETTINGS = {};
 
 function customProducts(){
   var raw = readStore(PKEY);
@@ -415,18 +416,52 @@ function tgSend(token, chat, text){
   });
 }
 
+/* ============ محرك تحديث الكود تلقائياً بعد أي تعديل ============ */
+var SRC_CACHE = null, CODE_CACHE = null;
+function fetchSource(){
+  if(SRC_CACHE) return Promise.resolve(SRC_CACHE);
+  var url = location.pathname + (location.pathname.slice(-1)==="/" ? "index.html" : "") + "?src=" + Date.now();
+  return fetch(url, {cache:"no-store"}).then(function(r){ return r.text(); }).then(function(t){
+    if(!/var SAVED_PRODUCTS = /.test(t)) throw new Error("bad source");
+    SRC_CACHE = t; return t;
+  });
+}
+function jsonSafe(v){ return JSON.stringify(v).replace(/<\//g,"<\\/"); }
+function buildFullCode(settings, products){
+  return fetchSource().then(function(html){
+    var st = {};
+    Object.keys(DEFAULTS).forEach(function(k){ st[k] = settings[k] != null ? settings[k] : DEFAULTS[k]; });
+    html = html.replace(/var SAVED_PRODUCTS = [\s\S]*?;\nvar SAVED_SETTINGS = [\s\S]*?;/,
+      "var SAVED_PRODUCTS = " + jsonSafe(products) + ";\nvar SAVED_SETTINGS = " + jsonSafe(st) + ";");
+    CODE_CACHE = html;
+    return html;
+  });
+}
+function autoExportOn(){ try{ return localStorage.getItem("auto_export") !== "0"; }catch(e){ return true; } }
+function codeStatus(msg){ var b = document.getElementById("codeBar"); if(b) b.textContent = msg; }
+function downloadCode(html){
+  var blob = new Blob([html], {type:"text/html;charset=utf-8"});
+  var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "index.html"; a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); },1500);
+}
+/* يتم استدعاؤها بعد أي تغيير: إضافة/تعديل/حذف منتج أو تغيير الإعدادات */
+function syncCode(auto){
+  codeStatus("⏳ جاري تحديث الكود بالتعديلات...");
+  return buildFullCode(S, customProducts()).then(function(html){
+    var kb = Math.round(html.length/1024);
+    codeStatus("✅ الكود محدّث بالكامل (" + kb + " KB) — يشمل كل المنتجات والصور");
+    if(auto && autoExportOn()) downloadCode(html);
+    return html;
+  }).catch(function(){
+    codeStatus("⚠️ تعذر تحديث الكود تلقائياً — افتح الصفحة عبر رابط الموقع (وليس ملف محلي) ثم أعد المحاولة");
+  });
+}
 function downloadConfiguredPage(settings, products){
   var out = document.getElementById("a_msg");
   out.textContent = "جاري تجهيز الملف...";
-  fetch(location.pathname + "?export=" + Date.now()).then(function(r){ return r.text(); }).then(function(html){
-    html = html.replace(/botToken:\s*"[^"]*"\s*,\s*chatId:\s*"[^"]*"/,
-      "botToken:" + JSON.stringify(settings.botToken) + ", chatId:" + JSON.stringify(settings.chatId));
-    html = html.replace(/var SAVED_PRODUCTS = \[\];/,
-      "var SAVED_PRODUCTS = " + JSON.stringify(products) + ";");
-    var blob = new Blob([html], {type:"text/html;charset=utf-8"});
-    var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "index.html"; a.click();
-    setTimeout(function(){ URL.revokeObjectURL(a.href); },1000);
-    out.textContent = "✅ تم تنزيل index.html مضبوطاً بكل المنتجات — ارفعه مكان الملف القديم على GitHub";
+  buildFullCode(settings, products).then(function(html){
+    downloadCode(html);
+    out.textContent = "✅ تم تنزيل index.html بكل المنتجات والصور — ارفعه مكان الملف القديم";
   }).catch(function(){ out.textContent = "❌ تعذر تجهيز الملف، حاول مرة أخرى"; });
 }
 
