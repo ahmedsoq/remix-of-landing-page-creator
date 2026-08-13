@@ -233,6 +233,8 @@ body{padding-bottom:76px}
 </div>
 
 <script>
+/* لقطة كاملة من كود الصفحة الأصلي (تعمل حتى بدون إنترنت أو من ملف محلي) */
+var SRC_SNAPSHOT = (function(){ try{ return "<!DOCTYPE html>\n" + document.documentElement.outerHTML; }catch(e){ return null; } })();
 /* ================= الإعدادات العامة ================= */
 var DEFAULTS = {
   botToken:"", chatId:"",
@@ -562,12 +564,20 @@ function tgSend(token, chat, text){
 
 /* ============ محرك تحديث الكود تلقائياً بعد أي تعديل ============ */
 var SRC_CACHE = null, CODE_CACHE = null;
+function snapshotSource(){
+  if(SRC_SNAPSHOT && /var SAVED_PRODUCTS = /.test(SRC_SNAPSHOT)) return SRC_SNAPSHOT;
+  return null;
+}
 function fetchSource(){
   if(SRC_CACHE) return Promise.resolve(SRC_CACHE);
   var url = location.pathname + (location.pathname.slice(-1)==="/" ? "index.html" : "") + "?src=" + Date.now();
   return fetch(url, {cache:"no-store"}).then(function(r){ return r.text(); }).then(function(t){
     if(!/var SAVED_PRODUCTS = /.test(t)) throw new Error("bad source");
     SRC_CACHE = t; return t;
+  }).catch(function(err){
+    var snap = snapshotSource();
+    if(snap){ SRC_CACHE = snap; return snap; }
+    throw err;
   });
 }
 function jsonSafe(v){ return JSON.stringify(v).replace(/<\//g,"<\\/"); }
