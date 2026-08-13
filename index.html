@@ -442,7 +442,7 @@ function renderHome(){
   document.title = S.storeName + " — متجر إلكتروني | الدفع عند الاستلام";
   var list = allProducts();
   var top = topProducts(null, 3).filter(function(p){ return (VIEWS[p.id]||0) > 0; });
-  var h = '<div class="codbar"><span class="codpill">💵 الدفع عند الاستلام</span></div>';
+  var h = '<div class="codbar"><span class="codpill"><b>' + S.storeName + '</b><span>💵 الدفع عند الاستلام</span></span></div>';
 
   if(top.length){
     h += '<h2 class="sechd">🔥 الأكثر مشاهدة<small>المنتجات اللي الناس بتدخل عليها دلوقتي</small></h2>';
