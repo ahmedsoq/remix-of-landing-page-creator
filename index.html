@@ -664,7 +664,7 @@ function cardHtml(p, i){
   var save = Number(p.oldPrice||0) - Number(p.price||0);
   return '<a class="glass ' + GLOWS[i % GLOWS.length] + ' pcard" href="' + esc(plink(p.id)) + '" data-nav="' + esc(p.id) + '">' +
     '<div class="ph">' + (img ? '<img src="'+esc(imgSrc(img))+'" alt="'+esc(p.name)+'" loading="lazy" decoding="async">' : '') +
-      (p.badge ? '<span class="tag">'+esc(p.badge)+'</span>' : (save>0 ? '<span class="tag">وفر '+save+' ج</span>' : '')) +
+      (p.badge ? '<span class="tag'+ ((p.badge==='الأحدث'||p.badge==='الأكثر مبيعاً'||p.badge==='جديد') ? ' red' : '') +'">'+esc(p.badge)+'</span>' : (save>0 ? '<span class="tag">وفر '+save+' ج</span>' : '')) +
     '</div>' +
     '<div class="pb"><h3>'+esc(p.name)+'</h3>' +
       '<div class="pp"><b>'+Number(p.price)+' ج</b>' + (p.oldPrice ? '<s>'+Number(p.oldPrice)+' ج</s>' : '') + '</div>' +
