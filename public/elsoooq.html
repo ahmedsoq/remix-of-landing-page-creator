@@ -1195,7 +1195,7 @@ function panel(){
   document.querySelectorAll('#p_list [data-del]').forEach(function(b){
     b.onclick = function(){
       var id = b.getAttribute("data-del");
-      saveCustom(customProducts().filter(function(x){ return x.id !== id; }));
+      try{ saveCustom(customProducts().filter(function(x){ return x.id !== id; })); }catch(e){}
       route();
       syncCode(true);
     };
