@@ -801,6 +801,7 @@ function panel(){
     '<button class="cta" id="a_save" style="width:auto;padding:12px 22px">حفظ وتطبيق فوراً</button>' +
     '<button class="ghost" id="a_test" style="width:auto;margin:0;padding:12px 22px">إرسال رسالة تجربة</button>' +
     '<button class="ghost" id="a_export" style="width:auto;margin:0;padding:12px 22px">تحميل index.html مضبوط</button>' +
+    '<button class="ghost" id="a_copy" style="width:auto;margin:0;padding:12px 22px">📋 نسخ بيانات المنتجات</button>' +
     '</div><p class="msg" id="a_msg"></p></section>';
 
   /* ===== مولد المنتجات ===== */
@@ -884,6 +885,16 @@ function panel(){
   document.getElementById("a_export").onclick = function(){
     var configured = draft(); save(configured);
     downloadConfiguredPage(configured, customProducts());
+  };
+  document.getElementById("a_copy").onclick = function(){
+    var out = document.getElementById("a_msg");
+    var data = JSON.stringify({settings:{botToken:S.botToken,chatId:S.chatId}, products:customProducts()});
+    var ta = document.createElement("textarea");
+    ta.value = data; ta.style.position="fixed"; ta.style.opacity="0";
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand("copy"); out.textContent = "✅ تم نسخ البيانات (" + data.length + " حرف) — الصقها في الشات"; }
+    catch(e){ out.textContent = "انسخ البيانات يدوياً من الصندوق بالأسفل"; ta.style.opacity="1"; ta.style.position="static"; ta.style.width="100%"; ta.style.height="120px"; return; }
+    ta.remove();
   };
 
   /* ==== منطق مولد المنتجات ==== */
