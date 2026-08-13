@@ -108,8 +108,10 @@ footer{margin-top:20px;text-align:center;font-size:11px;opacity:.6}
 .sticky button{flex:1;padding:13px;font-size:15px;border-radius:16px}
 body{padding-bottom:76px}
 /* ====== المتجر ====== */
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;margin-bottom:10px}
-.brand{font-size:20px;font-weight:900;letter-spacing:.5px;text-decoration:none;color:#fff;display:flex;align-items:center;gap:8px}
+.topbar{display:flex;flex-direction:column;align-items:center;gap:10px;padding:16px 14px 14px;margin-bottom:12px;text-align:center;position:relative;overflow:hidden}
+.topbar::after{content:"";position:absolute;inset:-40% -10% auto;height:150px;background:radial-gradient(closest-side,rgba(255,122,24,.35),transparent);pointer-events:none}
+.topbar .backl{position:absolute;top:12px;inset-inline-start:12px}
+.brand{font-size:26px;font-weight:900;letter-spacing:.5px;text-decoration:none;color:#fff;display:flex;align-items:center;gap:8px}
 .brand em{font-style:normal;background:linear-gradient(90deg,var(--orange),var(--yellow));-webkit-background-clip:text;background-clip:text;color:transparent}
 .backl{font-size:12.5px;font-weight:900;text-decoration:none;color:#fff;opacity:.85;padding:7px 12px;border-radius:99px;background:rgba(255,255,255,.1)}
 .pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
@@ -131,8 +133,8 @@ body{padding-bottom:76px}
 .hero h1{font-size:17px;line-height:1.45}
 .hero p{margin:4px 0 0;font-size:12px;opacity:.8;line-height:1.6}
 .codbar{display:flex;justify-content:center;margin:2px 0 14px}
-.codpill{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;padding:9px 26px;border-radius:14px;color:#fff;background:linear-gradient(100deg,var(--orange,#ff7a18),#ff2d55,#ff4fa3);box-shadow:0 12px 30px -10px rgba(255,90,20,.85),inset 0 1px 0 rgba(255,255,255,.45);border:2px solid rgba(255,255,255,.35)}
-.codpill b{font-size:19px;font-weight:900;letter-spacing:.6px;line-height:1.1}
+.codpill{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;padding:10px 22px;max-width:100%;border-radius:14px;color:#fff;background:linear-gradient(100deg,var(--orange,#ff7a18),#ff2d55,#ff4fa3);box-shadow:0 12px 30px -10px rgba(255,90,20,.85),inset 0 1px 0 rgba(255,255,255,.45);border:2px solid rgba(255,255,255,.35)}
+.codpill b{font-size:16px;font-weight:900;letter-spacing:.6px;line-height:1.1}
 .codpill span{font-size:12.5px;font-weight:800;opacity:.95}
 .chips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:9px}
 .chips span{font-size:11px;font-weight:900;padding:6px 10px;border-radius:99px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14)}
@@ -169,8 +171,10 @@ body{padding-bottom:76px}
 
 <div class="wrap">
   <div class="glass topbar" id="topbar">
-    <a class="brand" href="#" id="brandLink">🛍️ <em>elsoooq</em></a>
     <a class="backl" href="#" id="backLink" style="display:none">← كل المنتجات</a>
+    <a class="brand" href="#" id="brandLink">🛍️ <em>elsoooq</em></a>
+    <span class="codpill"><b>💵 الدفع عند الاستلام</b><span>اطلب الآن وادفع للمندوب عند وصول الطلب</span></span>
+    <div class="chips"><span>🚚 شحن لكل المحافظات</span><span>🔄 استبدال خلال 14 يوم</span><span>✅ منتجات أصلية</span></div>
   </div>
   <div id="app"></div>
   <div id="adminMount"></div>
@@ -372,8 +376,8 @@ function subtotalFor(p,q){ return (Number(p.price) - discountFor(p,q)) * q; }
 function totalFor(p,q){ return subtotalFor(p,q) + SHIP; }
 
 function iconHtml(ic){
-  if(/[\/.]/.test(ic) && /^(https?:|\.|\/|img)/.test(ic))
-    return '<img class="ic" src="'+esc(ic)+'" alt="" loading="lazy" decoding="async" width="52" height="52">';
+  if(/[\/.]/.test(ic) && /^(data:|https?:|\.|\/|img)/.test(ic))
+    return '<img class="ic" src="'+esc(imgSrc(ic))+'" alt="" loading="lazy" decoding="async" width="52" height="52">';
   return '<div class="emo">'+esc(ic||"⭐")+'</div>';
 }
 var GLOWS = ["g-orange","g-cyan","g-lime","g-pink","g-violet","g-yellow"];
@@ -457,7 +461,7 @@ function cardHtml(p, i){
   var img = (p.images && p.images[0]) ? p.images[0][0] : "";
   var save = Number(p.oldPrice||0) - Number(p.price||0);
   return '<a class="glass ' + GLOWS[i % GLOWS.length] + ' pcard" href="' + esc(plink(p.id)) + '" data-nav="' + esc(p.id) + '">' +
-    '<div class="ph">' + (img ? '<img src="'+esc(img)+'" alt="'+esc(p.name)+'" loading="lazy" decoding="async">' : '') +
+    '<div class="ph">' + (img ? '<img src="'+esc(imgSrc(img))+'" alt="'+esc(p.name)+'" loading="lazy" decoding="async">' : '') +
       (p.badge ? '<span class="tag">'+esc(p.badge)+'</span>' : (save>0 ? '<span class="tag">وفر '+save+' ج</span>' : '')) +
     '</div>' +
     '<div class="pb"><h3>'+esc(p.name)+'</h3>' +
@@ -470,7 +474,7 @@ function renderHome(){
   document.title = S.storeName + " — متجر إلكتروني | الدفع عند الاستلام";
   var list = allProducts();
   var top = topProducts(null, 3).filter(function(p){ return (VIEWS[p.id]||0) > 0; });
-  var h = '<div class="codbar"><span class="codpill"><b>' + S.storeName + '</b><span>💵 الدفع عند الاستلام</span></span></div>';
+  var h = '';
 
   if(top.length){
     h += '<h2 class="sechd">🔥 الأكثر مشاهدة<small>المنتجات اللي الناس بتدخل عليها دلوقتي</small></h2>';
@@ -558,7 +562,7 @@ function buildSlider(p){
   cur = 0;
   G.forEach(function(g,i){
     var im = document.createElement("img");
-    im.src = g[0]; im.alt = g[1] || p.name; im.loading = i===0?"eager":"lazy"; im.decoding = "async";
+    im.src = imgSrc(g[0]); im.alt = g[1] || p.name; im.loading = i===0?"eager":"lazy"; im.decoding = "async";
     if(i===0){ im.fetchPriority = "high"; im.className = "on"; }
     slider.appendChild(im);
     var b = document.createElement("button");
@@ -800,7 +804,7 @@ function drawUploads(){
   if(!UPLOADS.length){ box.innerHTML = '<p style="font-size:12px;opacity:.7;margin:0">لا توجد صور مرفوعة بعد.</p>'; return; }
   box.innerHTML = UPLOADS.map(function(g,i){
     return '<div class="upitem"><button class="x" data-rm="'+i+'" title="حذف">✕</button>' +
-      '<img src="'+esc(g[0])+'" alt="">' +
+      '<img src="'+esc(imgSrc(g[0]))+'" alt="">' +
       '<input data-cap="'+i+'" value="'+esc(g[1]||"")+'" placeholder="وصف الصورة" />' +
       '<div class="mv"><button data-mv="'+i+'" data-d="-1">◀</button><button data-mv="'+i+'" data-d="1">▶</button></div></div>';
   }).join("");
@@ -1099,7 +1103,7 @@ function panel(){
     ? '<p style="font-size:12px;opacity:.7;margin:10px 0 0">لا توجد منتجات مضافة بعد.</p>'
     : list.map(function(p){
         return '<div class="arow">' +
-          (p.images && p.images[0] ? '<img src="'+esc(p.images[0][0])+'" alt="">' : '') +
+          (p.images && p.images[0] ? '<img src="'+esc(imgSrc(p.images[0][0]))+'" alt="">' : '') +
           '<span>'+esc(p.name)+'<br><small>/'+esc(p.id)+' — '+Number(p.price)+' ج</small></span>' +
           '<button data-edit="'+esc(p.id)+'" style="background:rgba(80,180,255,.25)">تعديل</button>' +
           '<button data-del="'+esc(p.id)+'">حذف</button></div>';
