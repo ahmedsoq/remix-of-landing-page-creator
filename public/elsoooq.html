@@ -628,6 +628,7 @@ function route(){
   var id = currentId();
   var p = id ? getProduct(id) : null;
   document.getElementById("brandLink").href = homeLink();
+  document.getElementById("brandLink").innerHTML = '🛍️ <em>' + esc(S.storeName || "elsoooq") + '</em>';
   if(p) renderProduct(p); else renderHome();
   document.getElementById("waFollow").href = "https://wa.me/" + waNum() + "?text=" + encodeURIComponent("مرحباً، أرسلت طلباً من elsoooq وأريد متابعة الطلب");
   adminCheck();
