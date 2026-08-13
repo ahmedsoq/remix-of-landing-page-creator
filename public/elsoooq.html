@@ -1053,6 +1053,7 @@ function panel(){
       document.execCommand("copy"); ta.remove(); codeStatus("✅ تم نسخ الكود الكامل");
     }).catch(function(){ codeStatus("⚠️ تعذر النسخ — استخدم زر التحميل"); });
   };
+  syncCode(false);
   document.getElementById("a_test").onclick = function(){
     save(draft());
     var out = document.getElementById("a_msg");
