@@ -153,6 +153,16 @@ body{padding-bottom:76px}
 .upitem .mv{display:flex;gap:4px;margin-top:4px}
 .upitem .mv button{flex:1;border:none;background:rgba(255,255,255,.15);color:#fff;border-radius:8px;padding:3px;cursor:pointer;font-weight:900;font-size:11px}
 @media (prefers-reduced-motion: reduce){*{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}html{scroll-behavior:auto}}
+.studio{display:grid;gap:12px;margin-top:12px}
+.studio .upzone{padding:18px}
+.studio .res{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:12px}
+.studio .res .ritem{background:rgba(255,255,255,.07);border-radius:14px;padding:6px}
+.studio .res img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:12px;background:rgba(0,0,0,.3)}
+.studio .res .act{display:flex;gap:6px;margin-top:6px}
+.studio .res button{flex:1;border:none;border-radius:10px;padding:7px;font-family:inherit;font-weight:900;cursor:pointer;font-size:11px;color:#fff}
+.studio .res .add{background:rgba(46,255,120,.25)}
+.studio .res .del{background:rgba(255,50,50,.25)}
+.studio .status{font-size:13px;font-weight:900;text-align:center;padding:10px;border-radius:12px;background:rgba(255,255,255,.07);min-height:42px;display:flex;align-items:center;justify-content:center}
 </style>
 </head>
 <body>
@@ -740,7 +750,7 @@ window.addEventListener("hashchange", adminCheck);
 function emptyForm(){
   return {id:"", name:"", price:"", oldPrice:"", badge:"", desc:"", stock:"", hours:"", images:"", features:"", video:"", tiers:"0,100,200"};
 }
-var EDIT = emptyForm(), UPLOADS = [];
+var EDIT = emptyForm(), UPLOADS = [], STUDIO_URL = "", STUDIO_NAME = "";
 
 function ytId(v){
   v = String(v||"").trim();
@@ -791,6 +801,60 @@ function drawUploads(){
   });
 }
 
+/* ===== ستوديو الصور: معاينة ومعالجة ===== */
+function drawStudioPreview(){
+  var box = document.getElementById("s_preview"); if(!box) return;
+  if(!STUDIO_URL){ box.innerHTML = '<p style="font-size:12px;opacity:.7;margin:0">لا توجد صورة مختارة.</p>'; return; }
+  box.innerHTML = '<div class="upitem"><img src="'+esc(STUDIO_URL)+'" alt=""><input id="s_cap" value="'+esc(STUDIO_NAME)+'" placeholder="وصف الصورة" /></div>';
+  document.getElementById("s_cap").oninput = function(){ STUDIO_NAME = this.value; };
+}
+function studioStatus(msg, ok){
+  var el = document.getElementById("s_status"); if(!el) return;
+  el.textContent = msg;
+  el.style.background = ok ? "rgba(46,255,120,.15)" : "rgba(255,255,255,.07)";
+}
+function renderStudioResults(images){
+  var box = document.getElementById("s_results"); if(!box) return;
+  if(!images.length){ box.innerHTML = ""; return; }
+  box.innerHTML = images.map(function(url, i){
+    return '<div class="ritem"><img src="'+esc(url)+'" alt=""><div class="act">' +
+      '<button class="add" data-add="'+i+'">➕ أضف للمنتج</button>' +
+      '<button class="del" data-rmres="'+i+'">✕ حذف</button></div></div>';
+  }).join("");
+  box.querySelectorAll("[data-add]").forEach(function(b){
+    b.onclick = function(){
+      var idx = Number(b.getAttribute("data-add"));
+      UPLOADS.push([images[idx], STUDIO_NAME || ""]);
+      drawUploads();
+      studioStatus("✅ تمت إضافة الصورة إلى معرض المنتج — اضغط حفظ المنتج", true);
+    };
+  });
+  box.querySelectorAll("[data-rmres]").forEach(function(b){
+    b.onclick = function(){
+      var idx = Number(b.getAttribute("data-rmres"));
+      images.splice(idx, 1); renderStudioResults(images);
+    };
+  });
+}
+function studioProcess(action){
+  if(!STUDIO_URL){ studioStatus("❌ اختر صورة أولاً"); return; }
+  var name = document.getElementById("s_name"); if(name) STUDIO_NAME = name.value;
+  var status = document.getElementById("s_status");
+  studioStatus("⏳ جاري معالجة الصورة بالذكاء الاصطناعي...");
+  fetch("/api/public/image-studio", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ action: action, image: STUDIO_URL, productName: STUDIO_NAME || (document.getElementById("s_name") ? document.getElementById("s_name").value : "") })
+  }).then(function(r){ return r.json(); }).then(function(data){
+    if(data.error){ studioStatus("❌ " + data.error); return; }
+    if(data.images && data.images.length){ renderStudioResults(data.images); studioStatus("✅ تمت المعالجة — اختر الصور التي تريد إضافتها للمنتج", true); }
+    else { studioStatus("❌ لم يُنتج النموذج أي صورة"); }
+  }).catch(function(e){
+    console.error(e);
+    studioStatus("❌ فشل الاتصال: " + (e.message || "تأكد من اتصال الإنترنت"));
+  });
+}
+
 function panel(){
   var html = '<section class="glass g-pink pad" style="margin-top:20px">' +
     '<h2 style="margin:0;font-size:22px;font-weight:900">لوحة التحكم المخفية</h2>' +
@@ -836,6 +900,22 @@ function panel(){
     '</div><p class="msg" id="p_msg"></p>' +
     '<div class="adminlist" id="p_list"></div>' +
     '</section>';
+
+  /* ===== ستوديو الصور ===== */
+  html += '<section class="glass g-cyan pad" style="margin-top:16px">' +
+    '<h2 style="margin:0;font-size:19px;font-weight:900">🎨 ستوديو الصور بالذكاء الاصطناعي</h2>' +
+    '<p style="font-size:12px;opacity:.75;line-height:1.7;margin:6px 0 0">ارفع صورة المنتج وسيولد لك 3 صور مشابهة، أو ازل الخلفية وضع المنتج على خلفية بيضاء.</p>' +
+    '<div class="studio">' +
+      '<div class="upzone" id="s_zone">📤 اضغط لاختيار صورة المنتج<input type="file" id="s_file" accept="image/*" /></div>' +
+      '<div class="upgrid" id="s_preview"></div>' +
+      '<input class="fld" id="s_name" placeholder="اسم المنتج (مثال: سماعة بلوتوث)" />' +
+      '<div class="row" style="justify-content:flex-start">' +
+        '<button class="cta" id="s_gen" style="width:auto;padding:12px 22px">✨ توليد 3 صور مشابهة</button>' +
+        '<button class="ghost" id="s_bg" style="width:auto;margin:0;padding:12px 22px">🖼️ إزالة الخلفية</button>' +
+      '</div>' +
+      '<div class="status" id="s_status">اختر صورة ثم اضغط التوليد أو إزالة الخلفية</div>' +
+      '<div class="res" id="s_results"></div>' +
+    '</div></section>';
 
   /* ===== الزوار ===== */
   html += '<div class="glass pad" style="margin-top:16px;padding:14px">' +
@@ -939,6 +1019,29 @@ function panel(){
     });
   };
   drawUploads();
+
+  /* ===== منطق ستوديو الصور ===== */
+  var sFileInput = document.getElementById("s_file");
+  document.getElementById("s_zone").onclick = function(){ if(sFileInput) sFileInput.click(); };
+  if(sFileInput){
+    sFileInput.onchange = function(){
+      var f = sFileInput.files[0];
+      if(!f) return;
+      studioStatus("⏳ جاري ضغط الصورة...");
+      shrinkImage(f, function(url){
+        sFileInput.value = "";
+        if(!url){ studioStatus("❌ فشل قراءة الصورة"); return; }
+        STUDIO_URL = url;
+        STUDIO_NAME = document.getElementById("s_name") ? document.getElementById("s_name").value : "";
+        drawStudioPreview();
+        studioStatus("✅ جاهز — اختر توليد 3 صور أو إزالة الخلفية", true);
+      });
+    };
+  }
+  drawStudioPreview();
+  document.getElementById("s_gen").onclick = function(){ studioProcess("generate"); };
+  document.getElementById("s_bg").onclick = function(){ studioProcess("remove-bg"); };
+
   document.getElementById("p_save").onclick = function(){
     var d = pdraft(), msg = document.getElementById("p_msg");
     if(!d.name || !d.name.trim()) { msg.textContent = "اكتب اسم المنتج"; return; }
