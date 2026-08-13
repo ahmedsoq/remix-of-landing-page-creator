@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
-const IMAGE_MODEL = "google/gemini-3.1-flash-image";
+const IMAGE_MODEL = "google/gemini-2.5-flash-image";
 
 interface StudioBody {
   action: "generate" | "remove-bg";
