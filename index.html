@@ -259,8 +259,10 @@ function readStore(k){
   return raw;
 }
 function writeStore(k, raw){
-  try{ localStorage.setItem(k, raw); }catch(e){}
-  try{ cookieSet(k === KEY ? "cam_lp_s" : "elsoooq_p", raw); }catch(e){}
+  var ok = false;
+  try{ localStorage.setItem(k, raw); ok = (localStorage.getItem(k) === raw); }catch(e){ ok = false; }
+  if(raw.length < 3000){ try{ cookieSet(k === KEY ? "cam_lp_s" : "elsoooq_p", raw); }catch(e){} }
+  return ok;
 }
 function load(){
   var raw = readStore(KEY);
@@ -339,7 +341,11 @@ function customProducts(){
   try{ var a = raw ? JSON.parse(raw) : null; return Array.isArray(a) ? a : SAVED_PRODUCTS.slice(); }
   catch(e){ return SAVED_PRODUCTS.slice(); }
 }
-function saveCustom(list){ writeStore(PKEY, JSON.stringify(list)); }
+function saveCustom(list){
+  var raw = JSON.stringify(list);
+  if(!writeStore(PKEY, raw)) throw new Error("quota");
+  return true;
+}
 function allProducts(){
   var out = BUILTIN_PRODUCTS.slice();
   customProducts().forEach(function(p){
@@ -1189,7 +1195,7 @@ function panel(){
   document.querySelectorAll('#p_list [data-del]').forEach(function(b){
     b.onclick = function(){
       var id = b.getAttribute("data-del");
-      saveCustom(customProducts().filter(function(x){ return x.id !== id; }));
+      try{ saveCustom(customProducts().filter(function(x){ return x.id !== id; })); }catch(e){}
       route();
       syncCode(true);
     };
