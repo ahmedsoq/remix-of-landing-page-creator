@@ -936,7 +936,16 @@ function panel(){
     '<button class="ghost" id="a_test" style="width:auto;margin:0;padding:12px 22px">إرسال رسالة تجربة</button>' +
     '<button class="ghost" id="a_export" style="width:auto;margin:0;padding:12px 22px">تحميل index.html مضبوط</button>' +
     '<button class="ghost" id="a_copy" style="width:auto;margin:0;padding:12px 22px">📋 نسخ بيانات المنتجات</button>' +
-    '</div><p class="msg" id="a_msg"></p></section>';
+    '</div><p class="msg" id="a_msg"></p>' +
+    '<div class="glass g-yellow" style="margin-top:14px;padding:12px;border-radius:14px">' +
+      '<b style="font-size:14px">💾 حفظ الكود تلقائياً</b>' +
+      '<p class="msg" id="codeBar" style="margin:6px 0">جاهز — أي تعديل (منتج جديد، صور، إعدادات) يتم دمجه في الكود فوراً.</p>' +
+      '<div class="row" style="justify-content:flex-start">' +
+        '<label style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:800"><input type="checkbox" id="c_auto" ' + (autoExportOn() ? "checked" : "") + ' /> تنزيل الملف تلقائياً بعد كل تعديل</label>' +
+        '<button class="ghost" id="c_dl" style="width:auto;margin:0;padding:10px 18px">⬇️ تحميل الكود الكامل</button>' +
+        '<button class="ghost" id="c_copy" style="width:auto;margin:0;padding:10px 18px">📋 نسخ الكود الكامل</button>' +
+      '</div>' +
+    '</div></section>';
 
   /* ===== مولد المنتجات ===== */
   html += '<section class="glass g-lime pad" style="margin-top:16px">' +
@@ -1023,6 +1032,26 @@ function panel(){
   document.getElementById("a_save").onclick = function(){
     save(draft());
     document.getElementById("a_msg").textContent = "✅ تم الحفظ والتطبيق";
+    syncCode(true);
+  };
+  document.getElementById("c_auto").onchange = function(){
+    try{ localStorage.setItem("auto_export", this.checked ? "1" : "0"); }catch(e){}
+    codeStatus(this.checked ? "✅ التنزيل التلقائي مفعّل" : "التنزيل التلقائي متوقف — استخدم زر التحميل");
+  };
+  document.getElementById("c_dl").onclick = function(){
+    codeStatus("⏳ جاري تجهيز الكود...");
+    buildFullCode(S, customProducts()).then(function(html){ downloadCode(html); codeStatus("✅ تم تنزيل index.html بكل المنتجات والصور"); })
+      .catch(function(){ codeStatus("⚠️ تعذر تجهيز الكود — افتح الصفحة عبر رابط الموقع"); });
+  };
+  document.getElementById("c_copy").onclick = function(){
+    codeStatus("⏳ جاري تجهيز الكود...");
+    buildFullCode(S, customProducts()).then(function(html){
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        return navigator.clipboard.writeText(html).then(function(){ codeStatus("✅ تم نسخ الكود الكامل (" + Math.round(html.length/1024) + " KB)"); });
+      }
+      var ta = document.createElement("textarea"); ta.value = html; document.body.appendChild(ta); ta.select();
+      document.execCommand("copy"); ta.remove(); codeStatus("✅ تم نسخ الكود الكامل");
+    }).catch(function(){ codeStatus("⚠️ تعذر النسخ — استخدم زر التحميل"); });
   };
   document.getElementById("a_test").onclick = function(){
     save(draft());
@@ -1140,8 +1169,9 @@ function panel(){
     try{ saveCustom(list); }
     catch(e){ msg.textContent = "❌ مساحة المتصفح ممتلئة — احذف منتجاً قديماً أو استخدم صور أقل"; return; }
     EDIT = emptyForm(); UPLOADS = [];
-    msg.textContent = "✅ تم حفظ المنتج — رابطه: /" + prod.id;
+    msg.textContent = "✅ تم حفظ المنتج بصوره — رابطه: /" + prod.id;
     route();
+    syncCode(true);
   };
 
   var list = customProducts();
@@ -1159,6 +1189,7 @@ function panel(){
       var id = b.getAttribute("data-del");
       saveCustom(customProducts().filter(function(x){ return x.id !== id; }));
       route();
+      syncCode(true);
     };
   });
   document.querySelectorAll('#p_list [data-edit]').forEach(function(b){
