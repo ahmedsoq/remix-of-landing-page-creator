@@ -22,8 +22,8 @@ body{margin:0;background:
   radial-gradient(80vw 60vw at 85% -5%, rgba(255,122,24,.16), transparent 55%),
   radial-gradient(70vw 60vw at -5% 25%, rgba(34,227,255,.12), transparent 55%),
   var(--bg);
-  color:var(--fg);font-family:'Cairo',system-ui,sans-serif;font-weight:700;min-height:100vh}
-.wrap{max-width:780px;margin:0 auto;padding:12px 12px 40px}
+  color:var(--fg);font-family:'Cairo',system-ui,sans-serif;font-weight:700}
+.wrap{max-width:780px;margin:0 auto;padding:12px 12px 10px}
 .glass{background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.18);border-radius:22px;backdrop-filter:blur(8px);contain:layout style paint}
 .g-orange{border-color:rgba(255,122,24,.7);box-shadow:0 0 16px rgba(255,122,24,.32),inset 0 0 12px rgba(255,122,24,.12)}
 .g-lime{border-color:rgba(182,255,46,.7);box-shadow:0 0 16px rgba(182,255,46,.3),inset 0 0 12px rgba(182,255,46,.1)}
@@ -90,7 +90,7 @@ label span{font-size:12px}
 .tick{width:78px;height:78px;border-radius:99px;margin:0 auto;display:flex;align-items:center;justify-content:center}
 .tick svg{width:38px;height:38px;stroke:var(--lime)}
 .ghost{display:block;width:100%;margin-top:12px;padding:12px;border-radius:14px;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.2);color:#fff;font-family:inherit;font-weight:900;cursor:pointer}
-footer{margin-top:20px;text-align:center;font-size:11px;opacity:.6}
+footer{margin-top:10px;padding-bottom:6px;text-align:center;font-size:11px;opacity:.6}
 .urg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
 .urg>div{display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 8px;font-size:12.5px;font-weight:900;border-radius:16px}
 .urg b{font-variant-numeric:tabular-nums;font-size:14px}
@@ -106,7 +106,8 @@ footer{margin-top:20px;text-align:center;font-size:11px;opacity:.6}
 .sticky .p{flex:0 0 auto;font-size:13px;font-weight:900;line-height:1.2;text-align:center}
 .sticky .p em{font-style:normal;display:block;font-size:10px;opacity:.6;text-decoration:line-through}
 .sticky button{flex:1;padding:13px;font-size:15px;border-radius:16px}
-body{padding-bottom:76px}
+body{padding-bottom:0}
+body:has(.sticky){padding-bottom:76px}
 /* ====== المتجر ====== */
 .topbar{display:flex;flex-direction:column;align-items:center;gap:5px;padding:7px 8px 7px;margin-bottom:8px;text-align:center;position:relative;overflow:hidden}
 .topbar::after{content:"";position:absolute;inset:-40% -10% auto;height:120px;background:radial-gradient(closest-side,rgba(255,122,24,.35),transparent);pointer-events:none}
