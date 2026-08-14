@@ -569,7 +569,7 @@ var TG_GATEWAY_DEV  = "https://project--7ab438ab-0f13-4764-a081-501b90707363-dev
 var TG_GATEWAY = TG_GATEWAY_OVERRIDE || TG_GATEWAY_PROD;
 function tgGateways(){
   var list = [];
-  if(TG_GATEWAY_OVERRIDE) list.push(TG_GATEWAY_OVERRIDE);
+  if(TG_GATEWAY_OVERRIDE) return [TG_GATEWAY_OVERRIDE];
   if(location.protocol === "http:" || location.protocol === "https:") list.push(location.origin + "/api/public/telegram-order");
   list.push(TG_GATEWAY_PROD, TG_GATEWAY_DEV);
   var seen = {}, out = [];
