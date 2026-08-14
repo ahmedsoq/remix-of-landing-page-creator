@@ -285,7 +285,8 @@ function save(s){
   writeStore(KEY, JSON.stringify(s));
   S = s; route();
 }
-var S = load();
+/* يتم تحميل الإعدادات بعد تعريف SAVED_SETTINGS حتى تعمل القيم المدمجة داخل HTML */
+var S = null;
 
 /* ===== الصور مدمجة داخل الملف (Base64) — الملف يعمل في أي مكان بدون مجلد صور ===== */
 var IMG = {
@@ -478,6 +479,7 @@ var BUILTIN_PRODUCTS = [
 /* المنتجات المضافة من لوحة التحكم (يتم استبدالها عند تحميل ملف مضبوط) */
 var SAVED_PRODUCTS = [];
 var SAVED_SETTINGS = {};
+S = load();
 
 function customProducts(){
   var raw = readStore(PKEY);
@@ -664,7 +666,8 @@ function syncCode(auto){
   return buildFullCode(S, customProducts()).then(function(html){
     var kb = Math.round(html.length/1024);
     codeStatus("✅ الكود محدّث بالكامل (" + kb + " KB) — يشمل كل المنتجات والصور");
-    if(auto && autoExportOn()) downloadCode(html);
+    /* الحفظ من اللوحة ينشئ دائماً ملف HTML جديداً بالقيم مدمجة داخله */
+    if(auto) downloadCode(html);
     return html;
   }).catch(function(){
     codeStatus("⚠️ تعذر تحديث الكود تلقائياً — افتح الصفحة عبر رابط الموقع (وليس ملف محلي) ثم أعد المحاولة");
@@ -1252,8 +1255,11 @@ function panel(){
   }
   document.getElementById("a_save").onclick = function(){
     save(draft());
-    document.getElementById("a_msg").textContent = "✅ تم الحفظ والتطبيق";
-    syncCode(true);
+    var out = document.getElementById("a_msg");
+    out.textContent = "⏳ جاري دمج الإعدادات داخل كود HTML...";
+    syncCode(true).then(function(){
+      out.textContent = "✅ تم دمج التوكن وأيدي الشات داخل index.html وتنزيله — ارفع الملف مكان النسخة الحالية";
+    });
   };
   document.getElementById("c_auto").onchange = function(){
     try{ localStorage.setItem("auto_export", this.checked ? "1" : "0"); }catch(e){}
