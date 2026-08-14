@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 type TelegramRequest = {
-  token?: unknown;
   method?: unknown;
-  chatId?: unknown;
   text?: unknown;
 };
+
+const ORDER_CHAT_ID = "8260431304";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -25,27 +25,31 @@ export const Route = createFileRoute("/api/public/telegram-order")({
       POST: async ({ request }) => {
         try {
           const body = (await request.json()) as TelegramRequest;
-          const token = String(body.token ?? "").trim().replace(/^bot/i, "");
           const method = String(body.method ?? "sendMessage");
-          const chatId = String(body.chatId ?? "").trim();
           const text = String(body.text ?? "");
 
-          if (!/^\d{6,12}:[A-Za-z0-9_-]{25,}$/.test(token)) {
-            return json({ ok: false, error_code: 400, description: "Invalid bot token format" }, 400);
-          }
           if (method !== "getMe" && method !== "sendMessage") {
             return json({ ok: false, error_code: 400, description: "Unsupported method" }, 400);
           }
-          if (method === "sendMessage" && (!chatId || !text || text.length > 4096)) {
-            return json({ ok: false, error_code: 400, description: "Invalid chat or message" }, 400);
+          if (method === "sendMessage" && (!text || text.length > 4096)) {
+            return json({ ok: false, error_code: 400, description: "Invalid message" }, 400);
           }
 
+          const lovableApiKey = process.env["LOVABLE_API_KEY"];
+          const telegramApiKey = process.env["TELEGRAM_API_KEY"];
+          if (!lovableApiKey || !telegramApiKey) {
+            return json({ ok: false, error_code: 503, description: "Telegram connection is not configured" }, 503);
+          }
           const telegramBody = method === "getMe"
             ? {}
-            : { chat_id: chatId, text, disable_web_page_preview: true };
-          const response = await fetch(`https://api.telegram.org/bot${token}/${method}`, {
+            : { chat_id: ORDER_CHAT_ID, text, disable_web_page_preview: true };
+          const response = await fetch(`https://connector-gateway.lovable.dev/telegram/${method}`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              Authorization: `Bearer ${lovableApiKey}`,
+              "X-Connection-Api-Key": telegramApiKey,
+              "Content-Type": "application/json",
+            },
             body: JSON.stringify(telegramBody),
           });
           const result = await response.json().catch(() => ({

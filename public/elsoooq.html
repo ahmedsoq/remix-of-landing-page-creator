@@ -563,10 +563,8 @@ function tgErrText(code, desc){
 }
 var TG_GATEWAY = "https://project--7ab438ab-0f13-4764-a081-501b90707363-dev.lovable.app/api/public/telegram-order";
 function tgApi(method, params, timeout){
-  var token = tgToken();
-  if(!token) return Promise.reject(new Error("توكن البوت غير مضبوط."));
   var localGateway = location.protocol === "http:" || location.protocol === "https:" ? location.origin + "/api/public/telegram-order" : TG_GATEWAY;
-  var payload = {token:token, method:method, chatId:(params&&params.chat_id)||"", text:(params&&params.text)||""};
+  var payload = {method:method, text:(params&&params.text)||""};
   var ctl = ("AbortController" in window) ? new AbortController() : null;
   var timer = setTimeout(function(){ if(ctl) ctl.abort(); }, timeout || 15000);
   function call(url){
@@ -587,31 +585,18 @@ function tgApi(method, params, timeout){
     });
 }
 function tgSend(token, chat, text){
-  var t = tgClean(token).replace(/^bot/i,""), c = tgClean(chat);
-  if(!t || !c) return Promise.reject(new Error("لم يتم ضبط إعدادات الإشعارات بعد. افتح لوحة التحكم واحفظ التوكن وأيدي الشات."));
-  var saveT = S.botToken, saveC = S.chatId;
-  S.botToken = t; S.chatId = c;
-  return tgApi("sendMessage", { chat_id: tgChat(), text: text, disable_web_page_preview: "true" })
-    .then(function(r){ S.botToken = saveT; S.chatId = saveC; return r; },
-          function(e){ S.botToken = saveT; S.chatId = saveC; throw e; });
+  return tgApi("sendMessage", {text:text});
 }
 function tgVerify(token, chat){
-  var t = tgClean(token).replace(/^bot/i,""), c = tgClean(chat);
-  if(!t) return Promise.reject(new Error("اكتب توكن البوت."));
-  if(!c) return Promise.reject(new Error("اكتب أيدي الشات."));
-  var saveT = S.botToken, saveC = S.chatId; S.botToken = t; S.chatId = c;
-  var restore = function(){ S.botToken = saveT; S.chatId = saveC; };
   return tgApi("getMe").then(function(me){
-    return tgApi("sendMessage", { chat_id: tgChat(), text: "✅ تجربة اتصال ناجحة — بوت @" + (me.username||"") + " جاهز، وطلبات الموقع هتوصلك هنا." })
-      .then(function(){ restore(); return me; });
-  }, function(e){ restore(); throw e; })
-   .catch(function(e){ restore(); throw e; });
+    return tgApi("sendMessage", {text:"✅ تجربة اتصال ناجحة — بوت @" + (me.username||"") + " جاهز، وطلبات الموقع هتوصلك هنا."}).then(function(){ return me; });
+  });
 }
 /* طابور الطلبات الفاشلة — لا يضيع أي طلب */
 function tgQueue(){ try{ return JSON.parse(localStorage.getItem("tg_queue")||"[]"); }catch(e){ return []; } }
 function tgQueuePush(text){ try{ var q = tgQueue(); q.push({t:text, at:Date.now()}); localStorage.setItem("tg_queue", JSON.stringify(q.slice(-50))); }catch(e){} }
 function tgQueueFlush(){
-  var q = tgQueue(); if(!q.length || !tgToken() || !tgChat()) return;
+  var q = tgQueue(); if(!q.length) return;
   var item = q[0];
   tgSend(S.botToken, S.chatId, item.t).then(function(){
     try{ var cur = tgQueue(); cur.shift(); localStorage.setItem("tg_queue", JSON.stringify(cur)); }catch(e){}
@@ -939,8 +924,6 @@ document.getElementById("orderForm").onsubmit = function(e){
   if(!gov.value) return fail("اختر المحافظة");
   if(!area.value) return fail("اختر المركز / المنطقة");
   if(address.length < 6) return fail("اكتب العنوان بالتفصيل");
-  if(!S.botToken || !S.chatId) return fail("لم يتم ضبط إعدادات الإشعارات بعد. تواصل معنا هاتفياً.");
-
   var d = discountFor(CUR,q);
   var text = "🛒 طلب جديد من elsoooq.com\n" +
     "━━━━━━━━━━━━━━━━━━━━\n\n" +
