@@ -711,7 +711,6 @@ function loadViews(cb){
 function topProducts(exclude, n){
   return allProducts()
     .filter(function(p){ return p.id !== exclude; })
-    .sort(function(a,b){ return (VIEWS[b.id]||0) - (VIEWS[a.id]||0); })
     .slice(0, n||3);
 }
 
