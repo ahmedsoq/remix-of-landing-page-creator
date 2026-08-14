@@ -561,23 +561,29 @@ function tgErrText(code, desc){
   if(/not enough rights|kicked/i.test(desc)) return "البوت غير مضاف كمشرف في القناة/الجروب.";
   return desc || ("خطأ " + code);
 }
+var TG_GATEWAY = "https://project--7ab438ab-0f13-4764-a081-501b90707363-dev.lovable.app/api/public/telegram-order";
 function tgApi(method, params, timeout){
   var token = tgToken();
   if(!token) return Promise.reject(new Error("توكن البوت غير مضبوط."));
-  var url = "https://api.telegram.org/bot" + token + "/" + method;
-  var body = new URLSearchParams();
-  Object.keys(params||{}).forEach(function(k){ if(params[k] != null) body.append(k, String(params[k])); });
+  var localGateway = location.protocol === "http:" || location.protocol === "https:" ? location.origin + "/api/public/telegram-order" : TG_GATEWAY;
+  var payload = {token:token, method:method, chatId:(params&&params.chat_id)||"", text:(params&&params.text)||""};
   var ctl = ("AbortController" in window) ? new AbortController() : null;
   var timer = setTimeout(function(){ if(ctl) ctl.abort(); }, timeout || 15000);
-  return fetch(url, { method:"POST", body: body, signal: ctl ? ctl.signal : undefined })
-    .then(function(r){ return r.json().catch(function(){ return {ok:false, error_code:r.status, description:"رد غير مفهوم من تليجرام"}; }); })
+  function call(url){
+    return fetch(url, { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload), signal:ctl ? ctl.signal : undefined })
+      .then(function(r){ return r.json().catch(function(){ return {ok:false, error_code:r.status, description:"رد غير مفهوم من بوابة الإرسال"}; }); });
+  }
+  return call(localGateway).catch(function(firstErr){
+      if(localGateway === TG_GATEWAY) throw firstErr;
+      return call(TG_GATEWAY);
+    })
     .then(function(j){
       clearTimeout(timer);
       if(j && j.ok) return j.result;
       throw new Error(tgErrText(j && j.error_code, j && j.description));
     }, function(err){
       clearTimeout(timer);
-      throw new Error("تعذر الاتصال بتيليجرام (الشبكة/الإنترنت). " + (err && err.name === "AbortError" ? "انتهت المهلة." : ""));
+      throw new Error("تعذر الاتصال ببوابة إشعارات تيليجرام. " + (err && err.name === "AbortError" ? "انتهت المهلة." : (err && err.message ? err.message : "")));
     });
 }
 function tgSend(token, chat, text){

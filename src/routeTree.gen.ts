@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiPublicImageStudioRouteImport } from './routes/api/public/image-studio'
+import { Route as ApiPublicTelegramOrderRouteImport } from './routes/api/public/telegram-order'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +23,41 @@ const ApiPublicImageStudioRoute = ApiPublicImageStudioRouteImport.update({
   path: '/api/public/image-studio',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicTelegramOrderRoute = ApiPublicTelegramOrderRouteImport.update({
+  id: '/api/public/telegram-order',
+  path: '/api/public/telegram-order',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api/public/image-studio': typeof ApiPublicImageStudioRoute
+  '/api/public/telegram-order': typeof ApiPublicTelegramOrderRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/public/image-studio': typeof ApiPublicImageStudioRoute
+  '/api/public/telegram-order': typeof ApiPublicTelegramOrderRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/api/public/image-studio': typeof ApiPublicImageStudioRoute
+  '/api/public/telegram-order': typeof ApiPublicTelegramOrderRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/public/image-studio'
+  fullPaths: '/' | '/api/public/image-studio' | '/api/public/telegram-order'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/public/image-studio'
-  id: '__root__' | '/' | '/api/public/image-studio'
+  to: '/' | '/api/public/image-studio' | '/api/public/telegram-order'
+  id:
+    '__root__' | '/' | '/api/public/image-studio' | '/api/public/telegram-order'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApiPublicImageStudioRoute: typeof ApiPublicImageStudioRoute
+  ApiPublicTelegramOrderRoute: typeof ApiPublicTelegramOrderRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +76,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicImageStudioRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/telegram-order': {
+      id: '/api/public/telegram-order'
+      path: '/api/public/telegram-order'
+      fullPath: '/api/public/telegram-order'
+      preLoaderRoute: typeof ApiPublicTelegramOrderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiPublicImageStudioRoute: ApiPublicImageStudioRoute,
+  ApiPublicTelegramOrderRoute: ApiPublicTelegramOrderRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
