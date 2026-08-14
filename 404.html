@@ -239,8 +239,14 @@ body:has(.sticky){padding-bottom:76px}
 /* لقطة كاملة من كود الصفحة الأصلي (تعمل حتى بدون إنترنت أو من ملف محلي) */
 var SRC_SNAPSHOT = (function(){ try{ return "<!DOCTYPE html>\n" + document.documentElement.outerHTML; }catch(e){ return null; } })();
 /* ================= الإعدادات العامة ================= */
+/* ====== توكن البوت وأيدي الشات مدمجان هنا داخل الملف مباشرة ======
+   ضع التوكن من @BotFather وأيدي الشات، والصفحة ترسل لتيليجرام مباشرة
+   بدون أي سيرفر أو بوابة خارجية. */
+var BOT_TOKEN = "";
+var CHAT_ID   = "8260431304";
+
 var DEFAULTS = {
-  botToken:"", chatId:"",
+  botToken:BOT_TOKEN, chatId:CHAT_ID,
   storeName:"elsoooq",
   whatsapp:"201022077100", facebook:"https://facebook.com/elsoooqshop",
   phone:"01022077100", adminPass:"admin123"
@@ -276,9 +282,13 @@ function writeStore(k, raw){
   return ok;
 }
 function load(){
-  var raw = readStore(KEY);
-  try{ return raw ? Object.assign({},DEFAULTS,SAVED_SETTINGS,JSON.parse(raw)) : Object.assign({},DEFAULTS,SAVED_SETTINGS); }
-  catch(e){ return Object.assign({},DEFAULTS,SAVED_SETTINGS); }
+  var raw = readStore(KEY), s;
+  try{ s = raw ? Object.assign({},DEFAULTS,SAVED_SETTINGS,JSON.parse(raw)) : Object.assign({},DEFAULTS,SAVED_SETTINGS); }
+  catch(e){ s = Object.assign({},DEFAULTS,SAVED_SETTINGS); }
+  /* القيم المدمجة داخل الملف تُستخدم لو لم يحفظ المستخدم قيمة */
+  if(!String(s.botToken||"").trim()) s.botToken = BOT_TOKEN;
+  if(!String(s.chatId||"").trim())   s.chatId   = CHAT_ID;
+  return s;
 }
 function save(s){
   Object.keys(s).forEach(function(k){ if(typeof s[k]==="string") s[k]=s[k].trim(); });
@@ -561,52 +571,28 @@ function tgErrText(code, desc){
   if(/not enough rights|kicked/i.test(desc)) return "البوت غير مضاف كمشرف في القناة/الجروب.";
   return desc || ("خطأ " + code);
 }
-/* بوابات الإرسال — تعمل من أي استضافة خارجية (CORS مفتوح).
-   TG_GATEWAY_OVERRIDE: ضع هنا رابط بوابتك الخاصة لو نشرت backend مستقل. */
-var TG_GATEWAY_OVERRIDE = "";
-var TG_GATEWAY_PROD = "https://project--7ab438ab-0f13-4764-a081-501b90707363.lovable.app/api/public/telegram-order";
-var TG_GATEWAY_DEV  = "https://project--7ab438ab-0f13-4764-a081-501b90707363-dev.lovable.app/api/public/telegram-order";
-var TG_GATEWAY = TG_GATEWAY_OVERRIDE || TG_GATEWAY_PROD;
-function tgGateways(){
-  var list = [];
-  if(TG_GATEWAY_OVERRIDE) return [TG_GATEWAY_OVERRIDE];
-  if(location.protocol === "http:" || location.protocol === "https:") list.push(location.origin + "/api/public/telegram-order");
-  list.push(TG_GATEWAY_PROD, TG_GATEWAY_DEV);
-  var seen = {}, out = [];
-  for(var i=0;i<list.length;i++){ if(!seen[list[i]]){ seen[list[i]] = 1; out.push(list[i]); } }
-  return out;
-}
+/* الإرسال المباشر إلى تيليجرام من المتصفح — بدون أي سيرفر أو بوابة */
 function tgApi(method, params, timeout){
-  var payload = {method:method, text:(params&&params.text)||""};
-  var urls = tgGateways();
+  var token = tgToken(), chat = tgChat();
+  if(!token) return Promise.reject(new Error("توكن البوت غير مضبوط داخل الملف."));
+  if(method === "sendMessage" && !chat) return Promise.reject(new Error("أيدي الشات غير مضبوط داخل الملف."));
+  var body = (method === "getMe") ? {} : {chat_id: chat, text: (params&&params.text)||"", disable_web_page_preview:true};
   var ctl = ("AbortController" in window) ? new AbortController() : null;
   var timer = setTimeout(function(){ if(ctl) ctl.abort(); }, timeout || 20000);
-  function call(url){
-    return fetch(url, { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload), signal:ctl ? ctl.signal : undefined })
-      .then(function(r){
-        return r.text().then(function(t){
-          var j = null; try{ j = JSON.parse(t); }catch(e){}
-          /* رد غير JSON = هذه الاستضافة لا تحتوي البوابة → جرّب التالي */
-          if(!j || typeof j.ok === "undefined") throw new Error("no-gateway");
-          return j;
-        });
-      });
-  }
-  function attempt(i){
-    return call(urls[i]).catch(function(err){
-      if(err && err.name === "AbortError") throw err;
-      if(i + 1 < urls.length) return attempt(i + 1);
-      throw err;
-    });
-  }
-  return attempt(0)
+  return fetch("https://api.telegram.org/bot" + token + "/" + method, {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(body),
+      signal: ctl ? ctl.signal : undefined
+    })
+    .then(function(r){ return r.text().then(function(t){ var j=null; try{ j=JSON.parse(t); }catch(e){} return j || {ok:false, error_code:r.status, description:"رد غير مفهوم من تيليجرام"}; }); })
     .then(function(j){
       clearTimeout(timer);
       if(j && j.ok) return j.result;
       throw new Error(tgErrText(j && j.error_code, j && j.description));
     }, function(err){
       clearTimeout(timer);
-      throw new Error("تعذر الاتصال ببوابة إشعارات تيليجرام. " + (err && err.name === "AbortError" ? "انتهت المهلة." : (err && err.message === "no-gateway" ? "البوابة غير متاحة على هذه الاستضافة." : (err && err.message ? err.message : ""))));
+      throw new Error(err && err.name === "AbortError" ? "انتهت مهلة الاتصال بتيليجرام." : "تعذر الاتصال بتيليجرام — تحقق من الإنترنت.");
     });
 }
 function tgSend(token, chat, text){
