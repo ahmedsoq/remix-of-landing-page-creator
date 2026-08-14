@@ -10,7 +10,8 @@ const ORDER_CHAT_ID = "8260431304";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "Content-Type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Max-Age": "86400",
   "Cache-Control": "no-store",
 };
 
@@ -22,6 +23,12 @@ export const Route = createFileRoute("/api/public/telegram-order")({
   server: {
     handlers: {
       OPTIONS: async () => new Response(null, { status: 204, headers: corsHeaders }),
+      GET: async () =>
+        json({
+          ok: true,
+          service: "telegram-order-gateway",
+          configured: Boolean(process.env["LOVABLE_API_KEY"] && process.env["TELEGRAM_API_KEY"]),
+        }),
       POST: async ({ request }) => {
         try {
           const body = (await request.json()) as TelegramRequest;
