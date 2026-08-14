@@ -661,13 +661,12 @@ function downloadCode(html){
   setTimeout(function(){ URL.revokeObjectURL(a.href); },1500);
 }
 /* يتم استدعاؤها بعد أي تغيير: إضافة/تعديل/حذف منتج أو تغيير الإعدادات */
-function syncCode(auto){
+function syncCode(auto, forceDownload){
   codeStatus("⏳ جاري تحديث الكود بالتعديلات...");
   return buildFullCode(S, customProducts()).then(function(html){
     var kb = Math.round(html.length/1024);
     codeStatus("✅ الكود محدّث بالكامل (" + kb + " KB) — يشمل كل المنتجات والصور");
-    /* الحفظ من اللوحة ينشئ دائماً ملف HTML جديداً بالقيم مدمجة داخله */
-    if(auto) downloadCode(html);
+    if(auto && (forceDownload || autoExportOn())) downloadCode(html);
     return html;
   }).catch(function(){
     codeStatus("⚠️ تعذر تحديث الكود تلقائياً — افتح الصفحة عبر رابط الموقع (وليس ملف محلي) ثم أعد المحاولة");
@@ -1150,7 +1149,7 @@ function studioProcess(action){
 function panel(){
   var html = '<section class="glass g-pink pad" style="margin-top:20px">' +
     '<h2 style="margin:0;font-size:22px;font-weight:900">لوحة التحكم المخفية</h2>' +
-    '<p style="font-size:13px;opacity:.8">الإعدادات والمنتجات محفوظة في هذا المتصفح. لنشرها لكل الزوار اضغط «تحميل index.html مضبوط» وارفع الملف على GitHub.</p>' +
+    '<p style="font-size:13px;opacity:.8">عند حفظ الإعدادات يتم دمجها داخل ملف HTML وتنزيل نسخة جديدة. ارفع الملف الجديد مكان النسخة الحالية لتطبيقها لكل الزوار.</p>' +
     '<div class="fgrid">';
   FIELDS.forEach(function(f){
     html += '<label><span>'+f[1]+'</span><input class="fld" data-k="'+f[0]+'" value="'+esc(S[f[0]])+'" /></label>';
@@ -1257,7 +1256,7 @@ function panel(){
     save(draft());
     var out = document.getElementById("a_msg");
     out.textContent = "⏳ جاري دمج الإعدادات داخل كود HTML...";
-    syncCode(true).then(function(){
+    syncCode(true, true).then(function(){
       out.textContent = "✅ تم دمج التوكن وأيدي الشات داخل index.html وتنزيله — ارفع الملف مكان النسخة الحالية";
     });
   };
