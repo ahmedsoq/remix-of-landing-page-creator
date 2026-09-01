@@ -817,7 +817,7 @@ function renderHome(){
   document.getElementById("backLink").style.display = "none";
   document.title = S.storeName + " — متجر إلكتروني | الدفع عند الاستلام";
   var list = allProducts();
-  var top = topProducts(null, 3).filter(function(p){ return (VIEWS[p.id]||0) > 0; });
+  var top = topProducts(null, 4).filter(function(p){ return (VIEWS[p.id]||0) > 0; });
   var h = '';
 
   if(top.length){
@@ -885,7 +885,7 @@ function renderProduct(p){
       '<div class="vid"><iframe src="https://www.youtube.com/embed/'+esc(p.video)+'?rel=0" title="'+esc(p.name)+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>' +
       '</section>';
   }
-  var others = topProducts(p.id, 3);
+  var others = topProducts(p.id, 4);
   if(others.length){
     h += '<h2 class="sechd">🔥 الأكثر مشاهدة<small>منتجات عليها إقبال كبير دلوقتي</small></h2>';
     h += '<div class="pgrid">' + others.map(cardHtml).join("") + '</div>';
