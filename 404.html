@@ -879,9 +879,10 @@ function renderProduct(p){
     }).join("") + '</div>';
   }
   if(p.video){
+    var vid = ytId(p.video);
     h += '<section class="glass g-orange" style="padding:12px;margin-top:16px">' +
       '<h2 style="margin:0 0 8px;text-align:center;font-size:15px;font-weight:900">شاهد المنتج وهو يعمل</h2>' +
-      '<div class="vid"><iframe src="https://www.youtube.com/embed/'+esc(p.video)+'?rel=0" title="'+esc(p.name)+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>' +
+      '<div class="vid"><iframe src="https://www.youtube.com/embed/'+esc(vid)+'?rel=0" title="'+esc(p.name)+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>' +
       '</section>';
   }
   h += socialsHtml();
