@@ -817,13 +817,7 @@ function renderHome(){
   document.getElementById("backLink").style.display = "none";
   document.title = S.storeName + " — متجر إلكتروني | الدفع عند الاستلام";
   var list = allProducts();
-  var top = topProducts(null, 4).filter(function(p){ return (VIEWS[p.id]||0) > 0; });
   var h = '';
-
-  if(top.length){
-    h += '<h2 class="sechd">🔥 الأكثر مشاهدة<small>المنتجات اللي الناس بتدخل عليها دلوقتي</small></h2>';
-    h += '<div class="pgrid">' + top.map(cardHtml).join("") + '</div>';
-  }
   h += '<h2 class="sechd one">🛍️ كل المنتجات <span class="cnt">' + list.length + '</span> <span style="font-size:12px;font-weight:700;opacity:.7">منتج متاح للطلب</span></h2>';
   h += '<div class="pgrid"' + (list.length === 1 ? ' style="grid-template-columns:1fr;max-width:280px;margin-inline:auto"' : '') + '>' + list.map(cardHtml).join("") + '</div>';
   h += socialsHtml();
@@ -884,11 +878,6 @@ function renderProduct(p){
       '<h2 style="margin:0 0 8px;text-align:center;font-size:15px;font-weight:900">شاهد المنتج وهو يعمل</h2>' +
       '<div class="vid"><iframe src="https://www.youtube.com/embed/'+esc(p.video)+'?rel=0" title="'+esc(p.name)+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>' +
       '</section>';
-  }
-  var others = topProducts(p.id, 4);
-  if(others.length){
-    h += '<h2 class="sechd">🔥 الأكثر مشاهدة<small>منتجات عليها إقبال كبير دلوقتي</small></h2>';
-    h += '<div class="pgrid">' + others.map(cardHtml).join("") + '</div>';
   }
   h += socialsHtml();
   document.getElementById("app").innerHTML = h;
