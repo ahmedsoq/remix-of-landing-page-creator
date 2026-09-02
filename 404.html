@@ -1000,6 +1000,15 @@ function buildQty(p){
     b.onclick = function(){
       Array.prototype.forEach.call(box.querySelectorAll(".qopt"), function(x){ x.classList.remove("on"); });
       b.classList.add("on"); qty.value = b.getAttribute("data-q"); updTotal();
+      var qv = Number(b.getAttribute("data-q"));
+      pixelEvent('AddToCart', {
+        content_ids: [String(p.id)],
+        content_name: p.name,
+        content_type: 'product',
+        currency: 'EGP',
+        value: totalFor(p, qv),
+        quantity: qv
+      });
     };
   });
   updTotal();
