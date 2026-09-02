@@ -490,6 +490,7 @@ var BUILTIN_PRODUCTS = [
   {
     id:"6",
     name:"كاميرا الألعاب المصغّرة",
+    hidden:true,
     price:250, oldPrice:400, badge:"الأرخص",
     desc:"كاميرا تصوير صور فقط علي كارت ميموري — شكل كاميرا لعبة صغيرة",
     images:[
@@ -621,7 +622,7 @@ function allProducts(){
     var i = out.findIndex(function(x){ return x.id === p.id; });
     if(i > -1) out[i] = p; else out.push(p);
   });
-  return out;
+  return out.filter(function(p){ return !p.hidden; });
 }
 function getProduct(id){ return allProducts().filter(function(p){ return p.id === String(id); })[0] || null; }
 function nextId(){
