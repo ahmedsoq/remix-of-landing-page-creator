@@ -274,6 +274,13 @@ var DEFAULTS = {
 var KEY = "cam_lp_settings_v1";
 var PKEY = "elsoooq_products_v1";
 
+/* ================= مساعد أحداث Meta Pixel ================= */
+function pixelEvent(ev, params){
+  if(typeof fbq === "function"){
+    try{ fbq('track', ev, params || {}); }catch(e){}
+  }
+}
+
 function rootDomain(){
   var h = location.hostname;
   if(/^[\d.]+$/.test(h) || h === "localhost") return null;
