@@ -943,6 +943,13 @@ function renderProduct(p){
   document.getElementById("o_pname").textContent = "المنتج: " + p.name;
   document.getElementById("sPrice").textContent = p.price + " ج";
   document.getElementById("sOld").textContent = p.oldPrice ? p.oldPrice + " ج" : "";
+  pixelEvent('ViewContent', {
+    content_ids: [String(p.id)],
+    content_name: p.name,
+    content_type: 'product',
+    currency: 'EGP',
+    value: Number(p.price)
+  });
   startUrgency();
 }
 
