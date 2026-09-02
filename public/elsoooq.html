@@ -1125,6 +1125,14 @@ document.getElementById("orderForm").onsubmit = function(e){
     document.getElementById("orderForm").style.display = "none";
     document.getElementById("orderDone").style.display = "block";
     btn.disabled = false; btn.textContent = "تأكيد الطلب";
+    pixelEvent('Purchase', {
+      content_ids: [String(CUR.id)],
+      content_name: CUR.name,
+      content_type: 'product',
+      currency: 'EGP',
+      value: totalFor(CUR, q),
+      quantity: q
+    });
   }).catch(function(err){
     tgQueuePush(text);
     var wa = "https://wa.me/" + waNum() + "?text=" + encodeURIComponent(text);
