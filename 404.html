@@ -9,6 +9,21 @@
 <meta property="og:description" content="منتجات مختارة بأسعار مميزة، الدفع عند الاستلام وشحن 55 ج لكل محافظات مصر." />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '4631570770411701');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=4631570770411701&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel Code -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet" />
@@ -258,6 +273,13 @@ var DEFAULTS = {
 };
 var KEY = "cam_lp_settings_v1";
 var PKEY = "elsoooq_products_v1";
+
+/* ================= مساعد أحداث Meta Pixel ================= */
+function pixelEvent(ev, params){
+  if(typeof fbq === "function"){
+    try{ fbq('track', ev, params || {}); }catch(e){}
+  }
+}
 
 function rootDomain(){
   var h = location.hostname;
@@ -921,6 +943,13 @@ function renderProduct(p){
   document.getElementById("o_pname").textContent = "المنتج: " + p.name;
   document.getElementById("sPrice").textContent = p.price + " ج";
   document.getElementById("sOld").textContent = p.oldPrice ? p.oldPrice + " ج" : "";
+  pixelEvent('ViewContent', {
+    content_ids: [String(p.id)],
+    content_name: p.name,
+    content_type: 'product',
+    currency: 'EGP',
+    value: Number(p.price)
+  });
   startUrgency();
 }
 
@@ -971,6 +1000,15 @@ function buildQty(p){
     b.onclick = function(){
       Array.prototype.forEach.call(box.querySelectorAll(".qopt"), function(x){ x.classList.remove("on"); });
       b.classList.add("on"); qty.value = b.getAttribute("data-q"); updTotal();
+      var qv = Number(b.getAttribute("data-q"));
+      pixelEvent('AddToCart', {
+        content_ids: [String(p.id)],
+        content_name: p.name,
+        content_type: 'product',
+        currency: 'EGP',
+        value: totalFor(p, qv),
+        quantity: qv
+      });
     };
   });
   updTotal();
@@ -1087,6 +1125,14 @@ document.getElementById("orderForm").onsubmit = function(e){
     document.getElementById("orderForm").style.display = "none";
     document.getElementById("orderDone").style.display = "block";
     btn.disabled = false; btn.textContent = "تأكيد الطلب";
+    pixelEvent('Purchase', {
+      content_ids: [String(CUR.id)],
+      content_name: CUR.name,
+      content_type: 'product',
+      currency: 'EGP',
+      value: totalFor(CUR, q),
+      quantity: q
+    });
   }).catch(function(err){
     tgQueuePush(text);
     var wa = "https://wa.me/" + waNum() + "?text=" + encodeURIComponent(text);
