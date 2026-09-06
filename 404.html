@@ -24,6 +24,15 @@ fbq('track', 'PageView');
 </script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=4631570770411701&ev=PageView&noscript=1"/></noscript>
 <!-- End Meta Pixel Code -->
+<!-- TikTok Pixel Code Start -->
+<script>
+!function (w, d, t) {
+  w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script");n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+  ttq.load('DAEQMFBC77U208ULD72G');
+  ttq.page();
+}(window, document, 'ttq');
+</script>
+<!-- TikTok Pixel Code End -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet" />
@@ -276,8 +285,23 @@ var PKEY = "elsoooq_products_v1";
 
 /* ================= مساعد أحداث Meta Pixel ================= */
 function pixelEvent(ev, params){
+  params = params || {};
   if(typeof fbq === "function"){
-    try{ fbq('track', ev, params || {}); }catch(e){}
+    try{ fbq('track', ev, params); }catch(e){}
+  }
+  if(typeof ttq !== "undefined" && ttq && typeof ttq.track === "function"){
+    try{
+      var map = { PageView:"ViewContent", ViewContent:"ViewContent", AddToCart:"AddToCart", Purchase:"CompletePayment" };
+      var tev = map[ev] || ev;
+      ttq.track(tev, {
+        content_id: params.content_ids ? String(params.content_ids[0]) : undefined,
+        content_name: params.content_name,
+        content_type: "product",
+        quantity: params.contents && params.contents[0] ? params.contents[0].quantity : undefined,
+        value: params.value,
+        currency: params.currency || "EGP"
+      });
+    }catch(e){}
   }
 }
 
