@@ -33,7 +33,9 @@ async function handleMessage(from: string, text: string) {
   ]);
 
   if (order) {
-    await supabaseAdmin.from("wa_orders").insert({ wa_id: from, details: order });
+    await supabaseAdmin
+      .from("wa_orders")
+      .insert({ wa_id: from, details: JSON.parse(JSON.stringify(order)) });
   }
 }
 
