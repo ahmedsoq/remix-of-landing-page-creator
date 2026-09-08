@@ -14,7 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      wa_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          role: string
+          wa_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          role: string
+          wa_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          role?: string
+          wa_id?: string
+        }
+        Relationships: []
+      }
+      wa_orders: {
+        Row: {
+          created_at: string
+          details: Json
+          id: string
+          status: string
+          wa_id: string
+        }
+        Insert: {
+          created_at?: string
+          details: Json
+          id?: string
+          status?: string
+          wa_id: string
+        }
+        Update: {
+          created_at?: string
+          details?: Json
+          id?: string
+          status?: string
+          wa_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

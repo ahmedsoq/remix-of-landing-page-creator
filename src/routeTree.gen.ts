@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiPublicImageStudioRouteImport } from './routes/api/public/image-studio'
 import { Route as ApiPublicTelegramOrderRouteImport } from './routes/api/public/telegram-order'
+import { Route as ApiPublicWhatsappRouteImport } from './routes/api/public/whatsapp'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,36 +29,57 @@ const ApiPublicTelegramOrderRoute = ApiPublicTelegramOrderRouteImport.update({
   path: '/api/public/telegram-order',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicWhatsappRoute = ApiPublicWhatsappRouteImport.update({
+  id: '/api/public/whatsapp',
+  path: '/api/public/whatsapp',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api/public/image-studio': typeof ApiPublicImageStudioRoute
   '/api/public/telegram-order': typeof ApiPublicTelegramOrderRoute
+  '/api/public/whatsapp': typeof ApiPublicWhatsappRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/public/image-studio': typeof ApiPublicImageStudioRoute
   '/api/public/telegram-order': typeof ApiPublicTelegramOrderRoute
+  '/api/public/whatsapp': typeof ApiPublicWhatsappRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/api/public/image-studio': typeof ApiPublicImageStudioRoute
   '/api/public/telegram-order': typeof ApiPublicTelegramOrderRoute
+  '/api/public/whatsapp': typeof ApiPublicWhatsappRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/public/image-studio' | '/api/public/telegram-order'
+  fullPaths:
+    | '/'
+    | '/api/public/image-studio'
+    | '/api/public/telegram-order'
+    | '/api/public/whatsapp'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/public/image-studio' | '/api/public/telegram-order'
+  to:
+    | '/'
+    | '/api/public/image-studio'
+    | '/api/public/telegram-order'
+    | '/api/public/whatsapp'
   id:
-    '__root__' | '/' | '/api/public/image-studio' | '/api/public/telegram-order'
+    | '__root__'
+    | '/'
+    | '/api/public/image-studio'
+    | '/api/public/telegram-order'
+    | '/api/public/whatsapp'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApiPublicImageStudioRoute: typeof ApiPublicImageStudioRoute
   ApiPublicTelegramOrderRoute: typeof ApiPublicTelegramOrderRoute
+  ApiPublicWhatsappRoute: typeof ApiPublicWhatsappRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -83,6 +105,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicTelegramOrderRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/whatsapp': {
+      id: '/api/public/whatsapp'
+      path: '/api/public/whatsapp'
+      fullPath: '/api/public/whatsapp'
+      preLoaderRoute: typeof ApiPublicWhatsappRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -90,6 +119,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiPublicImageStudioRoute: ApiPublicImageStudioRoute,
   ApiPublicTelegramOrderRoute: ApiPublicTelegramOrderRoute,
+  ApiPublicWhatsappRoute: ApiPublicWhatsappRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
