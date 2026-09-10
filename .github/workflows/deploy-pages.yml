@@ -32,6 +32,21 @@ jobs:
           cp public/robots.txt _site/robots.txt 2>/dev/null || true
           cp public/favicon.ico _site/favicon.ico 2>/dev/null || true
           touch _site/.nojekyll
+          # Real 200-status pages for every product URL (e.g. /1) so crawlers
+          # (OAI-AdsBot, Googlebot...) never hit the 404 fallback.
+          ids=$(grep -o 'id:"[0-9]\+"' index.html | grep -o '[0-9]\+' | sort -un)
+          for id in $ids; do
+            mkdir -p "_site/$id"
+            cp index.html "_site/$id/index.html"
+          done
+          # sitemap
+          {
+            echo '<?xml version="1.0" encoding="UTF-8"?>'
+            echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+            echo '  <url><loc>https://elsoooq.com/</loc></url>'
+            for id in $ids; do echo "  <url><loc>https://elsoooq.com/$id</loc></url>"; done
+            echo '</urlset>'
+          } > _site/sitemap.xml
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
