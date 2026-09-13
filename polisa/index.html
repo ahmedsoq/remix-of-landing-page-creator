@@ -5,11 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>نظام بوالص الشحن | elsoooq</title>
   
-  <!-- خطوط وأيقونات مطابقة -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   
-  <!-- مكتبات إخراج الصور و PDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
@@ -39,19 +37,19 @@
       flex-direction: row;
       justify-content: center;
       align-items: flex-start;
-      gap: 25px;
+      gap: 20px;
     }
 
-    /* ==================== لوحة الإدخال الزجاجية الحديثة ==================== */
+    /* لوحة الإدخال الزجاجية */
     .glass-panel {
       width: 100%;
-      max-width: 400px;
+      max-width: 380px;
       background: rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.18);
       border-radius: 18px;
-      padding: 20px;
+      padding: 18px;
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
       color: #fff;
     }
@@ -59,12 +57,12 @@
     .glass-panel h2 {
       font-size: 1.15rem;
       font-weight: 800;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-      padding-bottom: 10px;
+      padding-bottom: 8px;
       color: #38bdf8;
     }
 
@@ -73,23 +71,20 @@
       border: 1px solid #38bdf8;
       color: #38bdf8;
       font-size: 0.75rem;
-      padding: 4px 10px;
+      padding: 4px 8px;
       border-radius: 6px;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
     }
 
     .form-group {
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .form-group label {
       display: block;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       font-weight: 600;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
       color: #e2e8f0;
     }
 
@@ -98,75 +93,63 @@
       background: rgba(255, 255, 255, 0.07);
       border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 8px;
-      padding: 8px 12px;
+      padding: 7px 10px;
       color: #ffffff;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       outline: none;
-      transition: 0.2s ease;
     }
 
     .glass-input::placeholder {
       color: rgba(255, 255, 255, 0.4);
-      font-size: 0.82rem;
+      font-size: 0.8rem;
     }
 
     .glass-input:focus {
       border-color: #38bdf8;
       background: rgba(255, 255, 255, 0.15);
-      box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
     }
 
     .form-row {
       display: grid;
       grid-template-columns: 2fr 1fr;
-      gap: 10px;
+      gap: 8px;
     }
 
     .actions-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 15px;
+      gap: 8px;
+      margin-top: 14px;
     }
 
     .btn-action {
       border: none;
       border-radius: 8px;
-      padding: 10px;
-      font-size: 0.86rem;
+      padding: 9px;
+      font-size: 0.85rem;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 5px;
       color: #fff;
-      transition: 0.2s;
     }
 
     .btn-print {
       grid-column: span 2;
       background: linear-gradient(135deg, #0284c7, #0369a1);
       font-size: 0.95rem;
-      padding: 12px;
+      padding: 11px;
     }
 
-    .btn-img {
-      background: linear-gradient(135deg, #059669, #047857);
-    }
+    .btn-img { background: linear-gradient(135deg, #059669, #047857); }
+    .btn-pdf { background: linear-gradient(135deg, #dc2626, #b91c1c); }
 
-    .btn-pdf {
-      background: linear-gradient(135deg, #dc2626, #b91c1c);
-    }
-
-    .btn-action:active {
-      transform: scale(0.97);
-    }
-
-    /* ==================== تصميم الفاتورة المطابق للأصل ==================== */
+    /* ==================== تصميم البوليصة ==================== */
     .preview-container {
       width: 100%;
-      max-width: 520px;
+      max-width: 490px;
       display: flex;
       justify-content: center;
     }
@@ -174,110 +157,95 @@
     .invoice-card {
       width: 100%;
       background: #ffffff;
-      border-radius: 12px;
+      border-radius: 8px;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
       position: relative;
     }
 
-    /* الهيدر العلوي */
     .header-section {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      padding: 20px 20px 10px 0;
+      padding: 14px 14px 6px 0;
+      direction: rtl;
     }
 
     .brand-logo-box {
-      padding-right: 20px;
+      padding-right: 14px;
     }
 
     .brand-logo {
       display: flex;
       align-items: center;
-      gap: 6px;
-      font-size: 2.3rem;
+      gap: 5px;
+      font-size: 1.8rem;
       font-weight: 900;
       color: var(--primary-navy);
-      letter-spacing: -1px;
       line-height: 1;
     }
 
-    .brand-logo i {
-      color: #0091ea;
-    }
+    .brand-logo i { color: #0091ea; }
 
     .brand-slogan {
-      font-size: 0.85rem;
+      font-size: 0.72rem;
       font-weight: 700;
       color: var(--primary-navy);
-      margin-top: 5px;
+      margin-top: 3px;
     }
 
-    /* بادج فاتورة بيع */
     .invoice-title-badge {
       background: var(--primary-navy);
       color: #ffffff;
-      padding: 8px 20px 12px 28px;
-      border-top-left-radius: 28px;
-      border-bottom-left-radius: 28px;
-      min-width: 215px;
+      padding: 6px 14px 8px 20px;
+      border-top-left-radius: 22px;
+      border-bottom-left-radius: 22px;
+      min-width: 175px;
       text-align: right;
     }
 
     .invoice-title-badge h1 {
-      font-size: 1.55rem;
+      font-size: 1.25rem;
       font-weight: 900;
       margin-bottom: 2px;
-      letter-spacing: 0.5px;
     }
 
     .invoice-title-badge .meta-item {
-      font-size: 0.78rem;
+      font-size: 0.7rem;
       font-weight: 700;
       display: flex;
       align-items: center;
-      justify-content: flex-start;
-      gap: 6px;
-      margin-top: 3px;
-    }
-
-    .invoice-title-badge .meta-item i {
-      font-size: 0.85rem;
+      gap: 5px;
+      margin-top: 2px;
     }
 
     .inv-body {
-      padding: 10px 20px;
+      padding: 6px 14px 10px 14px;
     }
 
-    /* الكروت المحاطة ببادج علوي مقوس من جهة واحدة */
     .bordered-card {
-      border: 1.5px solid var(--sky-border);
-      border-radius: 12px;
-      padding: 14px 18px;
-      margin-bottom: 18px;
+      border: 1.2px solid var(--sky-border);
+      border-radius: 10px;
+      padding: 8px 12px;
+      margin-bottom: 10px;
       position: relative;
     }
 
     .card-badge {
       position: absolute;
-      top: -14px;
-      left: 15px;
+      top: -11px;
+      left: 12px;
       background: var(--primary-navy);
       color: white;
-      padding: 2px 22px;
-      border-top-left-radius: 12px;
-      border-bottom-left-radius: 12px;
-      border-top-right-radius: 12px;
-      border-bottom-right-radius: 0;
-      font-size: 0.88rem;
+      padding: 1px 14px;
+      border-radius: 8px;
+      font-size: 0.75rem;
       font-weight: 800;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
 
-    /* بيانات العميل */
     .customer-grid {
       display: flex;
       align-items: center;
@@ -286,33 +254,29 @@
     .customer-avatar {
       background: var(--light-blue-fill);
       color: var(--primary-navy);
-      width: 54px;
-      height: 54px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.7rem;
-      margin-left: 20px;
+      font-size: 1.25rem;
+      margin-left: 12px;
       flex-shrink: 0;
     }
 
-    .customer-lines {
-      flex: 1;
-    }
+    .customer-lines { flex: 1; }
 
     .info-line {
       display: flex;
-      font-size: 0.95rem;
-      margin-bottom: 5px;
+      font-size: 0.8rem;
+      margin-bottom: 2px;
     }
 
-    .info-line:last-child {
-      margin-bottom: 0;
-    }
+    .info-line:last-child { margin-bottom: 0; }
 
     .info-line .label {
-      width: 95px;
+      width: 75px;
       font-weight: 800;
       color: var(--primary-navy);
       flex-shrink: 0;
@@ -324,166 +288,151 @@
       word-break: break-word;
     }
 
-    /* تفاصيل الطلب */
     .order-box-grid {
       display: flex;
       justify-content: space-around;
       align-items: center;
-      padding: 6px 0;
+      padding: 2px 0;
     }
 
-    .order-col {
-      text-align: center;
-    }
+    .order-col { text-align: center; }
 
     .order-col .head {
       font-weight: 800;
-      font-size: 0.9rem;
+      font-size: 0.75rem;
       color: var(--primary-navy);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      margin-bottom: 4px;
+      gap: 4px;
+      margin-bottom: 2px;
     }
 
     .order-col .data {
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.8rem;
       color: #111;
     }
 
-    /* جدول الأصناف */
     .items-table {
       width: 100%;
       border-collapse: collapse;
       border-radius: 6px;
       overflow: hidden;
-      border: 1.5px solid var(--table-border);
-      margin-bottom: 14px;
+      border: 1.2px solid var(--table-border);
+      margin-bottom: 8px;
     }
 
     .items-table thead th {
       background: var(--primary-navy);
       color: white;
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       font-weight: 800;
-      padding: 8px 6px;
-      border-left: 1.5px solid rgba(255, 255, 255, 0.25);
+      padding: 5px 3px;
+      border-left: 1px solid rgba(255, 255, 255, 0.25);
     }
 
-    .items-table thead th:last-child {
-      border-left: none;
-    }
+    .items-table thead th:last-child { border-left: none; }
 
     .items-table tbody td {
-      padding: 10px 6px;
-      font-size: 0.9rem;
+      padding: 6px 3px;
+      font-size: 0.78rem;
       font-weight: 700;
       color: #111;
       text-align: center;
-      border-left: 1.5px solid var(--table-border);
+      border-left: 1.2px solid var(--table-border);
     }
 
-    .items-table tbody td:last-child {
-      border-left: none;
-    }
+    .items-table tbody td:last-child { border-left: none; }
 
-    /* بنر المبلغ الإجمالي */
     .total-banner {
       background: var(--primary-navy);
       color: white;
-      border-radius: 8px;
-      padding: 8px 18px;
+      border-radius: 6px;
+      padding: 5px 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 15px;
+      margin-bottom: 8px;
     }
 
     .total-banner .lbl {
-      font-size: 1.15rem;
+      font-size: 0.9rem;
       font-weight: 800;
       display: flex;
       align-items: center;
-      gap: 8px;
-    }
-
-    .total-banner .lbl i {
-      font-size: 1.4rem;
+      gap: 6px;
     }
 
     .total-banner .val {
-      font-size: 1.35rem;
+      font-size: 1.05rem;
       font-weight: 900;
     }
 
-    /* الملاحظة */
     .note-box {
-      border: 1.5px solid var(--sky-border);
-      border-radius: 8px;
-      padding: 10px;
+      border: 1.2px solid var(--sky-border);
+      border-radius: 6px;
+      padding: 6px;
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      font-size: 0.9rem;
+      gap: 6px;
+      font-size: 0.75rem;
       font-weight: 800;
       color: var(--primary-navy);
-      margin-bottom: 15px;
+      margin-bottom: 8px;
     }
 
     .note-badge {
       position: absolute;
-      top: -13px;
-      left: 15px;
+      top: -9px;
+      left: 10px;
       background: #ffffff;
-      border: 1.5px solid var(--sky-border);
-      border-radius: 12px;
-      padding: 1px 12px;
-      font-size: 0.78rem;
+      border: 1px solid var(--sky-border);
+      border-radius: 8px;
+      padding: 0 8px;
+      font-size: 0.68rem;
       font-weight: 800;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 3px;
     }
 
-    /* التذييل: الهاتف + المميزات + الختم الأصلي */
     .footer-extra {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-top: 1.5px dashed var(--sky-border);
-      padding: 12px 0 6px 0;
+      border-top: 1px dashed var(--sky-border);
+      padding: 6px 0 2px 0;
     }
 
     .company-phone {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 5px;
     }
 
     .phone-icon-bg {
       background: var(--primary-navy);
       color: white;
-      width: 34px;
-      height: 34px;
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.95rem;
+      font-size: 0.75rem;
     }
 
     .phone-text .title {
-      font-size: 0.72rem;
+      font-size: 0.62rem;
       font-weight: 700;
       color: var(--primary-navy);
     }
 
     .phone-text .number {
-      font-size: 0.9rem;
+      font-size: 0.75rem;
       font-weight: 800;
       color: #000;
       direction: ltr;
@@ -491,44 +440,41 @@
 
     .perks-list {
       display: flex;
-      gap: 12px;
+      gap: 6px;
     }
 
     .perk-item {
       text-align: center;
-      font-size: 0.68rem;
+      font-size: 0.58rem;
       font-weight: 800;
       color: var(--primary-navy);
     }
 
     .perk-item i {
       display: block;
-      font-size: 1.1rem;
-      margin-bottom: 3px;
+      font-size: 0.85rem;
+      margin-bottom: 1px;
       color: var(--primary-navy);
     }
 
-    /* ================= الختم الأصلي الدائري المطابق تماماً ================= */
     .original-stamp-wrapper {
-      width: 78px;
-      height: 78px;
+      width: 62px;
+      height: 62px;
       transform: rotate(-10deg);
       display: flex;
       align-items: center;
       justify-content: center;
-      user-select: none;
     }
 
     .original-stamp {
-      width: 76px;
-      height: 76px;
-      border: 1.8px solid var(--primary-navy);
+      width: 60px;
+      height: 60px;
+      border: 1.5px solid var(--primary-navy);
       border-radius: 50%;
-      padding: 2px;
+      padding: 1px;
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
     }
 
     .original-stamp-inner {
@@ -542,62 +488,23 @@
       justify-content: center;
       text-align: center;
       color: var(--primary-navy);
-      position: relative;
     }
 
-    .stamp-top-text {
-      font-size: 0.55rem;
-      font-weight: 900;
-      line-height: 1;
-      margin-top: 2px;
-    }
+    .stamp-top-text { font-size: 0.45rem; font-weight: 900; line-height: 1; }
+    .stamp-center { display: flex; align-items: center; justify-content: center; gap: 2px; }
+    .stamp-center .star { font-size: 0.35rem; }
+    .stamp-center-logo i { font-size: 0.6rem; color: #0088cc; }
+    .stamp-brand-name { font-size: 0.52rem; font-weight: 900; line-height: 1; }
+    .stamp-bottom-text { font-size: 0.4rem; font-weight: 800; line-height: 1; }
 
-    .stamp-center {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      margin: 1px 0;
-    }
-
-    .stamp-center .star {
-      font-size: 0.45rem;
-    }
-
-    .stamp-center-logo {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .stamp-center-logo i {
-      font-size: 0.75rem;
-      color: #0088cc;
-    }
-
-    .stamp-brand-name {
-      font-size: 0.65rem;
-      font-weight: 900;
-      line-height: 1;
-      letter-spacing: -0.3px;
-    }
-
-    .stamp-bottom-text {
-      font-size: 0.48rem;
-      font-weight: 800;
-      line-height: 1;
-      margin-bottom: 2px;
-    }
-
-    /* ================= شريط الشكر السفلي ================= */
     .bottom-blue-bar {
       background: linear-gradient(90deg, #0288d1 0%, #0e3b64 100%);
       color: white;
-      padding: 10px 20px;
+      padding: 6px 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.8rem;
+      font-size: 0.68rem;
       font-weight: 700;
     }
 
@@ -609,41 +516,43 @@
     }
 
     .bottom-blue-bar .thanks-msg {
-      font-family: 'Reem Kufi', 'Cairo', sans-serif;
-      font-size: 1.15rem;
-      font-weight: 700;
-      line-height: 1.1;
+      font-size: 0.85rem;
+      font-weight: 800;
+      line-height: 1;
     }
 
     .bottom-blue-bar .thanks-heart {
-      font-size: 0.7rem;
+      font-size: 0.55rem;
       margin-top: 1px;
     }
 
-    /* تجاوب الهاتف */
     @media screen and (max-width: 860px) {
       body {
         flex-direction: column;
         align-items: center;
         padding: 10px;
-        gap: 20px;
+        gap: 15px;
       }
       .glass-panel, .preview-container {
         max-width: 100%;
       }
     }
 
-    /* إعدادات الطباعة على ورق البوالص */
+    /* ================= إعدادات الطباعة لحل مشكلة الصفحتين ================= */
     @page {
-      size: auto;
-      margin: 0mm;
+      size: A4 portrait;
+      margin: 8mm auto; /* هوامش محكمة تضمن عدم تجاوز الصفحة */
     }
 
     @media print {
       html, body {
         background: #ffffff !important;
-        padding: 0 !important;
         margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: auto !important;
+        overflow: visible !important;
         display: block !important;
       }
 
@@ -654,28 +563,33 @@
       .preview-container {
         width: 100% !important;
         max-width: 100% !important;
-        margin: 0 !important;
+        margin: 0 auto !important;
         padding: 0 !important;
-        display: block !important;
+        display: flex !important;
+        justify-content: center !important;
+        page-break-after: avoid !important;
+        page-break-inside: avoid !important;
       }
 
       .invoice-card {
-        width: 100% !important;
+        width: 520px !important; /* تثبيت العرض ليكون قياسياً وأنيقاً في منتصف A4 أو البوليصة */
         max-width: 100% !important;
         box-shadow: none !important;
         border-radius: 0 !important;
-        border: none !important;
-        page-break-inside: avoid;
+        border: 1px solid #ddd !important;
+        page-break-after: avoid !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- لوحة الإدخال الزجاجية (فارغة وجاهزة) -->
+  <!-- لوحة الإدخال الزجاجية -->
   <div class="glass-panel">
     <h2>
-      <span><i class="fa-solid fa-pen-to-square"></i> بوليصة شحن جديدة</span>
+      <span><i class="fa-solid fa-pen-to-square"></i> بوليصة جديدة</span>
       <button class="btn-new-id" onclick="generateInvoiceMeta()" title="توليد رقم وتاريخ جديد">
         <i class="fa-solid fa-arrows-rotate"></i> جديد
       </button>
@@ -683,7 +597,7 @@
 
     <div class="form-group">
       <label><i class="fa-solid fa-user"></i> اسم العميل</label>
-      <input type="text" id="inCustName" class="glass-input" placeholder="اكتب اسم العميل...">
+      <input type="text" id="inCustName" class="glass-input" placeholder="اسم العميل...">
     </div>
 
     <div class="form-group">
@@ -693,12 +607,12 @@
 
     <div class="form-group">
       <label><i class="fa-solid fa-location-dot"></i> عنوان العميل</label>
-      <input type="text" id="inCustAddress" class="glass-input" placeholder="المدينة - المنطقة - الشارع...">
+      <input type="text" id="inCustAddress" class="glass-input" placeholder="المحافظة - المنطقة - الشارع...">
     </div>
 
     <div class="form-row">
       <div class="form-group">
-        <label><i class="fa-solid fa-box-open"></i> النوع (اسم المنتج)</label>
+        <label><i class="fa-solid fa-box-open"></i> النوع</label>
         <input type="text" id="inProdName" class="glass-input" placeholder="اسم المنتج...">
       </div>
       <div class="form-group">
@@ -717,14 +631,13 @@
       <input type="text" id="inNote" class="glass-input" placeholder="متاح معاينة المنتج قبل الدفع">
     </div>
 
-    <!-- أزرار الإخراج الثلاثة -->
     <div class="actions-grid">
       <button type="button" class="btn-action btn-print" onclick="window.print()">
-        <i class="fa-solid fa-print"></i> طباعة البوليصة مباشرة
+        <i class="fa-solid fa-print"></i> طباعة (صفحة 1 كاملة)
       </button>
 
       <button type="button" class="btn-action btn-img" onclick="exportAsImage()">
-        <i class="fa-solid fa-image"></i> حفظ كصورة PNG
+        <i class="fa-solid fa-image"></i> حفظ صورة PNG
       </button>
 
       <button type="button" class="btn-action btn-pdf" onclick="exportAsPDF()">
@@ -733,7 +646,7 @@
     </div>
   </div>
 
-  <!-- معاينة البوليصة المطابقة 100% -->
+  <!-- معاينة البوليصة -->
   <div class="preview-container">
     <div class="invoice-card" id="invoiceArea">
       
@@ -749,7 +662,7 @@
         <div class="invoice-title-badge">
           <h1>فاتورة بيع</h1>
           <div class="meta-item">
-            رقم الفاتورة: <span id="outInvNumber">#000482</span>
+            رقم الفاتورة: <span id="outInvNumber">#000000</span>
           </div>
           <div class="meta-item">
             <i class="fa-regular fa-calendar-days"></i> التاريخ: <span id="outDate">--</span>
@@ -759,7 +672,7 @@
 
       <div class="inv-body">
         
-        <!-- كارت بيانات العميل -->
+        <!-- بيانات العميل -->
         <div class="bordered-card">
           <div class="card-badge">
             <i class="fa-solid fa-user"></i> بيانات العميل
@@ -785,7 +698,7 @@
           </div>
         </div>
 
-        <!-- كارت تفاصيل الطلب -->
+        <!-- تفاصيل الطلب -->
         <div class="bordered-card">
           <div class="card-badge">
             <i class="fa-regular fa-newspaper"></i> تفاصيل الطلب
@@ -795,21 +708,56 @@
               <div class="head">طريقة الدفع:</div>
               <div class="data">
                 كاش عند الاستلام 
-                <span style="display:inline-block; border:1px solid #111; border-radius:3px; padding:0 3px; font-size:0.75rem; margin-right:4px;">💵</span>
+                <span style="display:inline-block; border:1px solid #111; border-radius:2px; padding:0 2px; font-size:0.7rem;">💵</span>
               </div>
             </div>
             <div class="order-col">
               <div class="head">
                 تاريخ الطلب:
-                <i class="fa-regular fa-calendar-days" style="color:var(--primary-navy); font-size:1.1rem; margin-right:4px;"></i>
+                <i class="fa-regular fa-calendar-days" style="color:var(--primary-navy); font-size:0.9rem; margin-right:3px;"></i>
               </div>
               <div class="data" id="outOrderDate">--</div>
             </div>
           </div>
         </div>
 
-        <!-- جدول الأصناف المطابق تماماً -->
+        <!-- جدول الأصناف -->
         <table class="items-table">
           <thead>
             <tr>
-        
+              <th style="width: 28px;">م</th>
+              <th>اسم المنتج</th>
+              <th style="width: 50px;">الكمية</th>
+              <th style="width: 85px;">سعر الوحدة</th>
+              <th style="width: 85px;">الإجمالي</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td id="outProdName" style="text-align: right; padding-right: 10px;">---</td>
+              <td id="outProdQty">-</td>
+              <td><span id="outProdUnit">0</span> جنيه</td>
+              <td><span id="outProdTotal">0</span> جنيه</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- بنر المبلغ الإجمالي -->
+        <div class="total-banner">
+          <div class="lbl">
+            <i class="fa-solid fa-money-bill-transfer"></i> المبلغ الإجمالي
+          </div>
+          <div class="val">
+            <span id="outGrandTotal">0</span> جنيه مصري
+          </div>
+        </div>
+
+        <!-- كارت الملاحظة -->
+        <div class="note-box">
+          <div class="note-badge">
+            <i class="fa-regular fa-clipboard" style="color:var(--primary-navy);"></i> ملاحظة
+          </div>
+          <i class="fa-solid fa-circle-check" style="color: #0288d1; font-size: 1rem;"></i>
+          <span id="outNote">متاح معاينة المنتج قبل الدفع</span>
+       
