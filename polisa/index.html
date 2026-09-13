@@ -4,9 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>نظام بوالص الشحن | elsoooq</title>
+  
+  <!-- مكتبات الخط والأيقونات -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   
+  <!-- مكتبات التصدير لصورة و PDF بجودة فائقة -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
   <style>
     :root {
       --primary-navy: #0e3b64;
@@ -44,15 +50,15 @@
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.18);
       border-radius: 20px;
-      padding: 22px;
+      padding: 20px;
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
       color: #fff;
     }
 
     .glass-panel h2 {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       font-weight: 800;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -75,14 +81,14 @@
     }
 
     .form-group {
-      margin-bottom: 13px;
+      margin-bottom: 12px;
     }
 
     .form-group label {
       display: block;
-      font-size: 0.83rem;
+      font-size: 0.82rem;
       font-weight: 600;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
       color: #e2e8f0;
     }
 
@@ -91,16 +97,16 @@
       background: rgba(255, 255, 255, 0.07);
       border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 10px;
-      padding: 9px 12px;
+      padding: 8px 12px;
       color: #ffffff;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       outline: none;
       transition: 0.2s ease;
     }
 
     .glass-input::placeholder {
       color: rgba(255, 255, 255, 0.4);
-      font-size: 0.85rem;
+      font-size: 0.82rem;
     }
 
     .glass-input:focus {
@@ -115,27 +121,49 @@
       gap: 10px;
     }
 
-    .btn-print {
-      width: 100%;
+    /* أزرار الإخراج (طباعة - صورة - PDF) */
+    .actions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
       margin-top: 15px;
-      background: linear-gradient(135deg, #0284c7, #0369a1);
-      color: white;
+    }
+
+    .btn-action {
       border: none;
-      border-radius: 12px;
-      padding: 13px;
-      font-size: 1rem;
-      font-weight: 800;
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 0.88rem;
+      font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4);
-      transition: all 0.2s;
+      gap: 6px;
+      transition: 0.2s;
+      color: #fff;
     }
 
-    .btn-print:active {
-      transform: scale(0.98);
+    .btn-print {
+      grid-column: span 2;
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
+      font-size: 0.95rem;
+      padding: 12px;
+    }
+
+    .btn-img {
+      background: linear-gradient(135deg, #059669, #047857);
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+    }
+
+    .btn-pdf {
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+    }
+
+    .btn-action:active {
+      transform: scale(0.97);
     }
 
     /* الحاوية وبوليصة الشحن */
@@ -460,7 +488,7 @@
       color: var(--accent-blue);
     }
 
-    /* ==================== تصميم الختم الحقيقي الواقعي ==================== */
+    /* ختم الشركة الاحترافي الحقيقي */
     .real-stamp {
       width: 76px;
       height: 76px;
@@ -472,7 +500,6 @@
       justify-content: center;
       transform: rotate(-12deg);
       opacity: 0.88;
-      filter: drop-shadow(0 0 1px rgba(14, 59, 100, 0.4));
       user-select: none;
     }
 
@@ -493,7 +520,6 @@
       font-size: 0.58rem;
       font-weight: 900;
       color: #0e3b64;
-      letter-spacing: -0.2px;
       line-height: 1;
     }
 
@@ -526,7 +552,6 @@
       margin-top: 1px;
     }
 
-    /* الشريط السفلي */
     .bottom-blue-bar {
       background: linear-gradient(90deg, #0088cc 0%, #0e3b64 100%);
       color: white;
@@ -543,7 +568,6 @@
       font-weight: 800;
     }
 
-    /* تجاوب الهاتف */
     @media screen and (max-width: 860px) {
       body {
         flex-direction: column;
@@ -556,7 +580,7 @@
       }
     }
 
-    /* إعدادات الطباعة على ورق البوالص */
+    /* ضبط الطباعة الورقية */
     @page {
       size: auto;
       margin: 0mm;
@@ -595,7 +619,7 @@
 </head>
 <body>
 
-  <!-- كارت الإدخال الزجاجي -->
+  <!-- لوحة الإدخال الزجاجية -->
   <div class="glass-panel">
     <h2>
       <span><i class="fa-solid fa-pen-to-square"></i> بوليصة شحن جديدة</span>
@@ -640,16 +664,27 @@
       <input type="text" id="inNote" class="glass-input" placeholder="متاح معاينة المنتج قبل الدفع...">
     </div>
 
-    <button type="button" class="btn-print" onclick="window.print()">
-      <i class="fa-solid fa-print"></i> طباعة البوليصة تلقائياً
-    </button>
+    <!-- أزرار الإخراج الثلاثة -->
+    <div class="actions-grid">
+      <button type="button" class="btn-action btn-print" onclick="window.print()">
+        <i class="fa-solid fa-print"></i> طباعة البوليصة مباشرة
+      </button>
+
+      <button type="button" class="btn-action btn-img" onclick="exportAsImage()">
+        <i class="fa-solid fa-image"></i> حفظ كصورة PNG
+      </button>
+
+      <button type="button" class="btn-action btn-pdf" onclick="exportAsPDF()">
+        <i class="fa-solid fa-file-pdf"></i> حفظ كملف PDF
+      </button>
+    </div>
   </div>
 
-  <!-- البوليصة -->
+  <!-- المعاينة -->
   <div class="preview-container">
     <div class="invoice-card" id="invoiceArea">
       
-      <!-- الهيدر -->
+      <!-- الهيدر والشعار -->
       <div class="header-section">
         <div class="brand-logo-box">
           <div class="brand-logo">
@@ -758,7 +793,7 @@
           <span id="outNote">متاح معاينة المنتج قبل الدفع</span>
         </div>
 
-        <!-- المميزات ورقم الشركة والختم الواقعي -->
+        <!-- المميزات ورقم الشركة والختم -->
         <div class="footer-extra">
           <div class="company-phone">
             <div class="phone-icon-bg"><i class="fa-solid fa-phone"></i></div>
@@ -770,30 +805,4 @@
 
           <div class="perks-list">
             <div class="perk-item">
-              <i class="fa-solid fa-shield-halved"></i>
-              أمان وضمان
-            </div>
-            <div class="perk-item">
-              <i class="fa-solid fa-rotate-left"></i>
-              استرجاع لشهرين
-            </div>
-            <div class="perk-item">
-              <i class="fa-regular fa-credit-card"></i>
-              عند الاستلام
-            </div>
-          </div>
-
-          <!-- ختم شركة احترافي بتصميم واقعي -->
-          <div class="real-stamp">
-            <div class="stamp-inner-border">
-              <div class="stamp-company-name">★ شركة السوق ★</div>
-              <div class="stamp-stars">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-cart-shopping" style="font-size: 0.65rem;"></i>
-                <i class="fa-solid fa-star"></i>
-              </div>
-              <div class="stamp-logo">elsoooq</div>
-              <div class="stamp-approved">معتمد وموثق</div>
-            </div>
-          </div>
-        </di
+  
