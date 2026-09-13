@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -5,21 +6,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>بوليصة شحن - elsoooq</title>
   
-  <!-- خط Cairo الأصلي وأيقونات FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Changa:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@700;900&display=swap" rel="stylesheet">
   
-  <!-- مكتبات التصدير لصورة و PDF فوري -->
+  <!-- مكتبات حفظ الصور والـ PDF بجودة فائقة وبصفحة واحدة فقط -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
     :root {
-      --c-navy: #0e3b64;
-      --c-blue: #0288d1;
-      --c-sky: #9ecbed;
-      --c-light-bg: #e1f0fa;
-      --c-border: #b8daf3;
+      --primary-navy: #0e3b64;
+      --accent-blue: #0288d1;
+      --light-blue-bg: #eaf4fc;
+      --border-blue: #b3d7f2;
+      --text-dark: #1b2e4b;
     }
 
     * {
@@ -32,31 +32,30 @@
     }
 
     body {
-      background: radial-gradient(circle at top left, #122b49, #08101a);
+      background: #0f172a;
       min-height: 100vh;
-      padding: 15px;
+      padding: 20px 10px;
       display: flex;
-      flex-direction: row;
       justify-content: center;
       align-items: flex-start;
-      gap: 20px;
+      gap: 25px;
     }
 
-    /* ==================== لوحة الإدخال الزجاجية العصرية ==================== */
-    .glass-form-card {
+    /* ================= لوحة الإدخال الزجاجية (Glassmorphism) ================= */
+    .glass-control-panel {
       width: 100%;
       max-width: 380px;
       background: rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 16px;
       padding: 18px;
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
       color: #fff;
     }
 
-    .glass-form-card h2 {
+    .glass-control-panel h2 {
       font-size: 1.15rem;
       font-weight: 800;
       margin-bottom: 14px;
@@ -68,7 +67,7 @@
       color: #38bdf8;
     }
 
-    .btn-refresh-meta {
+    .btn-meta-gen {
       background: rgba(56, 189, 248, 0.2);
       border: 1px solid #38bdf8;
       color: #38bdf8;
@@ -124,7 +123,7 @@
       margin-top: 14px;
     }
 
-    .btn-g {
+    .btn-action {
       border: none;
       border-radius: 8px;
       padding: 9px;
@@ -138,205 +137,207 @@
       color: #fff;
     }
 
-    .btn-print-action {
+    .btn-print-act {
       grid-column: span 2;
       background: linear-gradient(135deg, #0284c7, #0369a1);
       font-size: 0.95rem;
       padding: 11px;
     }
 
-    .btn-img-action { background: linear-gradient(135deg, #059669, #047857); }
-    .btn-pdf-action { background: linear-gradient(135deg, #dc2626, #b91c1c); }
+    .btn-img-act { background: linear-gradient(135deg, #059669, #047857); }
+    .btn-pdf-act { background: linear-gradient(135deg, #dc2626, #b91c1c); }
 
-    /* ==================== تصميم بوليصة الشحن المطابقة 100% ==================== */
-    .invoice-stage {
+    /* ================= بوليصة الشحن المطابقة بنسبة 100% ================= */
+    .invoice-container {
       width: 100%;
       max-width: 500px;
       display: flex;
       justify-content: center;
     }
 
-    /* أبعاد ثابتة محكمة تمنع تعدد الصفحات */
-    .bill-box {
+    .invoice-card {
       width: 480px;
       background: #ffffff;
-      border-radius: 6px;
+      border-radius: 4px;
       overflow: hidden;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
       position: relative;
-      direction: rtl !important;
-      color: #0e3b64;
-    }
-
-    /* رأس الفاتورة */
-    .top-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: stretch;
       direction: rtl;
     }
 
-    /* بادج فاتورة بيع - الزاوية العلوية اليمنى بالصورة الأصلية */
-    .bill-title-tab {
-      background: var(--c-navy);
-      color: #ffffff;
-      padding: 12px 18px 12px 24px;
-      border-bottom-left-radius: 35px;
-      min-width: 190px;
-      text-align: right;
-    }
-
-    .bill-title-tab h1 {
-      font-size: 1.5rem;
-      font-weight: 900;
-      line-height: 1.1;
-      margin-bottom: 4px;
-    }
-
-    .bill-title-tab .meta-line {
-      font-size: 0.76rem;
-      font-weight: 700;
+    /* رأس الفاتورة */
+    .header-top {
       display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 3px;
+      justify-content: space-between;
+      align-items: stretch;
+      min-height: 110px;
+      position: relative;
     }
 
-    /* اللوجو وشعار المتجر - الزاوية العلوية اليسرى */
-    .brand-top-left {
-      padding: 14px 18px 0 0;
+    /* الشعار يسار الهيدر */
+    .header-logo-side {
+      padding: 20px 20px 0 0;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
     }
 
-    .brand-top-left .logo-row {
+    .logo-main-text {
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 2.1rem;
+      font-size: 2.2rem;
       font-weight: 900;
-      color: var(--c-navy);
-      line-height: 1;
+      color: var(--primary-navy);
       letter-spacing: -0.5px;
+      line-height: 1;
     }
 
-    .brand-top-left .logo-row i {
-      color: var(--c-blue);
-      font-size: 1.9rem;
+    .logo-main-text i {
+      color: var(--accent-blue);
+      font-size: 2rem;
     }
 
-    .brand-top-left .brand-slogan {
-      font-size: 0.78rem;
+    .logo-slogan {
+      font-size: 0.8rem;
       font-weight: 800;
-      color: var(--c-navy);
+      color: var(--primary-navy);
       margin-top: 4px;
     }
 
-    /* المحتوى الداخلي */
-    .bill-inner-body {
-      padding: 10px 14px 8px 14px;
+    /* بادج فاتورة بيع يمين الهيدر */
+    .header-badge-side {
+      background: var(--primary-navy);
+      color: #ffffff;
+      padding: 14px 22px 14px 28px;
+      border-bottom-left-radius: 48px;
+      min-width: 200px;
+      text-align: right;
     }
 
-    /* الكروت المؤطرة */
-    .sec-card {
-      border: 1.5px solid var(--c-border);
+    .header-badge-side h1 {
+      font-size: 1.65rem;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .header-badge-side .meta-row {
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    .invoice-body {
+      padding: 12px 16px 8px 16px;
+    }
+
+    /* الكروت ذات البادج المائل */
+    .data-box-card {
+      border: 1.5px solid var(--border-blue);
       border-radius: 12px;
-      padding: 12px 14px 10px 14px;
-      margin-bottom: 12px;
+      padding: 14px 16px 12px 16px;
+      margin-bottom: 14px;
       position: relative;
+      background: #ffffff;
     }
 
-    /* البادج العلوي على يمين الكرت كما بالصورة الأصلية تماماً */
-    .sec-badge-tab {
+    .card-slant-badge {
       position: absolute;
-      top: -13px;
+      top: -14px;
       right: 18px;
-      background: var(--c-navy);
-      color: white;
-      padding: 2px 18px 2px 24px;
-      border-radius: 14px;
-      font-size: 0.85rem;
+      background: var(--primary-navy);
+      color: #ffffff;
+      padding: 2px 22px 2px 30px;
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 12px 100%);
+      border-radius: 0 10px 0 0;
+      font-size: 0.88rem;
       font-weight: 800;
       display: flex;
       align-items: center;
       gap: 6px;
     }
 
-    /* كرت بيانات العميل */
-    .cust-layout {
+    /* بيانات العميل */
+    .client-details-grid {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
     }
 
-    .cust-lines-col {
+    .client-text-rows {
       flex: 1;
-      text-align: right;
     }
 
-    .cust-line {
+    .client-single-row {
       display: flex;
       align-items: center;
-      font-size: 0.88rem;
+      font-size: 0.92rem;
       margin-bottom: 4px;
     }
 
-    .cust-line:last-child { margin-bottom: 0; }
+    .client-single-row:last-child { margin-bottom: 0; }
 
-    .cust-lbl {
-      width: 90px;
+    .client-single-row .lbl {
+      width: 95px;
       font-weight: 800;
-      color: var(--c-navy);
-      flex-shrink: 0;
+      color: var(--primary-navy);
     }
 
-    .cust-val {
+    .client-single-row .val {
       font-weight: 700;
-      color: #111;
+      color: #222;
       word-break: break-word;
     }
 
-    .cust-avatar-circle {
-      background: var(--c-light-bg);
-      color: var(--c-navy);
-      width: 48px;
-      height: 48px;
+    .client-avatar-icon {
+      background: var(--light-blue-bg);
+      color: var(--primary-navy);
+      width: 52px;
+      height: 52px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
-      margin-right: 10px;
+      font-size: 1.7rem;
+      margin-right: 15px;
       flex-shrink: 0;
     }
 
-    /* كرت تفاصيل الطلب */
-    .order-split-row {
+    /* تفاصيل الطلب */
+    .order-details-grid {
       display: flex;
-      justify-content: space-around;
+      justify-content: space-between;
       align-items: center;
-      padding: 4px 0 2px 0;
+      padding: 4px 10px 2px 10px;
     }
 
-    .order-unit {
+    .order-sub-col {
       text-align: center;
+      flex: 1;
     }
 
-    .order-unit .u-title {
+    .order-sub-col:first-child {
+      border-left: 1px solid var(--border-blue);
+    }
+
+    .order-sub-col .col-head {
       font-weight: 800;
-      font-size: 0.84rem;
-      color: var(--c-navy);
+      font-size: 0.86rem;
+      color: var(--primary-navy);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 5px;
+      gap: 6px;
       margin-bottom: 4px;
     }
 
-    .order-unit .u-value {
+    .order-sub-col .col-val {
       font-weight: 800;
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       color: #111;
       display: flex;
       align-items: center;
@@ -344,173 +345,176 @@
       gap: 6px;
     }
 
-    /* أيقونة النقود الزرقاء للـ 50 */
-    .cash-badge-icon {
-      border: 1.5px solid var(--c-blue);
-      color: var(--c-blue);
+    .bill-cash-50 {
+      border: 1.5px solid var(--accent-blue);
+      color: var(--accent-blue);
       border-radius: 3px;
       padding: 0 4px;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 900;
       line-height: 1.2;
     }
 
-    /* جدول الأصناف المطابق */
-    .bill-table {
+    /* جدول الأصناف */
+    .invoice-table {
       width: 100%;
       border-collapse: collapse;
-      border-radius: 6px;
+      border-radius: 8px;
       overflow: hidden;
-      border: 1.5px solid var(--c-sky);
-      margin-bottom: 10px;
+      border: 1.5px solid var(--border-blue);
+      margin-bottom: 12px;
     }
 
-    .bill-table thead th {
-      background: var(--c-navy);
-      color: white;
-      font-size: 0.82rem;
+    .invoice-table thead th {
+      background: var(--primary-navy);
+      color: #ffffff;
+      font-size: 0.85rem;
       font-weight: 800;
-      padding: 6px 4px;
+      padding: 7px 4px;
       border-left: 1.5px solid rgba(255, 255, 255, 0.25);
     }
 
-    .bill-table thead th:last-child { border-left: none; }
+    .invoice-table thead th:last-child { border-left: none; }
 
-    .bill-table tbody td {
-      padding: 8px 4px;
-      font-size: 0.85rem;
+    .invoice-table tbody td {
+      padding: 9px 4px;
+      font-size: 0.88rem;
       font-weight: 700;
       color: #111;
       text-align: center;
-      border-left: 1.5px solid var(--c-sky);
+      border-left: 1.5px solid var(--border-blue);
     }
 
-    .bill-table tbody td:last-child { border-left: none; }
+    .invoice-table tbody td:last-child { border-left: none; }
 
-    /* بنر المبلغ الإجمالي */
-    .total-navy-strip {
-      background: var(--c-navy);
-      color: white;
-      border-radius: 6px;
-      padding: 7px 14px;
+    /* المبلغ الإجمالي */
+    .total-split-banner {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 12px;
+      background: var(--primary-navy);
+      border: 1.5px solid var(--border-blue);
     }
 
-    .total-navy-strip .t-lbl {
-      font-size: 1.1rem;
-      font-weight: 800;
+    .total-right-navy {
+      background: var(--primary-navy);
+      color: white;
+      padding: 9px 18px;
       display: flex;
       align-items: center;
       gap: 8px;
+      font-size: 1.15rem;
+      font-weight: 800;
     }
 
-    .total-navy-strip .t-lbl i {
+    .total-left-light {
+      flex: 1;
+      background: var(--light-blue-bg);
+      color: var(--primary-navy);
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0 16px;
       font-size: 1.35rem;
-    }
-
-    .total-navy-strip .t-val {
-      font-size: 1.25rem;
       font-weight: 900;
     }
 
-    /* كرت الملاحظة */
-    .note-rect-card {
-      border: 1.5px solid var(--c-border);
+    /* الملاحظة */
+    .note-card-bar {
+      border: 1.5px solid var(--border-blue);
       border-radius: 8px;
-      padding: 7px;
+      padding: 8px 12px;
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 7px;
-      font-size: 0.84rem;
+      gap: 8px;
+      font-size: 0.86rem;
       font-weight: 800;
-      color: var(--c-navy);
-      margin-bottom: 10px;
+      color: var(--primary-navy);
+      margin-bottom: 12px;
     }
 
-    .note-pill-badge {
+    .note-tag-head {
       position: absolute;
-      top: -11px;
-      right: 14px;
+      top: -12px;
+      right: 18px;
       background: #ffffff;
-      border: 1.5px solid var(--c-border);
+      border: 1.5px solid var(--border-blue);
       border-radius: 12px;
       padding: 0 10px;
-      font-size: 0.74rem;
+      font-size: 0.75rem;
       font-weight: 800;
       display: flex;
       align-items: center;
       gap: 4px;
     }
 
-    /* القسم السفلي: هاتف ومميزات وختم المتجر */
-    .bottom-perks-row {
+    /* القسم السفلي: هاتف الشركة + المميزات + الختم الأصلي */
+    .footer-extra-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-top: 1.5px dashed var(--c-sky);
+      border-top: 1.5px dashed var(--border-blue);
       padding: 8px 0 4px 0;
     }
 
-    .comp-call-box {
+    .support-contact {
       display: flex;
       align-items: center;
       gap: 6px;
     }
 
-    .call-circle-icon {
-      background: var(--c-navy);
+    .support-circle-phone {
+      background: var(--primary-navy);
       color: white;
-      width: 30px;
-      height: 30px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
     }
 
-    .call-meta .c-title {
+    .support-meta .s-title {
       font-size: 0.68rem;
       font-weight: 800;
-      color: var(--c-navy);
+      color: var(--primary-navy);
     }
 
-    .call-meta .c-num {
-      font-size: 0.82rem;
-      font-weight: 800;
+    .support-meta .s-number {
+      font-size: 0.84rem;
+      font-weight: 900;
       color: #000;
       direction: ltr;
     }
 
-    .three-perks-wrap {
+    .perks-list-wrap {
       display: flex;
-      gap: 10px;
+      gap: 12px;
     }
 
-    .perk-cell {
+    .perk-box {
       text-align: center;
-      font-size: 0.65rem;
+      font-size: 0.68rem;
       font-weight: 800;
-      color: var(--c-navy);
+      color: var(--primary-navy);
     }
 
-    .perk-cell i {
+    .perk-box i {
       display: block;
-      font-size: 1rem;
+      font-size: 1.1rem;
       margin-bottom: 2px;
-      color: var(--c-navy);
+      color: var(--primary-navy);
     }
 
-    /* الختم الدائري المطابق للأصل */
-    .authentic-stamp {
-      width: 70px;
-      height: 70px;
-      border: 1.8px solid var(--c-navy);
+    /* الختم الدائري المائل المطابق */
+    .stamp-container-angle {
+      width: 72px;
+      height: 72px;
+      border: 1.8px solid var(--primary-navy);
       border-radius: 50%;
       padding: 2px;
       display: flex;
@@ -520,73 +524,57 @@
       user-select: none;
     }
 
-    .authentic-stamp-inner {
+    .stamp-inner-circle {
       width: 100%;
       height: 100%;
-      border: 1px dashed var(--c-navy);
+      border: 1px dashed var(--primary-navy);
       border-radius: 50%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      color: var(--c-navy);
+      color: var(--primary-navy);
     }
 
-    .stamp-ar-top {
-      font-size: 0.52rem;
-      font-weight: 900;
-      line-height: 1;
-    }
+    .stamp-txt-top { font-size: 0.54rem; font-weight: 900; line-height: 1; }
+    .stamp-row-mid { display: flex; align-items: center; justify-content: center; gap: 3px; margin: 1px 0; }
+    .stamp-row-mid .star { font-size: 0.38rem; }
+    .stamp-row-mid i.fa-cart-shopping { font-size: 0.7rem; color: var(--accent-blue); }
+    .stamp-brand { font-size: 0.62rem; font-weight: 900; line-height: 1; }
+    .stamp-txt-bottom { font-size: 0.46rem; font-weight: 800; line-height: 1; }
 
-    .stamp-mid-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 3px;
-      margin: 1px 0;
-    }
-
-    .stamp-mid-row .st-star { font-size: 0.38rem; }
-    .stamp-mid-row i.fa-cart-shopping { font-size: 0.7rem; color: var(--c-blue); }
-    .stamp-brand-txt { font-size: 0.6rem; font-weight: 900; line-height: 1; }
-
-    .stamp-ar-bot {
-      font-size: 0.45rem;
-      font-weight: 800;
-      line-height: 1;
-    }
-
-    /* الشريط السفلي الأزرق */
-    .foot-gradient-bar {
-      background: linear-gradient(90deg, #0288d1 0%, #0e3b64 100%);
+    /* شريط الشكر السفلي */
+    .bottom-curved-navy-bar {
+      background: var(--primary-navy);
       color: white;
-      padding: 7px 14px;
+      padding: 8px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.74rem;
+      font-size: 0.78rem;
       font-weight: 700;
+      border-top-left-radius: 20px;
     }
 
-    .foot-gradient-bar .thanks-cell {
+    .bottom-curved-navy-bar .thanks-block {
       display: flex;
       flex-direction: column;
       align-items: center;
       line-height: 1;
     }
 
-    .foot-gradient-bar .thanks-cell .t-txt {
-      font-size: 0.95rem;
+    .bottom-curved-navy-bar .thanks-block .th-txt {
+      font-size: 1rem;
       font-weight: 800;
     }
 
-    .foot-gradient-bar .thanks-cell .t-heart {
-      font-size: 0.55rem;
+    .bottom-curved-navy-bar .thanks-block .th-heart {
+      font-size: 0.6rem;
       margin-top: 2px;
     }
 
-    /* ==================== استجابة الهاتف والشاشات الصغيرة ==================== */
+    /* تجاوب الهاتف */
     @media screen and (max-width: 860px) {
       body {
         flex-direction: column;
@@ -594,19 +582,19 @@
         padding: 8px;
         gap: 15px;
       }
-      .glass-form-card, .invoice-stage {
+      .glass-control-panel, .invoice-container {
         max-width: 100%;
       }
-      .bill-box {
+      .invoice-card {
         width: 100%;
         max-width: 480px;
       }
     }
 
-    /* ==================== قواعد الطباعة: صفحة واحدة فقط بدون تقطيع ==================== */
+    /* ================= قواعد الطباعة الثابتة: صفحة واحدة فقط ================= */
     @page {
       size: A4 portrait;
-      margin: 5mm auto;
+      margin: 6mm auto;
     }
 
     @media print {
@@ -621,11 +609,11 @@
         display: block !important;
       }
 
-      .glass-form-card, .no-print {
+      .glass-control-panel, .no-print {
         display: none !important;
       }
 
-      .invoice-stage {
+      .invoice-container {
         width: 100% !important;
         max-width: 100% !important;
         margin: 0 auto !important;
@@ -636,7 +624,7 @@
         page-break-inside: avoid !important;
       }
 
-      .bill-box {
+      .invoice-card {
         width: 480px !important;
         box-shadow: none !important;
         border-radius: 0 !important;
@@ -651,10 +639,10 @@
 <body>
 
   <!-- لوحة الإدخال الزجاجية (فارغة تماماً وجاهزة) -->
-  <div class="glass-form-card">
+  <div class="glass-control-panel">
     <h2>
       <span><i class="fa-solid fa-pen-to-square"></i> بوليصة شحن جديدة</span>
-      <button class="btn-refresh-meta" onclick="generateMeta()" title="توليد رقم وتاريخ جديد">
+      <button class="btn-meta-gen" onclick="generateMetaData()" title="توليد رقم وتاريخ جديد">
         <i class="fa-solid fa-arrows-rotate"></i> جديد
       </button>
     </h2>
@@ -671,7 +659,7 @@
 
     <div class="f-group">
       <label><i class="fa-solid fa-location-dot"></i> عنوان العميل</label>
-      <input type="text" id="inCustAddress" class="g-input" placeholder="المحافظة - المنطقة - الشارع...">
+      <input type="text" id="inCustAddress" class="g-input" placeholder="المدينة - المنطقة - الشارع...">
     </div>
 
     <div class="f-row">
@@ -695,91 +683,90 @@
       <input type="text" id="inNote" class="g-input" placeholder="متاح معاينة المنتج قبل الدفع">
     </div>
 
-    <!-- أزرار الإخراج -->
+    <!-- أزرار الإخراج الثلاثة -->
     <div class="btn-grid">
-      <button type="button" class="btn-g btn-print-action" onclick="window.print()">
+      <button type="button" class="btn-action btn-print-act" onclick="window.print()">
         <i class="fa-solid fa-print"></i> طباعة فورية (صفحة واحدة)
       </button>
-      <button type="button" class="btn-g btn-img-action" onclick="saveAsImage()">
+      <button type="button" class="btn-action btn-img-act" onclick="saveAsImage()">
         <i class="fa-solid fa-image"></i> حفظ كصورة PNG
       </button>
-      <button type="button" class="btn-g btn-pdf-action" onclick="saveAsPDF()">
+      <button type="button" class="btn-action btn-pdf-act" onclick="saveAsPDF()">
         <i class="fa-solid fa-file-pdf"></i> حفظ كملف PDF
       </button>
     </div>
   </div>
 
-  <!-- حاوية المعاينة للبوليصة المطابقة 100% للصورة الأصلية -->
-  <div class="invoice-stage">
-    <div class="bill-box" id="billToExport">
+  <!-- معاينة البوليصة المطابقة 100% -->
+  <div class="invoice-container">
+    <div class="invoice-card" id="invoiceCard">
       
-      <!-- الهيدر العلوي: بادج الفاتورة يميناً والشعار يساراً كما بالصورة الأصلية -->
-      <div class="top-header">
+      <!-- الهيدر -->
+      <div class="header-top">
         
-        <!-- بادج فاتورة بيع (يمين) -->
-        <div class="bill-title-tab">
-          <h1>فاتورة بيع</h1>
-          <div class="meta-line">
-            رقم الفاتورة: <span id="outInvNumber">#000482</span>
-          </div>
-          <div class="meta-line">
-            <i class="fa-regular fa-calendar-days"></i> التاريخ: <span id="outDate">--</span>
-          </div>
-        </div>
-
-        <!-- الشعار والسلوجان (يسار) -->
-        <div class="brand-top-left">
-          <div class="logo-row">
+        <!-- اللوجو والسلوجان على اليسار -->
+        <div class="header-logo-side">
+          <div class="logo-main-text">
             <i class="fa-solid fa-cart-shopping"></i> elsoooq
           </div>
-          <div class="brand-slogan">اختياراتك الأفضل .. دائماً</div>
+          <div class="logo-slogan">اختياراتك الأفضل .. دائماً</div>
+        </div>
+
+        <!-- بادج فاتورة بيع على اليمين -->
+        <div class="header-badge-side">
+          <h1>فاتورة بيع</h1>
+          <div class="meta-row">
+            رقم الفاتورة: <span id="outInvNumber">#000482</span>
+          </div>
+          <div class="meta-row">
+            <i class="fa-regular fa-calendar-days"></i> التاريخ: <span id="outDate">2026-09-14</span>
+          </div>
         </div>
 
       </div>
 
-      <div class="bill-inner-body">
+      <div class="invoice-body">
         
         <!-- كارت بيانات العميل -->
-        <div class="sec-card">
-          <div class="sec-badge-tab">
+        <div class="data-box-card">
+          <div class="card-slant-badge">
             <i class="fa-solid fa-user"></i> بيانات العميل
           </div>
-          <div class="cust-layout">
-            <div class="cust-avatar-circle">
-              <i class="fa-solid fa-user"></i>
+          <div class="client-details-grid">
+            <div class="client-text-rows">
+              <div class="client-single-row">
+                <span class="lbl">اسم العميل :</span>
+                <span class="val" id="outCustName">---</span>
+              </div>
+              <div class="client-single-row">
+                <span class="lbl">العنوان :</span>
+                <span class="val" id="outCustAddress">---</span>
+              </div>
+              <div class="client-single-row">
+                <span class="lbl">رقم الهاتف :</span>
+                <span class="val" id="outCustPhone">---</span>
+              </div>
             </div>
-            <div class="cust-lines-col">
-              <div class="cust-line">
-                <span class="cust-lbl">اسم العميل :</span>
-                <span class="cust-val" id="outCustName">---</span>
-              </div>
-              <div class="cust-line">
-                <span class="cust-lbl">العنوان :</span>
-                <span class="cust-val" id="outCustAddress">---</span>
-              </div>
-              <div class="cust-line">
-                <span class="cust-lbl">رقم الهاتف :</span>
-                <span class="cust-val" id="outCustPhone">---</span>
-              </div>
+            <div class="client-avatar-icon">
+              <i class="fa-solid fa-user"></i>
             </div>
           </div>
         </div>
 
         <!-- كارت تفاصيل الطلب -->
-        <div class="sec-card">
-          <div class="sec-badge-tab">
+        <div class="data-box-card">
+          <div class="card-slant-badge">
             <i class="fa-regular fa-clipboard"></i> تفاصيل الطلب
           </div>
-          <div class="order-split-row">
-            <div class="order-unit">
-              <div class="u-title">طريقة الدفع:</div>
-              <div class="u-value">
+          <div class="order-details-grid">
+            <div class="order-sub-col">
+              <div class="col-head">طريقة الدفع:</div>
+              <div class="col-val">
                 كاش عند الاستلام
-                <span class="cash-badge-icon">50</span>
+                <span class="bill-cash-50">50</span>
               </div>
             </div>
-            <div class="order-unit">
-              <div class="u-title">
+            <div class="order-sub-col">
+              <div class="col-head">
                 تاريخ الطلب:
-                <i class="fa-regular fa-calendar-days" style="color:var(--c-navy); font-size:1rem; margin-right:3px;"></i>
-              
+       
