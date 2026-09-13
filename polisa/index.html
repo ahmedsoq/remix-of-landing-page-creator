@@ -1,310 +1,799 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>elsoooq - بوليصة شحن (محسّنة)</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
-<style>
-:root{
-  --ink:#111827;
-  --line:#cbd5e1;
-  --muted:#64748b;
-  --brand:#0f172a;
-  --label-width-mm:100mm; /* default width */
-  --label-height-mm:150mm; /* default height */
-  --label-padding-mm:2.5mm; /* inner padding */
-}
-*{box-sizing:border-box}
-html{background:#f3f4f6}
-body{font-family:Tahoma, "Segoe UI", Arial, sans-serif;background:#f3f4f6;margin:0;padding:20px;color:var(--ink)}
-.wrap{max-width:1100px;margin:0 auto;display:flex;gap:18px;flex-wrap:wrap}
-.panel{background:#fff;border:1px solid #e6eef6;border-radius:10px;padding:20px;flex:0 0 420px;box-shadow:0 10px 30px rgba(15,23,42,.06)}
-.preview{flex:1;min-width:320px;display:flex;flex-direction:column;align-items:center}
-.panel h2{margin:0 0 8px;font-size:18px}
-.label-presets{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
-.preset-btn{padding:8px 10px;border-radius:8px;border:1px solid #e5eef8;background:#fff;cursor:pointer}
-.field{margin-bottom:10px}
-.field label{display:block;font-size:13px;margin-bottom:6px;color:#334155}
-.input,textarea,select{width:100%;padding:9px;border:1px solid #d1d9e6;border-radius:8px}
-.row{display:flex;gap:8px}
-.row .col{flex:1}
-.actions{display:flex;gap:8px;margin-top:10px}
-.btn{padding:10px 12px;border-radius:8px;border:0;cursor:pointer;font-weight:700}
-.btn.primary{background:var(--brand);color:#fff}
-.btn.ghost{background:#fafafa;border:1px solid #e6eef8}
-.hint{font-size:13px;color:var(--muted);margin-top:8px}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>نظام بوالص الشحن | elsoooq</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary-navy: #0e3b64;
+      --accent-blue: #0088cc;
+      --sky-border: #91c9f0;
+      --light-box: #f0f7fd;
+    }
 
-/* Preview label (real-size scaled down on screen) */
-.preview-wrap{background:transparent;padding:12px}
-#label-frame{width:calc(var(--label-width-mm) * 0.75); /* scale for on-screen preview ~75% of mm to px conversion */
-  transform-origin:top right; /* for RTL */
-}
-@media (min-width:900px){
-  /* increase preview scale on large screens */
-  #label-frame{width:calc(var(--label-width-mm) * 0.9);} 
-}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Cairo', sans-serif;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
 
-.label{direction:rtl;background:#fff;padding:calc(var(--label-padding-mm));border:1px solid #ddd;border-radius:6px;box-shadow:0 6px 18px rgba(17,24,39,0.06);display:flex;flex-direction:column;gap:6px}
-.lb-head{display:flex;justify-content:space-between;align-items:center;background:#111;color:#fff;padding:6px;border-radius:4px}
-.lb-head b{font-size:12px}
-.barcode{display:flex;flex-direction:column;align-items:center;padding:4px;border:1px solid #000;border-radius:6px}
-.barcode svg{width:100%;height:36px}
-.order-id{text-align:center;font-weight:700;margin-top:4px}
-.sections{display:flex;gap:8px}
-.right{flex:1}
-.left{width:36mm}
-.sec{border:1px solid var(--line);border-radius:6px;padding:6px;background:#fff}
-.sec .t{display:inline-block;background:#111;color:#fff;padding:3px 8px;border-radius:12px;font-size:11px}
-.r{display:flex;justify-content:space-between;gap:6px;padding:6px 0;border-bottom:1px dashed #eee}
-.r:last-child{border-bottom:none}
-.cod{display:flex;justify-content:space-between;align-items:center;background:#111;color:#fff;padding:8px;border-radius:6px;font-weight:700}
-.qrbox{width:36mm;height:36mm;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;border-radius:4px}
-.qrbox canvas, .qrbox img{width:32mm !important;height:32mm !important}
-.note{min-height:18mm;border:1px dashed #e2e8f0;border-radius:6px;padding:8px;text-align:center;color:var(--muted)}
-.footer{text-align:center;border-top:1px solid #eee;padding-top:6px;font-size:11px;color:var(--muted)}
+    body {
+      background: radial-gradient(circle at top left, #1a365d, #0f172a);
+      min-height: 100vh;
+      padding: 15px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 25px;
+    }
 
-/* Print rules: dynamic size using CSS variables */
-@page { size: var(--label-width-mm) var(--label-height-mm); margin: 0; }
-@media print{
-  html,body{background:#fff;margin:0;padding:0}
-  .wrap,.panel{display:none}
-  #print-area{display:block;width:var(--label-width-mm);height:var(--label-height-mm);overflow:hidden}
-  .label{padding:calc(var(--label-padding-mm));box-shadow:none;border:none}
-}
+    /* لوحة الإدخال الزجاجية */
+    .glass-panel {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      color: #fff;
+    }
 
-/* Responsive helpers */
-@media(max-width:720px){.wrap{padding:10px}.panel{flex:1 1 100%}.preview{order:2}}
-</style>
+    .glass-panel h2 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      padding-bottom: 10px;
+      color: #38bdf8;
+    }
+
+    .btn-new-id {
+      background: rgba(56, 189, 248, 0.2);
+      border: 1px solid #38bdf8;
+      color: #38bdf8;
+      font-size: 0.75rem;
+      padding: 4px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .form-group {
+      margin-bottom: 13px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.83rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #e2e8f0;
+    }
+
+    .glass-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      padding: 9px 12px;
+      color: #ffffff;
+      font-size: 0.92rem;
+      outline: none;
+      transition: 0.2s ease;
+    }
+
+    .glass-input::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 0.85rem;
+    }
+
+    .glass-input:focus {
+      border-color: #38bdf8;
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 10px;
+    }
+
+    .btn-print {
+      width: 100%;
+      margin-top: 15px;
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 13px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4);
+      transition: all 0.2s;
+    }
+
+    .btn-print:active {
+      transform: scale(0.98);
+    }
+
+    /* الحاوية وبوليصة الشحن */
+    .preview-container {
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .invoice-card {
+      width: 100%;
+      background: #ffffff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+
+    /* رأس الفاتورة */
+    .header-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 18px 16px 8px 0;
+    }
+
+    .brand-logo-box {
+      padding-right: 16px;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 1.9rem;
+      font-weight: 900;
+      color: var(--primary-navy);
+      line-height: 1;
+    }
+
+    .brand-logo i {
+      color: #0091ea;
+    }
+
+    .brand-slogan {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--primary-navy);
+      margin-top: 4px;
+    }
+
+    .invoice-title-badge {
+      background: var(--primary-navy);
+      color: #ffffff;
+      padding: 8px 18px 10px 22px;
+      border-top-left-radius: 25px;
+      border-bottom-left-radius: 25px;
+      min-width: 195px;
+    }
+
+    .invoice-title-badge h1 {
+      font-size: 1.35rem;
+      font-weight: 900;
+      margin-bottom: 2px;
+    }
+
+    .invoice-title-badge .meta-item {
+      font-size: 0.74rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 2px;
+    }
+
+    .inv-body {
+      padding: 10px 16px;
+    }
+
+    .bordered-card {
+      border: 1.5px solid var(--sky-border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      position: relative;
+    }
+
+    .card-badge {
+      position: absolute;
+      top: -12px;
+      left: 14px;
+      background: var(--primary-navy);
+      color: white;
+      padding: 1px 14px;
+      border-radius: 12px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .customer-grid {
+      display: flex;
+      align-items: center;
+    }
+
+    .customer-avatar {
+      background: #e1f0fa;
+      color: var(--primary-navy);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      margin-left: 12px;
+      flex-shrink: 0;
+    }
+
+    .customer-lines {
+      flex: 1;
+    }
+
+    .info-line {
+      display: flex;
+      font-size: 0.86rem;
+      margin-bottom: 3px;
+    }
+
+    .info-line:last-child {
+      margin-bottom: 0;
+    }
+
+    .info-line .label {
+      width: 90px;
+      font-weight: 800;
+      color: var(--primary-navy);
+      flex-shrink: 0;
+    }
+
+    .info-line .val {
+      font-weight: 700;
+      color: #1a202c;
+      word-break: break-word;
+    }
+
+    .order-box-grid {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 3px 0;
+    }
+
+    .order-col {
+      text-align: center;
+    }
+
+    .order-col .head {
+      font-weight: 800;
+      font-size: 0.8rem;
+      color: var(--primary-navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      margin-bottom: 2px;
+    }
+
+    .order-col .data {
+      font-weight: 700;
+      font-size: 0.84rem;
+      color: #111;
+    }
+
+    .items-table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1.5px solid var(--sky-border);
+      margin-bottom: 12px;
+    }
+
+    .items-table thead th {
+      background: var(--primary-navy);
+      color: white;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 6px 4px;
+      border-left: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .items-table thead th:last-child {
+      border-left: none;
+    }
+
+    .items-table tbody td {
+      padding: 8px 4px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #222;
+      text-align: center;
+      border-left: 1.5px solid var(--sky-border);
+    }
+
+    .items-table tbody td:last-child {
+      border-left: none;
+    }
+
+    .total-banner {
+      background: var(--primary-navy);
+      color: white;
+      border-radius: 6px;
+      padding: 7px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .total-banner .lbl {
+      font-size: 0.95rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .total-banner .val {
+      font-size: 1.2rem;
+      font-weight: 900;
+    }
+
+    .note-box {
+      border: 1.5px solid var(--sky-border);
+      border-radius: 8px;
+      padding: 8px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--primary-navy);
+      margin-bottom: 12px;
+    }
+
+    .note-badge {
+      position: absolute;
+      top: -11px;
+      left: 14px;
+      background: #ffffff;
+      border: 1.5px solid var(--sky-border);
+      border-radius: 10px;
+      padding: 0 10px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .footer-extra {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1.5px dashed var(--sky-border);
+      padding: 10px 0 4px 0;
+    }
+
+    .company-phone {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .phone-icon-bg {
+      background: var(--primary-navy);
+      color: white;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+    }
+
+    .phone-text .title {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--primary-navy);
+    }
+
+    .phone-text .number {
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: #000;
+      direction: ltr;
+    }
+
+    .perks-list {
+      display: flex;
+      gap: 8px;
+    }
+
+    .perk-item {
+      text-align: center;
+      font-size: 0.62rem;
+      font-weight: 800;
+      color: var(--primary-navy);
+    }
+
+    .perk-item i {
+      display: block;
+      font-size: 0.85rem;
+      margin-bottom: 2px;
+      color: var(--accent-blue);
+    }
+
+    /* ==================== تصميم الختم الحقيقي الواقعي ==================== */
+    .real-stamp {
+      width: 76px;
+      height: 76px;
+      border: 2px solid #0e3b64;
+      border-radius: 50%;
+      padding: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: rotate(-12deg);
+      opacity: 0.88;
+      filter: drop-shadow(0 0 1px rgba(14, 59, 100, 0.4));
+      user-select: none;
+    }
+
+    .stamp-inner-border {
+      width: 100%;
+      height: 100%;
+      border: 1px dashed #0e3b64;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2px;
+    }
+
+    .stamp-company-name {
+      font-size: 0.58rem;
+      font-weight: 900;
+      color: #0e3b64;
+      letter-spacing: -0.2px;
+      line-height: 1;
+    }
+
+    .stamp-stars {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      margin: 1px 0;
+    }
+
+    .stamp-stars i {
+      font-size: 0.42rem;
+      color: #0e3b64;
+    }
+
+    .stamp-logo {
+      font-size: 0.7rem;
+      font-weight: 900;
+      color: #0e3b64;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .stamp-approved {
+      font-size: 0.45rem;
+      font-weight: 800;
+      color: #0e3b64;
+      margin-top: 1px;
+    }
+
+    /* الشريط السفلي */
+    .bottom-blue-bar {
+      background: linear-gradient(90deg, #0088cc 0%, #0e3b64 100%);
+      color: white;
+      padding: 8px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .bottom-blue-bar .thanks-msg {
+      font-size: 0.88rem;
+      font-weight: 800;
+    }
+
+    /* تجاوب الهاتف */
+    @media screen and (max-width: 860px) {
+      body {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+        gap: 20px;
+      }
+      .glass-panel, .preview-container {
+        max-width: 100%;
+      }
+    }
+
+    /* إعدادات الطباعة على ورق البوالص */
+    @page {
+      size: auto;
+      margin: 0mm;
+    }
+
+    @media print {
+      html, body {
+        background: #ffffff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: block !important;
+      }
+
+      .glass-panel, .no-print {
+        display: none !important;
+      }
+
+      .preview-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+      }
+
+      .invoice-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        border: none !important;
+        page-break-inside: avoid;
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="panel" aria-label="ضبط البوليصة">
-    <h2>إعدادات البوليصة</h2>
-    <p class="hint">اختر مقاس جاهز أو أدخل مقاس مخصص (بالمليمتر). المعاينة تعرض البوليصة بالحجم الحقيقي تقريباً على الشاشة.</p>
 
-    <div class="field">
-      <label>المقاسات الجاهزة</label>
-      <div class="label-presets">
-        <button class="preset-btn" data-w="100" data-h="150">100 × 150 مم (10×15 سم)</button>
-        <button class="preset-btn" data-w="80" data-h="200">80 × 200 مم</button>
-        <button class="preset-btn" data-w="80" data-h="60">80 × 60 مم (قصيرة)</button>
-        <button class="preset-btn" data-w="58" data-h="120">58 × 120 مم (طابعة 58)</button>
+  <!-- كارت الإدخال الزجاجي -->
+  <div class="glass-panel">
+    <h2>
+      <span><i class="fa-solid fa-pen-to-square"></i> بوليصة شحن جديدة</span>
+      <button class="btn-new-id" onclick="generateInvoiceMeta()" title="توليد رقم وتاريخ جديد">
+        <i class="fa-solid fa-arrows-rotate"></i> جديد
+      </button>
+    </h2>
+
+    <div class="form-group">
+      <label><i class="fa-solid fa-user"></i> اسم العميل</label>
+      <input type="text" id="inCustName" class="glass-input" placeholder="اكتب اسم العميل...">
+    </div>
+
+    <div class="form-group">
+      <label><i class="fa-solid fa-phone"></i> تليفون العميل</label>
+      <input type="tel" id="inCustPhone" class="glass-input" placeholder="01xxxxxxxxx">
+    </div>
+
+    <div class="form-group">
+      <label><i class="fa-solid fa-location-dot"></i> عنوان العميل</label>
+      <input type="text" id="inCustAddress" class="glass-input" placeholder="المدينة - المنطقة - الشارع...">
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label><i class="fa-solid fa-box-open"></i> النوع</label>
+        <input type="text" id="inProdName" class="glass-input" placeholder="اسم المنتج...">
+      </div>
+      <div class="form-group">
+        <label><i class="fa-solid fa-arrow-up-1-9"></i> العدد</label>
+        <input type="number" id="inProdQty" class="glass-input" placeholder="1" min="1">
       </div>
     </div>
 
-    <div class="row">
-      <div class="col field">
-        <label>عرض البوليصة (مم)</label>
-        <input id="labelWidth" class="input" type="number" value="100" min="10">
-      </div>
-      <div class="col field">
-        <label>ارتفاع البوليصة (مم)</label>
-        <input id="labelHeight" class="input" type="number" value="150" min="10">
-      </div>
+    <div class="form-group">
+      <label><i class="fa-solid fa-money-bill-wave"></i> مبلغ التحصيل (ج.م)</label>
+      <input type="number" id="inTotalAmount" class="glass-input" placeholder="المبلغ المطلوب تحصيله...">
     </div>
 
-    <div class="field">
-      <label>حشوة داخلية (مم)</label>
-      <input id="labelPadding" class="input" type="number" value="2.5" step="0.5" min="0">
+    <div class="form-group">
+      <label><i class="fa-solid fa-comment-dots"></i> ملحوظة</label>
+      <input type="text" id="inNote" class="glass-input" placeholder="متاح معاينة المنتج قبل الدفع...">
     </div>
 
-    <hr>
-
-    <div class="field">
-      <label>رقم الطلب / باركود</label>
-      <input id="orderIdInput" class="input" value="ORD465731">
-    </div>
-
-    <div class="row">
-      <div class="col field"><label>اسم المستلم</label><input id="nameInput" class="input" value="ايهاب بوليد"></div>
-      <div class="col field"><label>الهاتف</label><input id="phoneInput" class="input" value="01125012480"></div>
-    </div>
-
-    <div class="field"><label>العنوان</label><input id="addressInput" class="input" value="القاهرة - حلوان - كورنيش النيل"></div>
-
-    <div class="row">
-      <div class="col field"><label>المنتج</label><input id="productInput" class="input" value="كاميرا X5"></div>
-      <div class="col field"><label>الكمية</label><input id="qtyInput" class="input" value="1"></div>
-    </div>
-
-    <div class="field"><label>المبلغ (جنيه)</label><input id="amountInput" class="input" value="570"></div>
-
-    <div class="field"><label>ملاحظات</label><textarea id="noteInput" class="input">-</textarea></div>
-
-    <div class="row actions">
-      <button id="updateBtn" class="btn primary">تحديث المعاينة</button>
-      <button id="printBtn" class="btn ghost">طباعة سريعة</button>
-      <button id="pdfBtn" class="btn ghost">تصدير PDF</button>
-    </div>
-
-    <p class="hint">ملاحظة: تأكد من إعداد الطابعة بحيث لا تضيف هوامش (margins = 0) عند الطباعة.</p>
+    <button type="button" class="btn-print" onclick="window.print()">
+      <i class="fa-solid fa-print"></i> طباعة البوليصة تلقائياً
+    </button>
   </div>
 
-  <div class="preview">
-    <h2 style="margin:0 0 8px">معاينة البوليصة</h2>
-    <div class="preview-wrap" id="print-area">
-      <!-- label-frame gives a scaled preview; actual printed size controlled by CSS variables and @page -->
-      <div id="label-frame">
-        <div class="label" id="labelEl" style="min-width:calc(var(--label-width-mm));min-height:calc(var(--label-height-mm));">
-
-          <div class="lb-head"><b id="storeName">ELSOOOQ</b><div id="dateText"></div></div>
-
-          <div class="barcode">
-            <svg id="barcode"></svg>
-            <div class="order-id" id="orderText">ORD465731</div>
+  <!-- البوليصة -->
+  <div class="preview-container">
+    <div class="invoice-card" id="invoiceArea">
+      
+      <!-- الهيدر -->
+      <div class="header-section">
+        <div class="brand-logo-box">
+          <div class="brand-logo">
+            <i class="fa-solid fa-cart-shopping"></i> elsoooq
           </div>
+          <div class="brand-slogan">اختياراتك الأفضل .. دائماً</div>
+        </div>
 
-          <div class="sections">
-            <div class="right">
-              <div class="sec">
-                <span class="t">بيانات المستلم</span>
-                <div class="r"><span>الاسم</span><span id="pvName">-</span></div>
-                <div class="r"><span>الهاتف</span><span id="pvPhone">-</span></div>
-                <div class="r"><span>العنوان</span><span id="pvAddress">-</span></div>
-              </div>
-            </div>
-            <div class="left">
-              <div class="sec" style="display:flex;flex-direction:column;gap:6px;align-items:stretch">
-                <div style="display:flex;justify-content:space-between;align-items:center">
-                  <div>
-                    <div style="font-weight:700" id="pvProduct">-</div>
-                    <div style="color:var(--muted)" id="pvQty">-</div>
-                  </div>
-                </div>
-                <div class="qrbox"><div id="pvQr"></div></div>
-              </div>
-              <div style="margin-top:6px" class="cod"><div>المبلغ المطلوب (COD)</div><div id="pvAmount">0 جنيه</div></div>
-            </div>
+        <div class="invoice-title-badge">
+          <h1>فاتورة بيع</h1>
+          <div class="meta-item">
+            رقم الفاتورة: <span id="outInvNumber">#000000</span>
           </div>
-
-          <div class="note" id="pvNote">-</div>
-
-          <div class="footer">
-            <div style="font-weight:700">elsoooq</div>
-            <div><a href="https://www.facebook.com/elsoooqshop" target="_blank">facebook.com/elsoooqshop</a></div>
-            <div>هاتف / واتساب: 01022077100</div>
+          <div class="meta-item">
+            التاريخ: <span id="outDate">--</span>
           </div>
-
+          <div class="meta-item">
+            الوقت: <span id="outTime">--</span>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
 
-<script>
-// utility
-function setVar(name, value){document.documentElement.style.setProperty(name, value+'mm');}
+      <div class="inv-body">
+        
+        <!-- بيانات العميل -->
+        <div class="bordered-card">
+          <div class="card-badge">
+            <i class="fa-solid fa-user"></i> بيانات العميل
+          </div>
+          <div class="customer-grid">
+            <div class="customer-avatar">
+              <i class="fa-solid fa-user"></i>
+            </div>
+            <div class="customer-lines">
+              <div class="info-line">
+                <span class="label">اسم العميل :</span>
+                <span class="val" id="outCustName">---</span>
+              </div>
+              <div class="info-line">
+                <span class="label">العنوان :</span>
+                <span class="val" id="outCustAddress">---</span>
+              </div>
+              <div class="info-line">
+                <span class="label">رقم الهاتف :</span>
+                <span class="val" id="outCustPhone">---</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-// elements
-const orderIdInput = document.getElementById('orderIdInput');
-const nameInput = document.getElementById('nameInput');
-const phoneInput = document.getElementById('phoneInput');
-const addressInput = document.getElementById('addressInput');
-const productInput = document.getElementById('productInput');
-const qtyInput = document.getElementById('qtyInput');
-const amountInput = document.getElementById('amountInput');
-const noteInput = document.getElementById('noteInput');
-const updateBtn = document.getElementById('updateBtn');
-const printBtn = document.getElementById('printBtn');
-const pdfBtn = document.getElementById('pdfBtn');
-const labelWidth = document.getElementById('labelWidth');
-const labelHeight = document.getElementById('labelHeight');
-const labelPadding = document.getElementById('labelPadding');
-const presets = document.querySelectorAll('.preset-btn');
+        <!-- تفاصيل الطلب -->
+        <div class="bordered-card">
+          <div class="card-badge">
+            <i class="fa-regular fa-clipboard"></i> تفاصيل الطلب
+          </div>
+          <div class="order-box-grid">
+            <div class="order-col">
+              <div class="head"><i class="fa-solid fa-money-bills"></i> طريقة الدفع:</div>
+              <div class="data">كاش عند الاستلام</div>
+            </div>
+            <div class="order-col">
+              <div class="head"><i class="fa-regular fa-calendar-days"></i> تاريخ الطلب:</div>
+              <div class="data" id="outOrderDate">--</div>
+            </div>
+          </div>
+        </div>
 
-// preview elements
-const orderText = document.getElementById('orderText');
-const pvName = document.getElementById('pvName');
-const pvPhone = document.getElementById('pvPhone');
-const pvAddress = document.getElementById('pvAddress');
-const pvProduct = document.getElementById('pvProduct');
-const pvQty = document.getElementById('pvQty');
-const pvAmount = document.getElementById('pvAmount');
-const pvNote = document.getElementById('pvNote');
-const pvQr = document.getElementById('pvQr');
-const pvDate = document.getElementById('dateText');
+        <!-- جدول الأصناف -->
+        <table class="items-table">
+          <thead>
+            <tr>
+              <th style="width: 28px;">م</th>
+              <th>اسم المنتج</th>
+              <th style="width: 50px;">الكمية</th>
+              <th style="width: 85px;">سعر الوحدة</th>
+              <th style="width: 85px;">الإجمالي</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td id="outProdName" style="text-align: right; padding-right: 8px;">---</td>
+              <td id="outProdQty">-</td>
+              <td><span id="outProdUnit">0</span> جنيه</td>
+              <td><span id="outProdTotal">0</span> جنيه</td>
+            </tr>
+          </tbody>
+        </table>
 
-// initialize from inputs
-function applySize(){
-  const w = parseFloat(labelWidth.value) || 100;
-  const h = parseFloat(labelHeight.value) || 150;
-  const p = parseFloat(labelPadding.value) || 2.5;
-  document.documentElement.style.setProperty('--label-width-mm', w+'mm');
-  document.documentElement.style.setProperty('--label-height-mm', h+'mm');
-  document.documentElement.style.setProperty('--label-padding-mm', p+'mm');
+        <!-- إجمالي الفاتورة -->
+        <div class="total-banner">
+          <div class="lbl">
+            <i class="fa-solid fa-coins"></i> المبلغ الإجمالي
+          </div>
+          <div class="val">
+            <span id="outGrandTotal">0</span> جنيه مصري
+          </div>
+        </div>
 
-  // also update inline min-width/height for the preview element so preview scales
-  const frame = document.getElementById('label-frame');
-  // frame width is CSS calc of var(--label-width-mm) but on some browsers using mm in calc causes issues
-  // set a style width in px computed from mm -> px approximate (1mm = 3.78px at 96dpi), but we rely on CSS scaling
-}
+        <!-- الملاحظة -->
+        <div class="note-box">
+          <div class="note-badge">
+            <i class="fa-regular fa-comment-dots"></i> ملاحظة
+          </div>
+          <i class="fa-solid fa-circle-check" style="color: #0288d1; font-size: 1rem;"></i>
+          <span id="outNote">متاح معاينة المنتج قبل الدفع</span>
+        </div>
 
-// render preview
-let currentQR;
-function render(){
-  const id = orderIdInput.value || ('ORD'+Math.floor(100000+Math.random()*900000));
-  orderText.textContent = id;
-  pvName.textContent = nameInput.value || '-';
-  pvPhone.textContent = phoneInput.value || '-';
-  pvAddress.textContent = addressInput.value || '-';
-  pvProduct.textContent = productInput.value || '-';
-  pvQty.textContent = qtyInput.value || '-';
-  pvAmount.textContent = (amountInput.value||'0') + ' جنيه';
-  pvNote.textContent = noteInput.value || '-';
-  pvDate.textContent = new Date().toLocaleDateString('ar-EG');
+        <!-- المميزات ورقم الشركة والختم الواقعي -->
+        <div class="footer-extra">
+          <div class="company-phone">
+            <div class="phone-icon-bg"><i class="fa-solid fa-phone"></i></div>
+            <div class="phone-text">
+              <div class="title">رقم الشركة</div>
+              <div class="number">01022077100</div>
+            </div>
+          </div>
 
-  // barcode
-  try{ JsBarcode('#barcode', id, {format:'CODE128',displayValue:false,margin:0,height:40,width:1.6}); }catch(e){console.warn(e);}
+          <div class="perks-list">
+            <div class="perk-item">
+              <i class="fa-solid fa-shield-halved"></i>
+              أمان وضمان
+            </div>
+            <div class="perk-item">
+              <i class="fa-solid fa-rotate-left"></i>
+              استرجاع لشهرين
+            </div>
+            <div class="perk-item">
+              <i class="fa-regular fa-credit-card"></i>
+              عند الاستلام
+            </div>
+          </div>
 
-  // QR
-  pvQr.innerHTML = '';
-  try{ new QRCode(pvQr, {text: window.location.href + '#'+id, width:120, height:120, correctLevel: QRCode.CorrectLevel.H}); }catch(e){console.warn(e)}
-}
-
-// preset buttons
-presets.forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    labelWidth.value = btn.dataset.w;
-    labelHeight.value = btn.dataset.h;
-    applySize();
-    render();
-  });
-});
-
-// update handlers with debounce for snappy UX
-function debounce(fn, wait=120){let t; return (...a)=>{clearTimeout(t); t=setTimeout(()=>fn(...a), wait)}}
-[labelWidth,labelHeight,labelPadding,orderIdInput,nameInput,phoneInput,addressInput,productInput,qtyInput,amountInput,noteInput].forEach(el=>el.addEventListener('input', debounce(()=>{applySize();render();}))); 
-
-updateBtn.addEventListener('click', (e)=>{ e.preventDefault(); applySize(); render(); });
-
-printBtn.addEventListener('click', (e)=>{ e.preventDefault(); applySize(); render(); setTimeout(()=>{window.print()},80); });
-
-pdfBtn.addEventListener('click', async (e)=>{
-  e.preventDefault(); applySize(); render();
-  // compute width/height in mm
-  const w = parseFloat(labelWidth.value) || 100;
-  const h = parseFloat(labelHeight.value) || 150;
-
-  const opt = {
-    margin: 0,
-    filename: (orderIdInput.value||'label') + '.pdf',
-    image: { type: 'jpeg', quality: 1 },
-    html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
-    jsPDF: { unit: 'mm', format: [w, h], orientation: 'portrait' }
-  };
-
-  const el = document.getElementById('labelEl');
-  try{
-    await html2pdf().set(opt).from(el).save();
-  }catch(err){console.error(err); alert('حدث خطأ أثناء التصدير، افتح الكونسول للمزيد');}
-});
-
-// initial
-applySize(); render();
-
-</script>
-</body>
-</html>
+          <!-- ختم شركة احترافي بتصميم واقعي -->
+          <div class="real-stamp">
+            <div class="stamp-inner-border">
+              <div class="stamp-company-name">★ شركة السوق ★</div>
+              <div class="stamp-stars">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-cart-shopping" style="font-size: 0.65rem;"></i>
+                <i class="fa-solid fa-star"></i>
+              </div>
+              <div class="stamp-logo">elsoooq</div>
+              <div class="stamp-approved">معتمد وموثق</div>
+            </div>
+          </div>
+        </di
