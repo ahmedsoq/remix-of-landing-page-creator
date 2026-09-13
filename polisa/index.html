@@ -5,20 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>نظام بوالص الشحن | elsoooq</title>
   
-  <!-- مكتبات الخط والأيقونات -->
+  <!-- خطوط وأيقونات مطابقة -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
   
-  <!-- مكتبات التصدير لصورة و PDF بجودة فائقة -->
+  <!-- مكتبات إخراج الصور و PDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
     :root {
       --primary-navy: #0e3b64;
-      --accent-blue: #0088cc;
-      --sky-border: #91c9f0;
-      --light-box: #f0f7fd;
+      --accent-blue: #0288d1;
+      --sky-border: #b8daf3;
+      --light-blue-fill: #e1f0fa;
+      --table-border: #9ecbed;
     }
 
     * {
@@ -31,7 +32,7 @@
     }
 
     body {
-      background: radial-gradient(circle at top left, #1a365d, #0f172a);
+      background: radial-gradient(circle at top left, #122b49, #09111e);
       min-height: 100vh;
       padding: 15px;
       display: flex;
@@ -41,22 +42,22 @@
       gap: 25px;
     }
 
-    /* لوحة الإدخال الزجاجية */
+    /* ==================== لوحة الإدخال الزجاجية الحديثة ==================== */
     .glass-panel {
       width: 100%;
-      max-width: 420px;
+      max-width: 400px;
       background: rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: 20px;
+      border-radius: 18px;
       padding: 20px;
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
       color: #fff;
     }
 
     .glass-panel h2 {
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       font-weight: 800;
       margin-bottom: 16px;
       display: flex;
@@ -68,16 +69,16 @@
     }
 
     .btn-new-id {
-      background: rgba(56, 189, 248, 0.2);
+      background: rgba(56, 189, 248, 0.15);
       border: 1px solid #38bdf8;
       color: #38bdf8;
       font-size: 0.75rem;
-      padding: 4px 8px;
+      padding: 4px 10px;
       border-radius: 6px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
     }
 
     .form-group {
@@ -96,7 +97,7 @@
       width: 100%;
       background: rgba(255, 255, 255, 0.07);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 10px;
+      border-radius: 8px;
       padding: 8px 12px;
       color: #ffffff;
       font-size: 0.9rem;
@@ -121,7 +122,6 @@
       gap: 10px;
     }
 
-    /* أزرار الإخراج (طباعة - صورة - PDF) */
     .actions-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -131,45 +131,42 @@
 
     .btn-action {
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       padding: 10px;
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
-      transition: 0.2s;
       color: #fff;
+      transition: 0.2s;
     }
 
     .btn-print {
       grid-column: span 2;
       background: linear-gradient(135deg, #0284c7, #0369a1);
-      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
       font-size: 0.95rem;
       padding: 12px;
     }
 
     .btn-img {
       background: linear-gradient(135deg, #059669, #047857);
-      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
     }
 
     .btn-pdf {
       background: linear-gradient(135deg, #dc2626, #b91c1c);
-      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
     }
 
     .btn-action:active {
       transform: scale(0.97);
     }
 
-    /* الحاوية وبوليصة الشحن */
+    /* ==================== تصميم الفاتورة المطابق للأصل ==================== */
     .preview-container {
       width: 100%;
-      max-width: 500px;
+      max-width: 520px;
       display: flex;
       justify-content: center;
     }
@@ -179,29 +176,30 @@
       background: #ffffff;
       border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
       position: relative;
     }
 
-    /* رأس الفاتورة */
+    /* الهيدر العلوي */
     .header-section {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      padding: 18px 16px 8px 0;
+      padding: 20px 20px 10px 0;
     }
 
     .brand-logo-box {
-      padding-right: 16px;
+      padding-right: 20px;
     }
 
     .brand-logo {
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 1.9rem;
+      font-size: 2.3rem;
       font-weight: 900;
       color: var(--primary-navy);
+      letter-spacing: -1px;
       line-height: 1;
     }
 
@@ -210,79 +208,92 @@
     }
 
     .brand-slogan {
-      font-size: 0.75rem;
+      font-size: 0.85rem;
       font-weight: 700;
       color: var(--primary-navy);
-      margin-top: 4px;
+      margin-top: 5px;
     }
 
+    /* بادج فاتورة بيع */
     .invoice-title-badge {
       background: var(--primary-navy);
       color: #ffffff;
-      padding: 8px 18px 10px 22px;
-      border-top-left-radius: 25px;
-      border-bottom-left-radius: 25px;
-      min-width: 195px;
+      padding: 8px 20px 12px 28px;
+      border-top-left-radius: 28px;
+      border-bottom-left-radius: 28px;
+      min-width: 215px;
+      text-align: right;
     }
 
     .invoice-title-badge h1 {
-      font-size: 1.35rem;
+      font-size: 1.55rem;
       font-weight: 900;
       margin-bottom: 2px;
+      letter-spacing: 0.5px;
     }
 
     .invoice-title-badge .meta-item {
-      font-size: 0.74rem;
-      font-weight: 600;
+      font-size: 0.78rem;
+      font-weight: 700;
       display: flex;
       align-items: center;
-      gap: 5px;
-      margin-top: 2px;
+      justify-content: flex-start;
+      gap: 6px;
+      margin-top: 3px;
+    }
+
+    .invoice-title-badge .meta-item i {
+      font-size: 0.85rem;
     }
 
     .inv-body {
-      padding: 10px 16px;
+      padding: 10px 20px;
     }
 
+    /* الكروت المحاطة ببادج علوي مقوس من جهة واحدة */
     .bordered-card {
       border: 1.5px solid var(--sky-border);
       border-radius: 12px;
-      padding: 12px 14px;
-      margin-bottom: 14px;
+      padding: 14px 18px;
+      margin-bottom: 18px;
       position: relative;
     }
 
     .card-badge {
       position: absolute;
-      top: -12px;
-      left: 14px;
+      top: -14px;
+      left: 15px;
       background: var(--primary-navy);
       color: white;
-      padding: 1px 14px;
-      border-radius: 12px;
-      font-size: 0.78rem;
-      font-weight: 700;
+      padding: 2px 22px;
+      border-top-left-radius: 12px;
+      border-bottom-left-radius: 12px;
+      border-top-right-radius: 12px;
+      border-bottom-right-radius: 0;
+      font-size: 0.88rem;
+      font-weight: 800;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
     }
 
+    /* بيانات العميل */
     .customer-grid {
       display: flex;
       align-items: center;
     }
 
     .customer-avatar {
-      background: #e1f0fa;
+      background: var(--light-blue-fill);
       color: var(--primary-navy);
-      width: 44px;
-      height: 44px;
+      width: 54px;
+      height: 54px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.35rem;
-      margin-left: 12px;
+      font-size: 1.7rem;
+      margin-left: 20px;
       flex-shrink: 0;
     }
 
@@ -292,8 +303,8 @@
 
     .info-line {
       display: flex;
-      font-size: 0.86rem;
-      margin-bottom: 3px;
+      font-size: 0.95rem;
+      margin-bottom: 5px;
     }
 
     .info-line:last-child {
@@ -301,7 +312,7 @@
     }
 
     .info-line .label {
-      width: 90px;
+      width: 95px;
       font-weight: 800;
       color: var(--primary-navy);
       flex-shrink: 0;
@@ -313,11 +324,12 @@
       word-break: break-word;
     }
 
+    /* تفاصيل الطلب */
     .order-box-grid {
       display: flex;
       justify-content: space-around;
       align-items: center;
-      padding: 3px 0;
+      padding: 6px 0;
     }
 
     .order-col {
@@ -326,37 +338,38 @@
 
     .order-col .head {
       font-weight: 800;
-      font-size: 0.8rem;
+      font-size: 0.9rem;
       color: var(--primary-navy);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 5px;
-      margin-bottom: 2px;
+      gap: 6px;
+      margin-bottom: 4px;
     }
 
     .order-col .data {
       font-weight: 700;
-      font-size: 0.84rem;
+      font-size: 0.95rem;
       color: #111;
     }
 
+    /* جدول الأصناف */
     .items-table {
       width: 100%;
       border-collapse: collapse;
       border-radius: 6px;
       overflow: hidden;
-      border: 1.5px solid var(--sky-border);
-      margin-bottom: 12px;
+      border: 1.5px solid var(--table-border);
+      margin-bottom: 14px;
     }
 
     .items-table thead th {
       background: var(--primary-navy);
       color: white;
-      font-size: 0.78rem;
-      font-weight: 700;
-      padding: 6px 4px;
-      border-left: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 0.85rem;
+      font-weight: 800;
+      padding: 8px 6px;
+      border-left: 1.5px solid rgba(255, 255, 255, 0.25);
     }
 
     .items-table thead th:last-child {
@@ -364,106 +377,113 @@
     }
 
     .items-table tbody td {
-      padding: 8px 4px;
-      font-size: 0.82rem;
+      padding: 10px 6px;
+      font-size: 0.9rem;
       font-weight: 700;
-      color: #222;
+      color: #111;
       text-align: center;
-      border-left: 1.5px solid var(--sky-border);
+      border-left: 1.5px solid var(--table-border);
     }
 
     .items-table tbody td:last-child {
       border-left: none;
     }
 
+    /* بنر المبلغ الإجمالي */
     .total-banner {
       background: var(--primary-navy);
       color: white;
-      border-radius: 6px;
-      padding: 7px 14px;
+      border-radius: 8px;
+      padding: 8px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 15px;
     }
 
     .total-banner .lbl {
-      font-size: 0.95rem;
+      font-size: 1.15rem;
       font-weight: 800;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+    }
+
+    .total-banner .lbl i {
+      font-size: 1.4rem;
     }
 
     .total-banner .val {
-      font-size: 1.2rem;
+      font-size: 1.35rem;
       font-weight: 900;
     }
 
+    /* الملاحظة */
     .note-box {
       border: 1.5px solid var(--sky-border);
       border-radius: 8px;
-      padding: 8px;
+      padding: 10px;
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      font-size: 0.82rem;
+      gap: 8px;
+      font-size: 0.9rem;
       font-weight: 800;
       color: var(--primary-navy);
-      margin-bottom: 12px;
+      margin-bottom: 15px;
     }
 
     .note-badge {
       position: absolute;
-      top: -11px;
-      left: 14px;
+      top: -13px;
+      left: 15px;
       background: #ffffff;
       border: 1.5px solid var(--sky-border);
-      border-radius: 10px;
-      padding: 0 10px;
-      font-size: 0.72rem;
+      border-radius: 12px;
+      padding: 1px 12px;
+      font-size: 0.78rem;
       font-weight: 800;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
     }
 
+    /* التذييل: الهاتف + المميزات + الختم الأصلي */
     .footer-extra {
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-top: 1.5px dashed var(--sky-border);
-      padding: 10px 0 4px 0;
+      padding: 12px 0 6px 0;
     }
 
     .company-phone {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
 
     .phone-icon-bg {
       background: var(--primary-navy);
       color: white;
-      width: 28px;
-      height: 28px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.75rem;
+      font-size: 0.95rem;
     }
 
     .phone-text .title {
-      font-size: 0.65rem;
+      font-size: 0.72rem;
       font-weight: 700;
       color: var(--primary-navy);
     }
 
     .phone-text .number {
-      font-size: 0.78rem;
+      font-size: 0.9rem;
       font-weight: 800;
       color: #000;
       direction: ltr;
@@ -471,103 +491,136 @@
 
     .perks-list {
       display: flex;
-      gap: 8px;
+      gap: 12px;
     }
 
     .perk-item {
       text-align: center;
-      font-size: 0.62rem;
+      font-size: 0.68rem;
       font-weight: 800;
       color: var(--primary-navy);
     }
 
     .perk-item i {
       display: block;
-      font-size: 0.85rem;
-      margin-bottom: 2px;
-      color: var(--accent-blue);
+      font-size: 1.1rem;
+      margin-bottom: 3px;
+      color: var(--primary-navy);
     }
 
-    /* ختم الشركة الاحترافي الحقيقي */
-    .real-stamp {
+    /* ================= الختم الأصلي الدائري المطابق تماماً ================= */
+    .original-stamp-wrapper {
+      width: 78px;
+      height: 78px;
+      transform: rotate(-10deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
+
+    .original-stamp {
       width: 76px;
       height: 76px;
-      border: 2px solid #0e3b64;
+      border: 1.8px solid var(--primary-navy);
       border-radius: 50%;
       padding: 2px;
       display: flex;
       align-items: center;
       justify-content: center;
-      transform: rotate(-12deg);
-      opacity: 0.88;
-      user-select: none;
+      position: relative;
     }
 
-    .stamp-inner-border {
+    .original-stamp-inner {
       width: 100%;
       height: 100%;
-      border: 1px dashed #0e3b64;
+      border: 1px dashed var(--primary-navy);
       border-radius: 50%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 2px;
+      color: var(--primary-navy);
+      position: relative;
     }
 
-    .stamp-company-name {
-      font-size: 0.58rem;
+    .stamp-top-text {
+      font-size: 0.55rem;
       font-weight: 900;
-      color: #0e3b64;
       line-height: 1;
+      margin-top: 2px;
     }
 
-    .stamp-stars {
+    .stamp-center {
       display: flex;
       align-items: center;
-      gap: 3px;
+      justify-content: center;
+      gap: 4px;
       margin: 1px 0;
     }
 
-    .stamp-stars i {
-      font-size: 0.42rem;
-      color: #0e3b64;
-    }
-
-    .stamp-logo {
-      font-size: 0.7rem;
-      font-weight: 900;
-      color: #0e3b64;
-      line-height: 1;
-      display: flex;
-      align-items: center;
-      gap: 2px;
-    }
-
-    .stamp-approved {
+    .stamp-center .star {
       font-size: 0.45rem;
-      font-weight: 800;
-      color: #0e3b64;
-      margin-top: 1px;
     }
 
+    .stamp-center-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .stamp-center-logo i {
+      font-size: 0.75rem;
+      color: #0088cc;
+    }
+
+    .stamp-brand-name {
+      font-size: 0.65rem;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.3px;
+    }
+
+    .stamp-bottom-text {
+      font-size: 0.48rem;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+
+    /* ================= شريط الشكر السفلي ================= */
     .bottom-blue-bar {
-      background: linear-gradient(90deg, #0088cc 0%, #0e3b64 100%);
+      background: linear-gradient(90deg, #0288d1 0%, #0e3b64 100%);
       color: white;
-      padding: 8px 16px;
+      padding: 10px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       font-weight: 700;
     }
 
-    .bottom-blue-bar .thanks-msg {
-      font-size: 0.88rem;
-      font-weight: 800;
+    .bottom-blue-bar .thanks-box {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
+    .bottom-blue-bar .thanks-msg {
+      font-family: 'Reem Kufi', 'Cairo', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .bottom-blue-bar .thanks-heart {
+      font-size: 0.7rem;
+      margin-top: 1px;
+    }
+
+    /* تجاوب الهاتف */
     @media screen and (max-width: 860px) {
       body {
         flex-direction: column;
@@ -580,7 +633,7 @@
       }
     }
 
-    /* ضبط الطباعة الورقية */
+    /* إعدادات الطباعة على ورق البوالص */
     @page {
       size: auto;
       margin: 0mm;
@@ -619,7 +672,7 @@
 </head>
 <body>
 
-  <!-- لوحة الإدخال الزجاجية -->
+  <!-- لوحة الإدخال الزجاجية (فارغة وجاهزة) -->
   <div class="glass-panel">
     <h2>
       <span><i class="fa-solid fa-pen-to-square"></i> بوليصة شحن جديدة</span>
@@ -645,7 +698,7 @@
 
     <div class="form-row">
       <div class="form-group">
-        <label><i class="fa-solid fa-box-open"></i> النوع</label>
+        <label><i class="fa-solid fa-box-open"></i> النوع (اسم المنتج)</label>
         <input type="text" id="inProdName" class="glass-input" placeholder="اسم المنتج...">
       </div>
       <div class="form-group">
@@ -661,7 +714,7 @@
 
     <div class="form-group">
       <label><i class="fa-solid fa-comment-dots"></i> ملحوظة</label>
-      <input type="text" id="inNote" class="glass-input" placeholder="متاح معاينة المنتج قبل الدفع...">
+      <input type="text" id="inNote" class="glass-input" placeholder="متاح معاينة المنتج قبل الدفع">
     </div>
 
     <!-- أزرار الإخراج الثلاثة -->
@@ -680,11 +733,11 @@
     </div>
   </div>
 
-  <!-- المعاينة -->
+  <!-- معاينة البوليصة المطابقة 100% -->
   <div class="preview-container">
     <div class="invoice-card" id="invoiceArea">
       
-      <!-- الهيدر والشعار -->
+      <!-- الهيدر -->
       <div class="header-section">
         <div class="brand-logo-box">
           <div class="brand-logo">
@@ -696,20 +749,17 @@
         <div class="invoice-title-badge">
           <h1>فاتورة بيع</h1>
           <div class="meta-item">
-            رقم الفاتورة: <span id="outInvNumber">#000000</span>
+            رقم الفاتورة: <span id="outInvNumber">#000482</span>
           </div>
           <div class="meta-item">
-            التاريخ: <span id="outDate">--</span>
-          </div>
-          <div class="meta-item">
-            الوقت: <span id="outTime">--</span>
+            <i class="fa-regular fa-calendar-days"></i> التاريخ: <span id="outDate">--</span>
           </div>
         </div>
       </div>
 
       <div class="inv-body">
         
-        <!-- بيانات العميل -->
+        <!-- كارت بيانات العميل -->
         <div class="bordered-card">
           <div class="card-badge">
             <i class="fa-solid fa-user"></i> بيانات العميل
@@ -735,74 +785,31 @@
           </div>
         </div>
 
-        <!-- تفاصيل الطلب -->
+        <!-- كارت تفاصيل الطلب -->
         <div class="bordered-card">
           <div class="card-badge">
-            <i class="fa-regular fa-clipboard"></i> تفاصيل الطلب
+            <i class="fa-regular fa-newspaper"></i> تفاصيل الطلب
           </div>
           <div class="order-box-grid">
             <div class="order-col">
-              <div class="head"><i class="fa-solid fa-money-bills"></i> طريقة الدفع:</div>
-              <div class="data">كاش عند الاستلام</div>
+              <div class="head">طريقة الدفع:</div>
+              <div class="data">
+                كاش عند الاستلام 
+                <span style="display:inline-block; border:1px solid #111; border-radius:3px; padding:0 3px; font-size:0.75rem; margin-right:4px;">💵</span>
+              </div>
             </div>
             <div class="order-col">
-              <div class="head"><i class="fa-regular fa-calendar-days"></i> تاريخ الطلب:</div>
+              <div class="head">
+                تاريخ الطلب:
+                <i class="fa-regular fa-calendar-days" style="color:var(--primary-navy); font-size:1.1rem; margin-right:4px;"></i>
+              </div>
               <div class="data" id="outOrderDate">--</div>
             </div>
           </div>
         </div>
 
-        <!-- جدول الأصناف -->
+        <!-- جدول الأصناف المطابق تماماً -->
         <table class="items-table">
           <thead>
             <tr>
-              <th style="width: 28px;">م</th>
-              <th>اسم المنتج</th>
-              <th style="width: 50px;">الكمية</th>
-              <th style="width: 85px;">سعر الوحدة</th>
-              <th style="width: 85px;">الإجمالي</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td id="outProdName" style="text-align: right; padding-right: 8px;">---</td>
-              <td id="outProdQty">-</td>
-              <td><span id="outProdUnit">0</span> جنيه</td>
-              <td><span id="outProdTotal">0</span> جنيه</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <!-- إجمالي الفاتورة -->
-        <div class="total-banner">
-          <div class="lbl">
-            <i class="fa-solid fa-coins"></i> المبلغ الإجمالي
-          </div>
-          <div class="val">
-            <span id="outGrandTotal">0</span> جنيه مصري
-          </div>
-        </div>
-
-        <!-- الملاحظة -->
-        <div class="note-box">
-          <div class="note-badge">
-            <i class="fa-regular fa-comment-dots"></i> ملاحظة
-          </div>
-          <i class="fa-solid fa-circle-check" style="color: #0288d1; font-size: 1rem;"></i>
-          <span id="outNote">متاح معاينة المنتج قبل الدفع</span>
-        </div>
-
-        <!-- المميزات ورقم الشركة والختم -->
-        <div class="footer-extra">
-          <div class="company-phone">
-            <div class="phone-icon-bg"><i class="fa-solid fa-phone"></i></div>
-            <div class="phone-text">
-              <div class="title">رقم الشركة</div>
-              <div class="number">01022077100</div>
-            </div>
-          </div>
-
-          <div class="perks-list">
-            <div class="perk-item">
-  
+        
