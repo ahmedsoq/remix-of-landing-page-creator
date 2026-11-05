@@ -124,6 +124,10 @@ footer{margin-top:10px;padding-bottom:6px;text-align:center;font-size:11px;opaci
 .trust{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
 .trust div{padding:9px 6px;border-radius:14px;text-align:center;font-size:11px;font-weight:900;line-height:1.35}
 .trust i{font-style:normal;display:block;font-size:16px;margin-bottom:2px}
+.trust svg{width:23px;height:23px;display:block;margin:0 auto 5px;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.trust .g-lime svg{stroke:var(--lime);filter:drop-shadow(0 0 7px rgba(126,224,176,.55))}
+.trust .g-cyan svg{stroke:var(--cyan);filter:drop-shadow(0 0 7px rgba(124,196,255,.55))}
+.trust .g-orange svg{stroke:var(--orange);filter:drop-shadow(0 0 7px rgba(255,154,77,.55))}
 .sticky{position:fixed;inset-inline:0;bottom:0;z-index:40;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:linear-gradient(to top,rgba(10,19,48,.98),rgba(10,19,48,.78));backdrop-filter:blur(8px);transform:translateY(120%) translateZ(0);transition:transform .3s ease;will-change:transform}
 .sticky.on{transform:translateZ(0)}
 .sticky .inner{max-width:780px;margin:0 auto;display:flex;align-items:center;gap:10px}
@@ -835,9 +839,9 @@ function renderProduct(p){
       '</div>' +
       '<button class="cta" style="margin-top:12px;padding:15px;font-size:17px" onclick="openOrder()">اطلب الآن — الدفع عند الاستلام</button>' +
       '<div class="trust">' +
-        '<div class="glass g-lime"><i>🛡️</i>ضمان استرجاع 14 يوم</div>' +
-        '<div class="glass g-cyan"><i>✅</i>منتجات أصلية</div>' +
-        '<div class="glass g-orange"><i>⚡</i>توصيل من يومين لـ 3 أيام</div>' +
+        '<div class="glass g-lime"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m8.7 12.2 2.2 2.2 4.4-4.6"/></svg>ضمان استرجاع 14 يوم</div>' +
+        '<div class="glass g-cyan"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg>منتجات أصلية</div>' +
+        '<div class="glass g-orange"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.6 17.4V6.2a1.4 1.4 0 0 0-1.4-1.4H3.4A1.4 1.4 0 0 0 2 6.2v9.8a1.2 1.2 0 0 0 1.2 1.2h1.6"/><path d="M14.4 17.4H9.2"/><path d="M18.2 17.4h2.6a1.2 1.2 0 0 0 1.2-1.2v-3.6a1.2 1.2 0 0 0-.27-.75l-3.2-4a1.2 1.2 0 0 0-.93-.45h-3.4"/><circle cx="17.2" cy="17.6" r="2"/><circle cx="7.2" cy="17.6" r="2"/></svg>توصيل من يومين لـ 3 أيام</div>' +
       '</div>' +
     '</section>';
 
