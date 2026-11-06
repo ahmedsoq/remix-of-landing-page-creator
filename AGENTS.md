@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+## Store structure
+- Keep every customer-facing store copy as a synchronized, standalone HTML file so the shop remains portable and embeds its product assets.
